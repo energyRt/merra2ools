@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://olugovoy.github.io/merra2ools//index.html</loc>
+  </url>
+  <url>
+    <loc>https://olugovoy.github.io/merra2ools//reference/fHellmann.html</loc>
+  </url>
+  <url>
+    <loc>https://olugovoy.github.io/merra2ools//reference/fPOA.html</loc>
+  </url>
+  <url>
+    <loc>https://olugovoy.github.io/merra2ools//reference/fPOA_dl.html</loc>
+  </url>
+  <url>
+    <loc>https://olugovoy.github.io/merra2ools//reference/fWindPowerCurve.html</loc>
+  </url>
+  <url>
+    <loc>https://olugovoy.github.io/merra2ools//reference/fWindSpeedExtrapolation.html</loc>
+  </url>
+  <url>
+    <loc>https://olugovoy.github.io/merra2ools//reference/merra2db.html</loc>
+  </url>
+  <url>
+    <loc>https://olugovoy.github.io/merra2ools//articles/get_started.html</loc>
+  </url>
+</urlset>

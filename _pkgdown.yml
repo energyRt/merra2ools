@@ -2,5 +2,5 @@ url: https://olugovoy.github.io/merra2ools/
 
 template:
   params:
-    bootswatch: Sandstone
+    bootswatch: flatly
     ganalytics: G-00GHMPMM37
