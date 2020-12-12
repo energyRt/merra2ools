@@ -100,7 +100,34 @@
 <h1 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h1>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># devtools::install_github("olugovoy/merra2ools")</span></code></pre></div>
+<code class="sourceCode R"><span class="co"># Installation of `merra2ools` package</span>
+<span class="va">pkg</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/installed.packages.html">installed.packages</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="co"># returns names of installed packages</span>
+<span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="op">(</span><span class="st">"devtools"</span> <span class="op">%in%</span> <span class="fu">pkg</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span>
+<span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="op">(</span><span class="st">"merra2ools"</span> <span class="op">%in%</span> <span class="fu">pkg</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"olugovoy/merra2ools"</span><span class="op">)</span>
+  
+<span class="co"># Installation of packages used in the vignette</span>
+<span class="co">## gis/spatial objects and method</span>
+<span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="op">(</span><span class="st">"sp"</span> <span class="op">%in%</span> <span class="fu">pkg</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"sp"</span><span class="op">)</span>
+<span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="op">(</span><span class="st">"rgeos"</span> <span class="op">%in%</span> <span class="fu">pkg</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"rgeos"</span><span class="op">)</span>
+<span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="op">(</span><span class="st">"sf"</span> <span class="op">%in%</span> <span class="fu">pkg</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"sf"</span><span class="op">)</span>
+<span class="co">## gis-datasets by OpenSci project </span>
+<span class="co">## (alternative packages might be used instead)</span>
+<span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="op">(</span><span class="st">"rnaturalearth"</span> <span class="op">%in%</span> <span class="fu">pkg</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"rnaturalearth"</span><span class="op">)</span>
+<span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="op">(</span><span class="st">"rnaturalearthdata"</span> <span class="op">%in%</span> <span class="fu">pkg</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"rnaturalearthdata"</span><span class="op">)</span>
+<span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="op">(</span><span class="st">"rnaturalearthhires"</span> <span class="op">%in%</span> <span class="fu">pkg</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> 
+  <span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"ropensci/rnaturalearthhires"</span><span class="op">)</span>
+<span class="co"># rm(pkg)</span>
+
+<span class="co"># Load packages used in the vignette</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span>
+<span class="co">#&gt; -- Attaching packages --------------------------------------- tidyverse 1.3.0 --</span>
+<span class="co">#&gt; v ggplot2 3.3.2     v purrr   0.3.4</span>
+<span class="co">#&gt; v tibble  3.0.4     v dplyr   1.0.2</span>
+<span class="co">#&gt; v tidyr   1.1.2     v stringr 1.4.0</span>
+<span class="co">#&gt; v readr   1.4.0     v forcats 0.5.0</span>
+<span class="co">#&gt; -- Conflicts ------------------------------------------ tidyverse_conflicts() --</span>
+<span class="co">#&gt; x dplyr::filter() masks stats::filter()</span>
+<span class="co">#&gt; x dplyr::lag()    masks stats::lag()</span></code></pre></div>
 </div>
 <div id="downloading-the-data" class="section level1">
 <h1 class="hasAnchor">
@@ -121,203 +148,32 @@
 <span class="fu"><a href="../reference/merra2db.html">set_merra2db</a></span><span class="op">(</span><span class="st">"D:/Dropbox/Xeon2x24/merra2/data"</span><span class="op">)</span>
 <span class="fu"><a href="../reference/merra2db.html">check_merra2db</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; [1] 487</span>
-<span class="fu"><a href="../reference/merra2db.html">check_merra2db</a></span><span class="op">(</span>detailed <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>
-<span class="co">#&gt; $path</span>
-<span class="co">#&gt; [1] "D:/Dropbox/Xeon2x24/merra2/data"</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $nfiles</span>
-<span class="co">#&gt; [1] 487</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $merra_files</span>
-<span class="co">#&gt;   [1] "merra2_198001.fst" "merra2_198002.fst" "merra2_198003.fst"</span>
-<span class="co">#&gt;   [4] "merra2_198004.fst" "merra2_198005.fst" "merra2_198006.fst"</span>
-<span class="co">#&gt;   [7] "merra2_198007.fst" "merra2_198008.fst" "merra2_198009.fst"</span>
-<span class="co">#&gt;  [10] "merra2_198010.fst" "merra2_198011.fst" "merra2_198012.fst"</span>
-<span class="co">#&gt;  [13] "merra2_198101.fst" "merra2_198102.fst" "merra2_198103.fst"</span>
-<span class="co">#&gt;  [16] "merra2_198104.fst" "merra2_198105.fst" "merra2_198106.fst"</span>
-<span class="co">#&gt;  [19] "merra2_198107.fst" "merra2_198108.fst" "merra2_198109.fst"</span>
-<span class="co">#&gt;  [22] "merra2_198110.fst" "merra2_198111.fst" "merra2_198112.fst"</span>
-<span class="co">#&gt;  [25] "merra2_198201.fst" "merra2_198202.fst" "merra2_198203.fst"</span>
-<span class="co">#&gt;  [28] "merra2_198204.fst" "merra2_198205.fst" "merra2_198206.fst"</span>
-<span class="co">#&gt;  [31] "merra2_198207.fst" "merra2_198208.fst" "merra2_198209.fst"</span>
-<span class="co">#&gt;  [34] "merra2_198210.fst" "merra2_198211.fst" "merra2_198212.fst"</span>
-<span class="co">#&gt;  [37] "merra2_198301.fst" "merra2_198302.fst" "merra2_198303.fst"</span>
-<span class="co">#&gt;  [40] "merra2_198304.fst" "merra2_198305.fst" "merra2_198306.fst"</span>
-<span class="co">#&gt;  [43] "merra2_198307.fst" "merra2_198308.fst" "merra2_198309.fst"</span>
-<span class="co">#&gt;  [46] "merra2_198310.fst" "merra2_198311.fst" "merra2_198312.fst"</span>
-<span class="co">#&gt;  [49] "merra2_198401.fst" "merra2_198402.fst" "merra2_198403.fst"</span>
-<span class="co">#&gt;  [52] "merra2_198404.fst" "merra2_198405.fst" "merra2_198406.fst"</span>
-<span class="co">#&gt;  [55] "merra2_198407.fst" "merra2_198408.fst" "merra2_198409.fst"</span>
-<span class="co">#&gt;  [58] "merra2_198410.fst" "merra2_198411.fst" "merra2_198412.fst"</span>
-<span class="co">#&gt;  [61] "merra2_198501.fst" "merra2_198502.fst" "merra2_198503.fst"</span>
-<span class="co">#&gt;  [64] "merra2_198504.fst" "merra2_198505.fst" "merra2_198506.fst"</span>
-<span class="co">#&gt;  [67] "merra2_198507.fst" "merra2_198508.fst" "merra2_198509.fst"</span>
-<span class="co">#&gt;  [70] "merra2_198510.fst" "merra2_198511.fst" "merra2_198512.fst"</span>
-<span class="co">#&gt;  [73] "merra2_198601.fst" "merra2_198602.fst" "merra2_198603.fst"</span>
-<span class="co">#&gt;  [76] "merra2_198604.fst" "merra2_198605.fst" "merra2_198606.fst"</span>
-<span class="co">#&gt;  [79] "merra2_198607.fst" "merra2_198608.fst" "merra2_198609.fst"</span>
-<span class="co">#&gt;  [82] "merra2_198610.fst" "merra2_198611.fst" "merra2_198612.fst"</span>
-<span class="co">#&gt;  [85] "merra2_198701.fst" "merra2_198702.fst" "merra2_198703.fst"</span>
-<span class="co">#&gt;  [88] "merra2_198704.fst" "merra2_198705.fst" "merra2_198706.fst"</span>
-<span class="co">#&gt;  [91] "merra2_198707.fst" "merra2_198708.fst" "merra2_198709.fst"</span>
-<span class="co">#&gt;  [94] "merra2_198710.fst" "merra2_198711.fst" "merra2_198712.fst"</span>
-<span class="co">#&gt;  [97] "merra2_198801.fst" "merra2_198802.fst" "merra2_198803.fst"</span>
-<span class="co">#&gt; [100] "merra2_198804.fst" "merra2_198805.fst" "merra2_198806.fst"</span>
-<span class="co">#&gt; [103] "merra2_198807.fst" "merra2_198808.fst" "merra2_198809.fst"</span>
-<span class="co">#&gt; [106] "merra2_198810.fst" "merra2_198811.fst" "merra2_198812.fst"</span>
-<span class="co">#&gt; [109] "merra2_198901.fst" "merra2_198902.fst" "merra2_198903.fst"</span>
-<span class="co">#&gt; [112] "merra2_198904.fst" "merra2_198905.fst" "merra2_198906.fst"</span>
-<span class="co">#&gt; [115] "merra2_198907.fst" "merra2_198908.fst" "merra2_198909.fst"</span>
-<span class="co">#&gt; [118] "merra2_198910.fst" "merra2_198911.fst" "merra2_198912.fst"</span>
-<span class="co">#&gt; [121] "merra2_199001.fst" "merra2_199002.fst" "merra2_199003.fst"</span>
-<span class="co">#&gt; [124] "merra2_199004.fst" "merra2_199005.fst" "merra2_199006.fst"</span>
-<span class="co">#&gt; [127] "merra2_199007.fst" "merra2_199008.fst" "merra2_199009.fst"</span>
-<span class="co">#&gt; [130] "merra2_199010.fst" "merra2_199011.fst" "merra2_199012.fst"</span>
-<span class="co">#&gt; [133] "merra2_199101.fst" "merra2_199102.fst" "merra2_199103.fst"</span>
-<span class="co">#&gt; [136] "merra2_199104.fst" "merra2_199105.fst" "merra2_199106.fst"</span>
-<span class="co">#&gt; [139] "merra2_199107.fst" "merra2_199108.fst" "merra2_199109.fst"</span>
-<span class="co">#&gt; [142] "merra2_199110.fst" "merra2_199111.fst" "merra2_199112.fst"</span>
-<span class="co">#&gt; [145] "merra2_199201.fst" "merra2_199202.fst" "merra2_199203.fst"</span>
-<span class="co">#&gt; [148] "merra2_199204.fst" "merra2_199205.fst" "merra2_199206.fst"</span>
-<span class="co">#&gt; [151] "merra2_199207.fst" "merra2_199208.fst" "merra2_199209.fst"</span>
-<span class="co">#&gt; [154] "merra2_199210.fst" "merra2_199211.fst" "merra2_199212.fst"</span>
-<span class="co">#&gt; [157] "merra2_199301.fst" "merra2_199302.fst" "merra2_199303.fst"</span>
-<span class="co">#&gt; [160] "merra2_199304.fst" "merra2_199305.fst" "merra2_199306.fst"</span>
-<span class="co">#&gt; [163] "merra2_199307.fst" "merra2_199308.fst" "merra2_199309.fst"</span>
-<span class="co">#&gt; [166] "merra2_199310.fst" "merra2_199311.fst" "merra2_199312.fst"</span>
-<span class="co">#&gt; [169] "merra2_199401.fst" "merra2_199402.fst" "merra2_199403.fst"</span>
-<span class="co">#&gt; [172] "merra2_199404.fst" "merra2_199405.fst" "merra2_199406.fst"</span>
-<span class="co">#&gt; [175] "merra2_199407.fst" "merra2_199408.fst" "merra2_199409.fst"</span>
-<span class="co">#&gt; [178] "merra2_199410.fst" "merra2_199411.fst" "merra2_199412.fst"</span>
-<span class="co">#&gt; [181] "merra2_199501.fst" "merra2_199502.fst" "merra2_199503.fst"</span>
-<span class="co">#&gt; [184] "merra2_199504.fst" "merra2_199505.fst" "merra2_199506.fst"</span>
-<span class="co">#&gt; [187] "merra2_199507.fst" "merra2_199508.fst" "merra2_199509.fst"</span>
-<span class="co">#&gt; [190] "merra2_199510.fst" "merra2_199511.fst" "merra2_199512.fst"</span>
-<span class="co">#&gt; [193] "merra2_199601.fst" "merra2_199602.fst" "merra2_199603.fst"</span>
-<span class="co">#&gt; [196] "merra2_199604.fst" "merra2_199605.fst" "merra2_199606.fst"</span>
-<span class="co">#&gt; [199] "merra2_199607.fst" "merra2_199608.fst" "merra2_199609.fst"</span>
-<span class="co">#&gt; [202] "merra2_199610.fst" "merra2_199611.fst" "merra2_199612.fst"</span>
-<span class="co">#&gt; [205] "merra2_199701.fst" "merra2_199702.fst" "merra2_199703.fst"</span>
-<span class="co">#&gt; [208] "merra2_199704.fst" "merra2_199705.fst" "merra2_199706.fst"</span>
-<span class="co">#&gt; [211] "merra2_199707.fst" "merra2_199708.fst" "merra2_199709.fst"</span>
-<span class="co">#&gt; [214] "merra2_199710.fst" "merra2_199711.fst" "merra2_199712.fst"</span>
-<span class="co">#&gt; [217] "merra2_199801.fst" "merra2_199802.fst" "merra2_199803.fst"</span>
-<span class="co">#&gt; [220] "merra2_199804.fst" "merra2_199805.fst" "merra2_199806.fst"</span>
-<span class="co">#&gt; [223] "merra2_199807.fst" "merra2_199808.fst" "merra2_199809.fst"</span>
-<span class="co">#&gt; [226] "merra2_199810.fst" "merra2_199811.fst" "merra2_199812.fst"</span>
-<span class="co">#&gt; [229] "merra2_199901.fst" "merra2_199902.fst" "merra2_199903.fst"</span>
-<span class="co">#&gt; [232] "merra2_199904.fst" "merra2_199905.fst" "merra2_199906.fst"</span>
-<span class="co">#&gt; [235] "merra2_199907.fst" "merra2_199908.fst" "merra2_199909.fst"</span>
-<span class="co">#&gt; [238] "merra2_199910.fst" "merra2_199911.fst" "merra2_199912.fst"</span>
-<span class="co">#&gt; [241] "merra2_200001.fst" "merra2_200002.fst" "merra2_200003.fst"</span>
-<span class="co">#&gt; [244] "merra2_200004.fst" "merra2_200005.fst" "merra2_200006.fst"</span>
-<span class="co">#&gt; [247] "merra2_200007.fst" "merra2_200008.fst" "merra2_200009.fst"</span>
-<span class="co">#&gt; [250] "merra2_200010.fst" "merra2_200011.fst" "merra2_200012.fst"</span>
-<span class="co">#&gt; [253] "merra2_200101.fst" "merra2_200102.fst" "merra2_200103.fst"</span>
-<span class="co">#&gt; [256] "merra2_200104.fst" "merra2_200105.fst" "merra2_200106.fst"</span>
-<span class="co">#&gt; [259] "merra2_200107.fst" "merra2_200108.fst" "merra2_200109.fst"</span>
-<span class="co">#&gt; [262] "merra2_200110.fst" "merra2_200111.fst" "merra2_200112.fst"</span>
-<span class="co">#&gt; [265] "merra2_200201.fst" "merra2_200202.fst" "merra2_200203.fst"</span>
-<span class="co">#&gt; [268] "merra2_200204.fst" "merra2_200205.fst" "merra2_200206.fst"</span>
-<span class="co">#&gt; [271] "merra2_200207.fst" "merra2_200208.fst" "merra2_200209.fst"</span>
-<span class="co">#&gt; [274] "merra2_200210.fst" "merra2_200211.fst" "merra2_200212.fst"</span>
-<span class="co">#&gt; [277] "merra2_200301.fst" "merra2_200302.fst" "merra2_200303.fst"</span>
-<span class="co">#&gt; [280] "merra2_200304.fst" "merra2_200305.fst" "merra2_200306.fst"</span>
-<span class="co">#&gt; [283] "merra2_200307.fst" "merra2_200308.fst" "merra2_200309.fst"</span>
-<span class="co">#&gt; [286] "merra2_200310.fst" "merra2_200311.fst" "merra2_200312.fst"</span>
-<span class="co">#&gt; [289] "merra2_200401.fst" "merra2_200402.fst" "merra2_200403.fst"</span>
-<span class="co">#&gt; [292] "merra2_200404.fst" "merra2_200405.fst" "merra2_200406.fst"</span>
-<span class="co">#&gt; [295] "merra2_200407.fst" "merra2_200408.fst" "merra2_200409.fst"</span>
-<span class="co">#&gt; [298] "merra2_200410.fst" "merra2_200411.fst" "merra2_200412.fst"</span>
-<span class="co">#&gt; [301] "merra2_200501.fst" "merra2_200502.fst" "merra2_200503.fst"</span>
-<span class="co">#&gt; [304] "merra2_200504.fst" "merra2_200505.fst" "merra2_200506.fst"</span>
-<span class="co">#&gt; [307] "merra2_200507.fst" "merra2_200508.fst" "merra2_200509.fst"</span>
-<span class="co">#&gt; [310] "merra2_200510.fst" "merra2_200511.fst" "merra2_200512.fst"</span>
-<span class="co">#&gt; [313] "merra2_200601.fst" "merra2_200602.fst" "merra2_200603.fst"</span>
-<span class="co">#&gt; [316] "merra2_200604.fst" "merra2_200605.fst" "merra2_200606.fst"</span>
-<span class="co">#&gt; [319] "merra2_200607.fst" "merra2_200608.fst" "merra2_200609.fst"</span>
-<span class="co">#&gt; [322] "merra2_200610.fst" "merra2_200611.fst" "merra2_200612.fst"</span>
-<span class="co">#&gt; [325] "merra2_200701.fst" "merra2_200702.fst" "merra2_200703.fst"</span>
-<span class="co">#&gt; [328] "merra2_200704.fst" "merra2_200705.fst" "merra2_200706.fst"</span>
-<span class="co">#&gt; [331] "merra2_200707.fst" "merra2_200708.fst" "merra2_200709.fst"</span>
-<span class="co">#&gt; [334] "merra2_200710.fst" "merra2_200711.fst" "merra2_200712.fst"</span>
-<span class="co">#&gt; [337] "merra2_200801.fst" "merra2_200802.fst" "merra2_200803.fst"</span>
-<span class="co">#&gt; [340] "merra2_200804.fst" "merra2_200805.fst" "merra2_200806.fst"</span>
-<span class="co">#&gt; [343] "merra2_200807.fst" "merra2_200808.fst" "merra2_200809.fst"</span>
-<span class="co">#&gt; [346] "merra2_200810.fst" "merra2_200811.fst" "merra2_200812.fst"</span>
-<span class="co">#&gt; [349] "merra2_200901.fst" "merra2_200902.fst" "merra2_200903.fst"</span>
-<span class="co">#&gt; [352] "merra2_200904.fst" "merra2_200905.fst" "merra2_200906.fst"</span>
-<span class="co">#&gt; [355] "merra2_200907.fst" "merra2_200908.fst" "merra2_200909.fst"</span>
-<span class="co">#&gt; [358] "merra2_200910.fst" "merra2_200911.fst" "merra2_200912.fst"</span>
-<span class="co">#&gt; [361] "merra2_201001.fst" "merra2_201002.fst" "merra2_201003.fst"</span>
-<span class="co">#&gt; [364] "merra2_201004.fst" "merra2_201005.fst" "merra2_201006.fst"</span>
-<span class="co">#&gt; [367] "merra2_201007.fst" "merra2_201008.fst" "merra2_201009.fst"</span>
-<span class="co">#&gt; [370] "merra2_201010.fst" "merra2_201011.fst" "merra2_201012.fst"</span>
-<span class="co">#&gt; [373] "merra2_201101.fst" "merra2_201102.fst" "merra2_201103.fst"</span>
-<span class="co">#&gt; [376] "merra2_201104.fst" "merra2_201105.fst" "merra2_201106.fst"</span>
-<span class="co">#&gt; [379] "merra2_201107.fst" "merra2_201108.fst" "merra2_201109.fst"</span>
-<span class="co">#&gt; [382] "merra2_201110.fst" "merra2_201111.fst" "merra2_201112.fst"</span>
-<span class="co">#&gt; [385] "merra2_201201.fst" "merra2_201202.fst" "merra2_201203.fst"</span>
-<span class="co">#&gt; [388] "merra2_201204.fst" "merra2_201205.fst" "merra2_201206.fst"</span>
-<span class="co">#&gt; [391] "merra2_201207.fst" "merra2_201208.fst" "merra2_201209.fst"</span>
-<span class="co">#&gt; [394] "merra2_201210.fst" "merra2_201211.fst" "merra2_201212.fst"</span>
-<span class="co">#&gt; [397] "merra2_201301.fst" "merra2_201302.fst" "merra2_201303.fst"</span>
-<span class="co">#&gt; [400] "merra2_201304.fst" "merra2_201305.fst" "merra2_201306.fst"</span>
-<span class="co">#&gt; [403] "merra2_201307.fst" "merra2_201308.fst" "merra2_201309.fst"</span>
-<span class="co">#&gt; [406] "merra2_201310.fst" "merra2_201311.fst" "merra2_201312.fst"</span>
-<span class="co">#&gt; [409] "merra2_201401.fst" "merra2_201402.fst" "merra2_201403.fst"</span>
-<span class="co">#&gt; [412] "merra2_201404.fst" "merra2_201405.fst" "merra2_201406.fst"</span>
-<span class="co">#&gt; [415] "merra2_201407.fst" "merra2_201408.fst" "merra2_201409.fst"</span>
-<span class="co">#&gt; [418] "merra2_201410.fst" "merra2_201411.fst" "merra2_201412.fst"</span>
-<span class="co">#&gt; [421] "merra2_201501.fst" "merra2_201502.fst" "merra2_201503.fst"</span>
-<span class="co">#&gt; [424] "merra2_201504.fst" "merra2_201505.fst" "merra2_201506.fst"</span>
-<span class="co">#&gt; [427] "merra2_201507.fst" "merra2_201508.fst" "merra2_201509.fst"</span>
-<span class="co">#&gt; [430] "merra2_201510.fst" "merra2_201511.fst" "merra2_201512.fst"</span>
-<span class="co">#&gt; [433] "merra2_201601.fst" "merra2_201602.fst" "merra2_201603.fst"</span>
-<span class="co">#&gt; [436] "merra2_201604.fst" "merra2_201605.fst" "merra2_201606.fst"</span>
-<span class="co">#&gt; [439] "merra2_201607.fst" "merra2_201608.fst" "merra2_201609.fst"</span>
-<span class="co">#&gt; [442] "merra2_201610.fst" "merra2_201611.fst" "merra2_201612.fst"</span>
-<span class="co">#&gt; [445] "merra2_201701.fst" "merra2_201702.fst" "merra2_201703.fst"</span>
-<span class="co">#&gt; [448] "merra2_201704.fst" "merra2_201705.fst" "merra2_201706.fst"</span>
-<span class="co">#&gt; [451] "merra2_201707.fst" "merra2_201708.fst" "merra2_201709.fst"</span>
-<span class="co">#&gt; [454] "merra2_201710.fst" "merra2_201711.fst" "merra2_201712.fst"</span>
-<span class="co">#&gt; [457] "merra2_201801.fst" "merra2_201802.fst" "merra2_201803.fst"</span>
-<span class="co">#&gt; [460] "merra2_201804.fst" "merra2_201805.fst" "merra2_201806.fst"</span>
-<span class="co">#&gt; [463] "merra2_201807.fst" "merra2_201808.fst" "merra2_201809.fst"</span>
-<span class="co">#&gt; [466] "merra2_201810.fst" "merra2_201811.fst" "merra2_201812.fst"</span>
-<span class="co">#&gt; [469] "merra2_201901.fst" "merra2_201902.fst" "merra2_201903.fst"</span>
-<span class="co">#&gt; [472] "merra2_201904.fst" "merra2_201905.fst" "merra2_201906.fst"</span>
-<span class="co">#&gt; [475] "merra2_201907.fst" "merra2_201908.fst" "merra2_201909.fst"</span>
-<span class="co">#&gt; [478] "merra2_201910.fst" "merra2_201911.fst" "merra2_201912.fst"</span>
-<span class="co">#&gt; [481] "merra2_202001.fst" "merra2_202002.fst" "merra2_202003.fst"</span>
-<span class="co">#&gt; [484] "merra2_202004.fst" "merra2_202005.fst" "merra2_202006.fst"</span>
-<span class="co">#&gt; [487] "merra2_202007.fst"</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $loc_id</span>
-<span class="co">#&gt; [1] TRUE</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="fu"><a href="../reference/merra2db.html">check_merra2db</a></span><span class="op">(</span>detailed <span class="op">=</span> <span class="cn">T</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; List of 4</span>
+<span class="co">#&gt;  $ path       : chr "D:/Dropbox/Xeon2x24/merra2/data"</span>
+<span class="co">#&gt;  $ nfiles     : int 487</span>
+<span class="co">#&gt;  $ merra_files: chr [1:487] "merra2_198001.fst" "merra2_198002.fst" "merra2_198003.fst" "merra2_198004.fst" ...</span>
+<span class="co">#&gt;  $ loc_id     : logi TRUE</span></code></pre></div>
 </div>
-<div id="test" class="section level1">
+<div id="locations-ids-in-merra-2-dataset" class="section level1">
 <h1 class="hasAnchor">
-<a href="#test" class="anchor"></a>Test</h1>
+<a href="#locations-ids-in-merra-2-dataset" class="anchor"></a>Locations IDs in MERRA-2 dataset</h1>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># data("loc_id")</span>
-<span class="co"># loc_id</span>
-<span class="co"># locid &lt;- loc_id</span>
-<span class="co"># rm(loc_id)</span>
-<span class="co"># locid$lon &lt;- round(locid$lon, 3)</span>
-<span class="co"># locid$lat &lt;- round(locid$lat, 1)</span>
-<span class="co"># locid &lt;- rename(locid, locid = loc_id)</span>
-<span class="co"># save(locid, file = "data/locid.RData")</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"locid"</span><span class="op">)</span>
-<span class="va">locid</span>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"locid"</span><span class="op">)</span>
+<span class="co"># locid</span>
 
 <span class="va">lon</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">locid</span><span class="op">$</span><span class="va">lon</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">lon</span>, <span class="fl">10</span><span class="op">)</span>
+<span class="co">#&gt;  [1] -180.000 -179.375 -178.750 -178.125 -177.500 -176.875 -176.250 -175.625</span>
+<span class="co">#&gt;  [9] -175.000 -174.375</span>
 <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">lon</span><span class="op">)</span>
+<span class="co">#&gt; [1] 576</span>
 
 <span class="va">lat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">locid</span><span class="op">$</span><span class="va">lat</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">lat</span>, <span class="fl">10</span><span class="op">)</span>
+<span class="co">#&gt;  [1] -90.0 -89.5 -89.0 -88.5 -88.0 -87.5 -87.0 -86.5 -86.0 -85.5</span>
 <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">lat</span><span class="op">)</span>
+<span class="co">#&gt; [1] 361</span>
 
 <span class="va">lo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">180</span>, <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">lon</span><span class="op">)</span>, by <span class="op">=</span> <span class="fl">30</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">lon</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op">(</span><span class="op">)</span>
 <span class="va">la</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">90</span>, <span class="fl">90</span>, by <span class="op">=</span> <span class="fl">15</span><span class="op">)</span>
@@ -343,198 +199,208 @@
   <span class="fu">labs</span><span class="op">(</span>x <span class="op">=</span> <span class="st">"lon"</span>, title <span class="op">=</span> <span class="st">"Location ID (`locid`) layout of MERRA-2 subset"</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu">theme</span><span class="op">(</span>plot.title <span class="op">=</span> <span class="fu">element_text</span><span class="op">(</span>hjust <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
   <span class="fu">coord_fixed</span><span class="op">(</span><span class="fl">1.2</span><span class="op">)</span>
-
-<span class="co"># dat &lt;- locid %&gt;%</span>
-<span class="co">#   mutate(col = sample(1:10,))</span>
-
-<span class="va">a</span> <span class="op">&lt;-</span> <span class="fu">ggplot</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> 
-  <span class="fu">geom_map</span><span class="op">(</span>data <span class="op">=</span> <span class="va">world_map</span>, map <span class="op">=</span> <span class="va">world_map</span>,
-           <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">long</span>, y <span class="op">=</span> <span class="va">lat</span>, map_id <span class="op">=</span> <span class="va">region</span><span class="op">)</span>,
-           fill <span class="op">=</span> <span class="st">"wheat"</span>, alpha <span class="op">=</span> <span class="fl">1</span>, colour <span class="op">=</span> <span class="st">"grey"</span>, size <span class="op">=</span> <span class="fl">0.25</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">theme_bw</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">geom_raster</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span><span class="va">lon</span>, <span class="va">lat</span><span class="op">)</span>, fill <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">locid</span><span class="op">)</span>, <span class="cn">T</span><span class="op">)</span>, 
-              data <span class="op">=</span> <span class="va">locid</span>, alpha <span class="op">=</span> <span class="fl">.3</span><span class="op">)</span> <span class="op">+</span>
-    <span class="fu">geom_rect</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>xmin <span class="op">=</span> <span class="va">xmin</span>, xmax <span class="op">=</span> <span class="va">xmax</span>, ymin <span class="op">=</span> <span class="va">ymin</span>, ymax <span class="op">=</span> <span class="va">ymax</span><span class="op">)</span>,
-    data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>xmin <span class="op">=</span> <span class="op">-</span><span class="fl">180</span>, xmax <span class="op">=</span> <span class="fl">180</span>, ymin <span class="op">=</span> <span class="op">-</span><span class="fl">90</span>, ymax <span class="op">=</span> <span class="fl">90</span><span class="op">)</span>,
-    alpha <span class="op">=</span> <span class="fl">.5</span>, fill <span class="op">=</span> <span class="cn">NA</span>, colour <span class="op">=</span> <span class="st">"grey25"</span><span class="op">)</span> <span class="op">+</span>
-  <span class="co"># geom_point(aes(x = lon, y = lat), data = locid_sample, size = 1, colour = "red") + </span>
-  <span class="co"># geom_text(aes(x = lon, y = lat, label = locid), data = locid_sample, </span>
-  <span class="co">#            position = position_nudge(y = 4),</span>
-  <span class="co">#            alpha = 0.75,</span>
-  <span class="co">#            size = unit(3, "lines")) +</span>
-  <span class="fu">scale_x_continuous</span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">ceiling</a></span><span class="op">(</span><span class="va">lo</span><span class="op">)</span>, minor_breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">ceiling</a></span><span class="op">(</span><span class="va">lo</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">scale_y_continuous</span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">la</span><span class="op">)</span>, minor_breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">ceiling</a></span><span class="op">(</span><span class="va">la</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
-  <span class="fu">labs</span><span class="op">(</span>x <span class="op">=</span> <span class="st">"lon"</span>
-       <span class="co"># , title = "Location ID (`locid`) layout of MERRA-2 subset"</span>
-       <span class="op">)</span> <span class="op">+</span>
-  <span class="fu">theme</span><span class="op">(</span>plot.title <span class="op">=</span> <span class="fu">element_text</span><span class="op">(</span>hjust <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
-  <span class="fu">coord_fixed</span><span class="op">(</span><span class="fl">1.2</span><span class="op">)</span>
-<span class="va">a</span>
-
-<span class="va">a</span> <span class="op">+</span> <span class="fu">geom_rect</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>xmin <span class="op">=</span> <span class="va">xmin</span>, xmax <span class="op">=</span> <span class="va">xmax</span>, ymin <span class="op">=</span> <span class="va">ymin</span>, ymax <span class="op">=</span> <span class="va">ymax</span><span class="op">)</span>,
-    data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>xmin <span class="op">=</span> <span class="op">-</span><span class="fl">85</span>, xmax <span class="op">=</span> <span class="op">-</span><span class="fl">75</span>, ymin <span class="op">=</span> <span class="fl">23</span>, ymax <span class="op">=</span> <span class="fl">33</span><span class="op">)</span>,
-    alpha <span class="op">=</span> <span class="fl">.75</span>, fill <span class="op">=</span> <span class="cn">NA</span>, colour <span class="op">=</span> <span class="st">"red"</span><span class="op">)</span>
-
-<span class="va">a.zoom</span> <span class="op">&lt;-</span> <span class="fu">ggplot</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> 
-  <span class="fu">geom_map</span><span class="op">(</span>data <span class="op">=</span> <span class="va">world_map</span>, map <span class="op">=</span> <span class="va">world_map</span>,
-           <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">long</span>, y <span class="op">=</span> <span class="va">lat</span>, map_id <span class="op">=</span> <span class="va">region</span><span class="op">)</span>,
-           fill <span class="op">=</span> <span class="st">"wheat"</span>, alpha <span class="op">=</span> <span class="fl">1</span>, colour <span class="op">=</span> <span class="st">"grey"</span>, size <span class="op">=</span> <span class="fl">0.25</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">theme_bw</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
-  <span class="co"># geom_raster(aes(lon, lat), fill = sample(1:10, nrow(locid), T), </span>
-  <span class="co">#             data = locid, alpha = .3) +</span>
-    <span class="fu">geom_rect</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>xmin <span class="op">=</span> <span class="va">xmin</span>, xmax <span class="op">=</span> <span class="va">xmax</span>, ymin <span class="op">=</span> <span class="va">ymin</span>, ymax <span class="op">=</span> <span class="va">ymax</span><span class="op">)</span>,
-    data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>xmin <span class="op">=</span> <span class="op">-</span><span class="fl">180</span>, xmax <span class="op">=</span> <span class="fl">180</span>, ymin <span class="op">=</span> <span class="op">-</span><span class="fl">90</span>, ymax <span class="op">=</span> <span class="fl">90</span><span class="op">)</span>,
-    alpha <span class="op">=</span> <span class="fl">.5</span>, fill <span class="op">=</span> <span class="cn">NA</span>, colour <span class="op">=</span> <span class="st">"grey25"</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://rdrr.io/r/graphics/plot.window.html">xlim</a></span><span class="op">(</span><span class="op">-</span><span class="fl">85</span>, <span class="op">-</span><span class="fl">75</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.window.html">ylim</a></span><span class="op">(</span><span class="fl">23</span>, <span class="fl">33</span><span class="op">)</span> <span class="op">+</span> 
-  <span class="fu">coord_fixed</span><span class="op">(</span><span class="fl">1.</span><span class="op">)</span>
-
-<span class="co"># a.zoom + </span>
-<span class="co">#   geom_rect(aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax),</span>
-<span class="co">#     data = data.frame(xmin = -85, xmax = -75, ymin = 23, ymax = 33),</span>
-<span class="co">#     alpha = .75, fill = NA, colour = "red") +</span>
-<span class="co">#   geom_point(aes(x = lon, y = lat), data = locid, size = 1, colour = "red")</span>
-
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"grid"</span><span class="op">)</span>
-<span class="va">ii</span> <span class="op">&lt;-</span> <span class="va">grid</span><span class="op">$</span><span class="va">lon</span> <span class="op">&gt;=</span> <span class="op">-</span><span class="fl">85</span> <span class="op">&amp;</span> <span class="va">grid</span><span class="op">$</span><span class="va">lon</span> <span class="op">&lt;=</span> <span class="op">-</span><span class="fl">75</span> <span class="op">&amp;</span> <span class="va">grid</span><span class="op">$</span><span class="va">lat</span> <span class="op">&gt;=</span> <span class="fl">23</span> <span class="op">&amp;</span> <span class="va">grid</span><span class="op">$</span><span class="va">lat</span> <span class="op">&lt;=</span> <span class="fl">33</span>; <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">ii</span><span class="op">)</span>
-
-<span class="va">grid_df</span> <span class="op">&lt;-</span> <span class="fu">fortify</span><span class="op">(</span><span class="va">grid</span><span class="op">[</span><span class="va">ii</span>,<span class="op">]</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">as_tibble</span><span class="op">(</span><span class="op">)</span>
-<span class="va">grid_df</span>
-
-<span class="co"># (dx &lt;- diff(lon[1:2]))</span>
-<span class="co"># (dy &lt;- diff(lat[1:2]))</span>
-<span class="co"># </span>
-<span class="co"># a.zoom + </span>
-<span class="co">#   # geom_rect(aes(xmin = long - dx/2, xmax = long + dx/2, </span>
-<span class="co">#   #               ymin = lat - dy/2, ymax = lat + dy/2),</span>
-<span class="co">#   #           data = grid_df, fill = NA, colour = "grey") +</span>
-<span class="co">#   geom_polygon(aes(x = long, y = lat, group = group), fill = NA, </span>
-<span class="co">#                colour = 1, data = grid_df, show.legend = F) +</span>
-<span class="co">#   # geom_raster(aes(long, lat, group = group, fill = group),</span>
-<span class="co">#   #           # fill = NA, </span>
-<span class="co">#   #           colour = "grey",</span>
-<span class="co">#   #           hjust = 0., vjust = 0., data = grid_df, show.legend = F, alpha = .4) +</span>
-<span class="co">#   geom_point(aes(x = lon, y = lat), data = locid[ii,], size = 1, colour = "red")</span>
-
-<span class="va">a.zoom</span> <span class="op">+</span>
-  <span class="fu">geom_polygon</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">long</span>, y <span class="op">=</span> <span class="va">lat</span>, group <span class="op">=</span> <span class="va">group</span><span class="op">)</span>, fill <span class="op">=</span> <span class="cn">NA</span>, 
-               colour <span class="op">=</span> <span class="st">"grey"</span>, data <span class="op">=</span> <span class="va">grid_df</span>, show.legend <span class="op">=</span> <span class="cn">F</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">geom_point</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">lon</span>, y <span class="op">=</span> <span class="va">lat</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">locid</span><span class="op">[</span><span class="va">ii</span>,<span class="op">]</span>, size <span class="op">=</span> <span class="fl">1</span>, colour <span class="op">=</span> <span class="st">"red"</span><span class="op">)</span></code></pre></div>
+<span class="co">#&gt; Warning: Ignoring unknown aesthetics: x, y</span></code></pre></div>
+<p><img src="get_started_files/figure-html/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;"></p>
+<div id="spatial-points" class="section level2">
+<h2 class="hasAnchor">
+<a href="#spatial-points" class="anchor"></a>Spatial points</h2>
 </div>
-<div id="over" class="section level1">
+<div id="spatial-polygons" class="section level2">
+<h2 class="hasAnchor">
+<a href="#spatial-polygons" class="anchor"></a>Spatial polygons</h2>
+</div>
+</div>
+<div id="location-ids-for-your-project" class="section level1">
 <h1 class="hasAnchor">
-<a href="#over" class="anchor"></a>Over</h1>
+<a href="#location-ids-for-your-project" class="anchor"></a>Location IDs for your project</h1>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/">sf</a></span><span class="op">)</span>
-<span class="va">FL</span> <span class="op">&lt;-</span> <span class="fu">maps</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/maps/man/map.html">map</a></span><span class="op">(</span><span class="st">"state"</span>, regions <span class="op">=</span> <span class="st">"FL"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">FL</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">FL</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">FL</span><span class="op">)</span>
-<span class="co"># maptools::map2SpatialPolygons(map = FL, IDs = "florida")</span>
-<span class="fu"><a href="https://r-spatial.github.io/sf/reference/plot.html">plot</a></span><span class="op">(</span><span class="va">FL</span><span class="op">)</span>
-
-<span class="co"># FL_df &lt;- map_data("state", "florida")</span>
-<span class="co"># ggplot(FL_df) + geom_map(aes(map_id = region, x = long, y = lat), map = FL_df)</span>
-<span class="va">FL_sf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sf.html">st_as_sf</a></span><span class="op">(</span><span class="va">FL</span><span class="op">)</span>
-<span class="fu"><a href="https://r-spatial.github.io/sf/reference/plot.html">plot</a></span><span class="op">(</span><span class="va">FL_sf</span><span class="op">)</span>
-<span class="va">FL_sp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/coerce-methods.html">as_Spatial</a></span><span class="op">(</span><span class="va">FL_sf</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">FL_sp</span><span class="op">)</span>
-<span class="fu"><a href="https://r-spatial.github.io/sf/reference/plot.html">plot</a></span><span class="op">(</span><span class="op">)</span>
-
-<span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/files2.html">dir.exists</a></span><span class="op">(</span><span class="st">"tmp"</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/files2.html">dir.create</a></span><span class="op">(</span><span class="st">"tmp"</span><span class="op">)</span>
-<span class="va">gis_sp</span> <span class="op">&lt;-</span> <span class="fu">raster</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/getData.html">getData</a></span><span class="op">(</span><span class="st">"GADM"</span>, country <span class="op">=</span> <span class="st">"USA"</span>, level <span class="op">=</span> <span class="fl">1</span>, path <span class="op">=</span> <span class="st">"tmp/"</span><span class="op">)</span>
-<span class="va">gis_sp</span><span class="op">@</span><span class="va">proj4string</span>
-<span class="va">gis_sp</span><span class="op">@</span><span class="va">bbox</span>
-<span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">gis_sp</span><span class="op">)</span> <span class="co"># number of regions</span>
-<span class="co"># plot(gis_sp)</span>
-<span class="va">gis_sp</span> <span class="op">&lt;-</span> <span class="va">gis_sp</span><span class="op">[</span><span class="va">gis_sp</span><span class="op">$</span><span class="va">NAME_1</span> <span class="op">==</span> <span class="st">"Florida"</span>,<span class="op">]</span>
-<span class="fu"><a href="https://r-spatial.github.io/sf/reference/plot.html">plot</a></span><span class="op">(</span><span class="va">gis_sp</span><span class="op">)</span>
-<span class="va">gis_sp</span><span class="op">@</span><span class="va">data</span>
-
-<span class="va">gis_sp</span><span class="op">@</span><span class="va">proj4string</span>
-<span class="va">grid</span><span class="op">@</span><span class="va">proj4string</span>
-<span class="va">grid</span><span class="op">@</span><span class="va">proj4string</span> <span class="op">&lt;-</span> <span class="va">gis_sp</span><span class="op">@</span><span class="va">proj4string</span>
-
-<span class="va">locid_grid</span><span class="op">@</span><span class="va">proj4string</span> <span class="op">&lt;-</span> <span class="va">gis_sp</span><span class="op">@</span><span class="va">proj4string</span>
-<span class="va">gg</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/plotmath.html">over</a></span><span class="op">(</span><span class="va">locid_grid</span>, <span class="va">gis_sp</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">gg</span><span class="op">)</span>; <span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">gg</span><span class="op">)</span>; <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">gg</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">gg</span><span class="op">$</span><span class="va">GID_0</span><span class="op">)</span>,<span class="op">]</span><span class="op">)</span>
-
-<span class="va">gg</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/plotmath.html">over</a></span><span class="op">(</span><span class="va">gis_sp</span>, <span class="va">locid_grid</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">gg</span><span class="op">)</span>; <span class="co">#dim(gg); head(gg[!is.na(gg$GID_0),])</span>
-
-<span class="op">?</span><span class="fu">rgeos</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/rgeos/man/topo-bin-gIntersection.html">gIntersection</a></span>
-<span class="va">gg</span> <span class="op">&lt;-</span> <span class="fu">rgeos</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/rgeos/man/topo-bin-gIntersection.html">gIntersection</a></span><span class="op">(</span><span class="va">grid</span>, <span class="va">gis_sp</span>, byid <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">gg</span><span class="op">)</span>; <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">gg</span><span class="op">)</span>; 
-<span class="fu"><a href="https://r-spatial.github.io/sf/reference/plot.html">plot</a></span><span class="op">(</span><span class="va">gg</span><span class="op">)</span>
-
-<span class="op">?</span><span class="fu">raster</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/raster/man/intersect.html">intersect</a></span>
-<span class="va">gg</span> <span class="op">&lt;-</span> <span class="fu">raster</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/intersect.html">intersect</a></span><span class="op">(</span><span class="va">grid</span>, <span class="va">gis_sp</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">gg</span><span class="op">)</span>; <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">gg</span><span class="op">)</span>; 
-<span class="fu"><a href="https://r-spatial.github.io/sf/reference/plot.html">plot</a></span><span class="op">(</span><span class="va">gg</span><span class="op">)</span>
-
-
-<span class="va">gg</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/plotmath.html">over</a></span><span class="op">(</span><span class="va">grid</span>, <span class="va">gis_sp</span><span class="op">)</span>
-<span class="va">gg</span>
-<span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">gg</span><span class="op">)</span>
-
-<span class="va">a.zoom</span> <span class="op">+</span>
-  <span class="fu">geom_polygon</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">long</span>, y <span class="op">=</span> <span class="va">lat</span>, group <span class="op">=</span> <span class="va">group</span><span class="op">)</span>, fill <span class="op">=</span> <span class="cn">NA</span>, 
-               colour <span class="op">=</span> <span class="st">"grey"</span>, data <span class="op">=</span> <span class="va">grid_df</span>, show.legend <span class="op">=</span> <span class="cn">F</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">geom_point</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">lon</span>, y <span class="op">=</span> <span class="va">lat</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">locid</span><span class="op">[</span><span class="va">gg</span>,<span class="op">]</span>, size <span class="op">=</span> <span class="fl">1</span>, colour <span class="op">=</span> <span class="st">"red"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="co"># get US-data</span>
+<span class="va">usa_sp</span> <span class="op">&lt;-</span> <span class="fu">rnaturalearth</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/rnaturalearth/man/ne_states.html">ne_states</a></span><span class="op">(</span>iso_a2 <span class="op">=</span> <span class="st">"us"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">usa_sp</span><span class="op">)</span>
+<span class="co">#&gt; [1] "SpatialPolygonsDataFrame"</span>
+<span class="co">#&gt; attr(,"package")</span>
+<span class="co">#&gt; [1] "sp"</span>
+<span class="va">usa_sp</span><span class="op">@</span><span class="va">data</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="op">)</span>
+<span class="co">#&gt;              featurecla scalerank adm1_code diss_me iso_3166_2</span>
+<span class="co">#&gt; 1290 Admin-1 scale rank         2  USA-3514    3514      US-MN</span>
+<span class="co">#&gt; 1292 Admin-1 scale rank         2  USA-3519    3519      US-WA</span>
+<span class="co">#&gt; 1294 Admin-1 scale rank         2  USA-3518    3518      US-ID</span>
+<span class="co">#&gt; 1295 Admin-1 scale rank         2  USA-3515    3515      US-MT</span>
+<span class="co">#&gt; 1298 Admin-1 scale rank         2  USA-3516    3516      US-ND</span>
+<span class="co">#&gt; 1300 Admin-1 scale rank         2  USA-3562    3562      US-MI</span>
+<span class="co">#&gt;                                            wikipedia iso_a2 adm0_sr</span>
+<span class="co">#&gt; 1290          http://en.wikipedia.org/wiki/Minnesota     US       1</span>
+<span class="co">#&gt; 1292 http://en.wikipedia.org/wiki/Washington_(state)     US       6</span>
+<span class="co">#&gt; 1294              http://en.wikipedia.org/wiki/Idaho     US       1</span>
+<span class="co">#&gt; 1295            http://en.wikipedia.org/wiki/Montana     US       1</span>
+<span class="co">#&gt; 1298       http://en.wikipedia.org/wiki/North_Dakota     US       1</span>
+<span class="co">#&gt; 1300           http://en.wikipedia.org/wiki/Michigan     US       1</span>
+<span class="co">#&gt;              name name_alt name_local  type type_en code_local code_hasc note</span>
+<span class="co">#&gt; 1290    Minnesota MN|Minn.       &lt;NA&gt; State   State       US27     US.MN &lt;NA&gt;</span>
+<span class="co">#&gt; 1292   Washington WA|Wash.       &lt;NA&gt; State   State       US53     US.WA &lt;NA&gt;</span>
+<span class="co">#&gt; 1294        Idaho ID|Idaho       &lt;NA&gt; State   State       US16     US.ID &lt;NA&gt;</span>
+<span class="co">#&gt; 1295      Montana MT|Mont.       &lt;NA&gt; State   State       US30     US.MT &lt;NA&gt;</span>
+<span class="co">#&gt; 1298 North Dakota  ND|N.D.       &lt;NA&gt; State   State       US38     US.ND &lt;NA&gt;</span>
+<span class="co">#&gt; 1300     Michigan MI|Mich.       &lt;NA&gt; State   State       US26     US.MI &lt;NA&gt;</span>
+<span class="co">#&gt;      hasc_maybe  region region_cod provnum_ne gadm_level check_me datarank</span>
+<span class="co">#&gt; 1290       &lt;NA&gt; Midwest       &lt;NA&gt;          0          1       20        1</span>
+<span class="co">#&gt; 1292       &lt;NA&gt;    West       &lt;NA&gt;          0          1       20        1</span>
+<span class="co">#&gt; 1294       &lt;NA&gt;    West       &lt;NA&gt;          0          1       20        1</span>
+<span class="co">#&gt; 1295       &lt;NA&gt;    West       &lt;NA&gt;          0          1       20        1</span>
+<span class="co">#&gt; 1298       &lt;NA&gt; Midwest       &lt;NA&gt;          0          1       20        1</span>
+<span class="co">#&gt; 1300       &lt;NA&gt; Midwest       &lt;NA&gt;          0          1       20        1</span>
+<span class="co">#&gt;      abbrev postal area_sqkm sameascity labelrank name_len mapcolor9 mapcolor13</span>
+<span class="co">#&gt; 1290  Minn.     MN         0         NA         0        9         1          1</span>
+<span class="co">#&gt; 1292  Wash.     WA         0         NA         0       10         1          1</span>
+<span class="co">#&gt; 1294  Idaho     ID         0         NA         0        5         1          1</span>
+<span class="co">#&gt; 1295  Mont.     MT         0         NA         0        7         1          1</span>
+<span class="co">#&gt; 1298   N.D.     ND         0         NA         0       12         1          1</span>
+<span class="co">#&gt; 1300  Mich.     MI         0         NA         0        8         1          1</span>
+<span class="co">#&gt;      fips fips_alt  woe_id                       woe_label     woe_name</span>
+<span class="co">#&gt; 1290 US27     &lt;NA&gt; 2347582    Minnesota, US, United States    Minnesota</span>
+<span class="co">#&gt; 1292 US53     &lt;NA&gt; 2347606   Washington, US, United States   Washington</span>
+<span class="co">#&gt; 1294 US16     &lt;NA&gt; 2347571        Idaho, US, United States        Idaho</span>
+<span class="co">#&gt; 1295 US30     &lt;NA&gt; 2347585      Montana, US, United States      Montana</span>
+<span class="co">#&gt; 1298 US38     &lt;NA&gt; 2347593 North Dakota, US, United States North Dakota</span>
+<span class="co">#&gt; 1300 US26     &lt;NA&gt; 2347581     Michigan, US, United States     Michigan</span>
+<span class="co">#&gt;      latitude longitude sov_a3 adm0_a3 adm0_label                    admin</span>
+<span class="co">#&gt; 1290  46.0592  -93.3640    US1     USA          2 United States of America</span>
+<span class="co">#&gt; 1292  47.4865 -120.3610    US1     USA          2 United States of America</span>
+<span class="co">#&gt; 1294  43.7825 -114.1330    US1     USA          2 United States of America</span>
+<span class="co">#&gt; 1295  46.9965 -110.0440    US1     USA          2 United States of America</span>
+<span class="co">#&gt; 1298  47.4675 -100.3020    US1     USA          2 United States of America</span>
+<span class="co">#&gt; 1300  43.4343  -84.9479    US1     USA          2 United States of America</span>
+<span class="co">#&gt;                      geonunit gu_a3   gn_id      gn_name gns_id gns_name</span>
+<span class="co">#&gt; 1290 United States of America   USA 5037779    Minnesota     -1     &lt;NA&gt;</span>
+<span class="co">#&gt; 1292 United States of America   USA 5815135   Washington     -1     &lt;NA&gt;</span>
+<span class="co">#&gt; 1294 United States of America   USA 5596512        Idaho     -1     &lt;NA&gt;</span>
+<span class="co">#&gt; 1295 United States of America   USA 5667009      Montana     -1     &lt;NA&gt;</span>
+<span class="co">#&gt; 1298 United States of America   USA 5690763 North Dakota     -1     &lt;NA&gt;</span>
+<span class="co">#&gt; 1300 United States of America   USA 5001836     Michigan     -1     &lt;NA&gt;</span>
+<span class="co">#&gt;      gn_level gn_region gn_a1_code         region_sub sub_code gns_level</span>
+<span class="co">#&gt; 1290        1      &lt;NA&gt;      US.MN West North Central     &lt;NA&gt;        -1</span>
+<span class="co">#&gt; 1292        1      &lt;NA&gt;      US.WA            Pacific     &lt;NA&gt;        -1</span>
+<span class="co">#&gt; 1294        1      &lt;NA&gt;      US.ID           Mountain     &lt;NA&gt;        -1</span>
+<span class="co">#&gt; 1295        1      &lt;NA&gt;      US.MT           Mountain     &lt;NA&gt;        -1</span>
+<span class="co">#&gt; 1298        1      &lt;NA&gt;      US.ND West North Central     &lt;NA&gt;        -1</span>
+<span class="co">#&gt; 1300        1      &lt;NA&gt;      US.MI East North Central     &lt;NA&gt;        -1</span>
+<span class="co">#&gt;      gns_lang gns_adm1 gns_region min_label max_label min_zoom wikidataid</span>
+<span class="co">#&gt; 1290     &lt;NA&gt;     &lt;NA&gt;       &lt;NA&gt;       3.5       7.5        2      Q1527</span>
+<span class="co">#&gt; 1292     &lt;NA&gt;     &lt;NA&gt;       &lt;NA&gt;       3.5       7.5        2      Q1223</span>
+<span class="co">#&gt; 1294     &lt;NA&gt;     &lt;NA&gt;       &lt;NA&gt;       3.5       7.5        2      Q1221</span>
+<span class="co">#&gt; 1295     &lt;NA&gt;     &lt;NA&gt;       &lt;NA&gt;       3.5       7.5        2      Q1212</span>
+<span class="co">#&gt; 1298     &lt;NA&gt;     &lt;NA&gt;       &lt;NA&gt;       3.5       7.5        2      Q1207</span>
+<span class="co">#&gt; 1300     &lt;NA&gt;     &lt;NA&gt;       &lt;NA&gt;       3.5       7.5        2      Q1166</span>
+<span class="co">#&gt;      name_ar name_bn      name_de      name_en          name_es</span>
+<span class="co">#&gt; 1290    &lt;NA&gt;    &lt;NA&gt;    Minnesota    Minnesota        Minnesota</span>
+<span class="co">#&gt; 1292    &lt;NA&gt;    &lt;NA&gt;   Washington   Washington       Washington</span>
+<span class="co">#&gt; 1294    &lt;NA&gt;    &lt;NA&gt;        Idaho        Idaho            Idaho</span>
+<span class="co">#&gt; 1295    &lt;NA&gt;    &lt;NA&gt;      Montana      Montana          Montana</span>
+<span class="co">#&gt; 1298    &lt;NA&gt;    &lt;NA&gt; North Dakota North Dakota Dakota del Norte</span>
+<span class="co">#&gt; 1300    &lt;NA&gt;    &lt;NA&gt;     Michigan     Michigan         Míchigan</span>
+<span class="co">#&gt;                 name_fr name_el name_hi      name_hu      name_id</span>
+<span class="co">#&gt; 1290          Minnesota    &lt;NA&gt;    &lt;NA&gt;    Minnesota    Minnesota</span>
+<span class="co">#&gt; 1292 État de Washington    &lt;NA&gt;    &lt;NA&gt;   Washington   Washington</span>
+<span class="co">#&gt; 1294              Idaho    &lt;NA&gt;    &lt;NA&gt;        Idaho        Idaho</span>
+<span class="co">#&gt; 1295            Montana    &lt;NA&gt;    &lt;NA&gt;      Montana      Montana</span>
+<span class="co">#&gt; 1298     Dakota du Nord    &lt;NA&gt;    &lt;NA&gt; Észak-Dakota Dakota Utara</span>
+<span class="co">#&gt; 1300           Michigan    &lt;NA&gt;    &lt;NA&gt;     Michigan     Michigan</span>
+<span class="co">#&gt;              name_it name_ja name_ko      name_nl         name_pl</span>
+<span class="co">#&gt; 1290       Minnesota    &lt;NA&gt;    &lt;NA&gt;    Minnesota       Minnesota</span>
+<span class="co">#&gt; 1292      Washington    &lt;NA&gt;    &lt;NA&gt;   Washington      Waszyngton</span>
+<span class="co">#&gt; 1294           Idaho    &lt;NA&gt;    &lt;NA&gt;        Idaho           Idaho</span>
+<span class="co">#&gt; 1295         Montana    &lt;NA&gt;    &lt;NA&gt;      Montana         Montana</span>
+<span class="co">#&gt; 1298 Dakota del Nord    &lt;NA&gt;    &lt;NA&gt; North Dakota Dakota Pólnocna</span>
+<span class="co">#&gt; 1300        Michigan    &lt;NA&gt;    &lt;NA&gt;     Michigan        Michigan</span>
+<span class="co">#&gt;              name_pt name_ru      name_sv      name_tr    name_vi name_zh</span>
+<span class="co">#&gt; 1290       Minnesota    &lt;NA&gt;    Minnesota    Minnesota  Minnesota    &lt;NA&gt;</span>
+<span class="co">#&gt; 1292      Washington    &lt;NA&gt;   Washington    Vasington Washington    &lt;NA&gt;</span>
+<span class="co">#&gt; 1294           Idaho    &lt;NA&gt;        Idaho        Idaho      Idaho    &lt;NA&gt;</span>
+<span class="co">#&gt; 1295         Montana    &lt;NA&gt;      Montana      Montana    Montana    &lt;NA&gt;</span>
+<span class="co">#&gt; 1298 Dakota do Norte    &lt;NA&gt; North Dakota Kuzey Dakota       &lt;NA&gt;    &lt;NA&gt;</span>
+<span class="co">#&gt; 1300        Michigan    &lt;NA&gt;     Michigan     Michigan   Michigan    &lt;NA&gt;</span>
+<span class="co">#&gt;           ne_id</span>
+<span class="co">#&gt; 1290 1159315297</span>
+<span class="co">#&gt; 1292 1159309547</span>
+<span class="co">#&gt; 1294 1159315339</span>
+<span class="co">#&gt; 1295 1159315333</span>
+<span class="co">#&gt; 1298 1159315337</span>
+<span class="co">#&gt; 1300 1159314665</span>
+<span class="va">florida_sp</span> <span class="op">&lt;-</span> <span class="va">usa_sp</span><span class="op">[</span><span class="va">usa_sp</span><span class="op">$</span><span class="va">name_en</span> <span class="op">==</span> <span class="st">"Florida"</span>,<span class="op">]</span>
+<span class="fu">sp</span><span class="fu">::</span><span class="fu">plot</span><span class="op">(</span><span class="va">florida_sp</span>, col <span class="op">=</span> <span class="st">"lightblue"</span>, main <span class="op">=</span> <span class="st">"Florida, USA"</span><span class="op">)</span>
+<span class="co">#&gt; Warning in wkt(obj): CRS object has no comment</span></code></pre></div>
+<p><img src="get_started_files/figure-html/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;"></p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st">"maps"</span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://r-spatial.github.io/sf/">"sf"</a></span><span class="op">)</span>
-<span class="va">states</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sf.html">st_as_sf</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/maps/man/map.html">map</a></span><span class="op">(</span><span class="st">"state"</span>, plot <span class="op">=</span> <span class="cn">FALSE</span>, fill <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">states</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu">energyRt</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/energyRt/man/size.html">size</a></span><span class="op">(</span><span class="va">florida_sp</span><span class="op">)</span>
+<span class="co">#&gt; [1] "115.4 Kb"</span>
+<span class="va">florida_sp</span><span class="op">@</span><span class="va">proj4string</span>
+<span class="co">#&gt; CRS arguments:</span>
+<span class="co">#&gt;  +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0</span>
 
-<span class="fu">ggplot</span><span class="op">(</span>data <span class="op">=</span> <span class="va">world</span><span class="op">)</span> <span class="op">+</span>
-    <span class="fu">geom_sf</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
-    <span class="fu">geom_sf</span><span class="op">(</span>data <span class="op">=</span> <span class="va">states</span>, fill <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span> <span class="op">+</span> 
-    <span class="fu">geom_text</span><span class="op">(</span>data <span class="op">=</span> <span class="va">states</span>, <span class="fu">aes</span><span class="op">(</span><span class="va">X</span>, <span class="va">Y</span>, label <span class="op">=</span> <span class="va">ID</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">5</span><span class="op">)</span> <span class="op">+</span>
-    <span class="fu">coord_sf</span><span class="op">(</span>xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">88</span>, <span class="op">-</span><span class="fl">78</span><span class="op">)</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">24.5</span>, <span class="fl">33</span><span class="op">)</span>, expand <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-
-<span class="va">florida_df</span> <span class="op">&lt;-</span> <span class="fu">us_map</span><span class="op">(</span><span class="st">"states"</span>, <span class="st">"FL"</span><span class="op">)</span>
-<span class="fu">usmap_transform</span><span class="op">(</span><span class="va">florida_df</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">florida_df</span><span class="op">)</span>
-<span class="va">florida_sf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sf.html">st_as_sf</a></span><span class="op">(</span><span class="va">florida_df</span>, coords <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://r-spatial.github.io/sf/reference/plot.html">plot</a></span><span class="op">(</span><span class="va">florida_sf</span><span class="op">)</span></code></pre></div>
+<span class="va">iceland_sp</span> <span class="op">&lt;-</span> <span class="fu">rnaturalearth</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/rnaturalearth/man/ne_states.html">ne_states</a></span><span class="op">(</span>country <span class="op">=</span> <span class="st">"iceland"</span><span class="op">)</span>
+<span class="co"># iceland_sp &lt;- rnaturalearth::ne_countries(country = "iceland", scale = "large")</span>
+<span class="fu">sp</span><span class="fu">::</span><span class="fu">plot</span><span class="op">(</span><span class="va">iceland_sp</span>, col <span class="op">=</span> <span class="st">"lightblue"</span>, main <span class="op">=</span> <span class="st">"Iceland"</span><span class="op">)</span>
+<span class="co">#&gt; Warning in wkt(obj): CRS object has no comment</span></code></pre></div>
+<p><img src="get_started_files/figure-html/unnamed-chunk-7-2.png" width="672" style="display: block; margin: auto;"></p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
-<span class="co"># (load("..\\usensys\\data\\maps/usa49_tiny.RData"))</span>
-<span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/load.html">load</a></span><span class="op">(</span><span class="st">"..\\usensys\\data\\maps/usa49_light.RData"</span><span class="op">)</span><span class="op">)</span>
-<span class="co"># plot()</span>
-<span class="va">usa_49</span> <span class="op">&lt;-</span> <span class="va">usa49_light_sp</span>
+<span class="va">kenya_sp</span> <span class="op">&lt;-</span> <span class="fu">rnaturalearth</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/rnaturalearth/man/ne_countries.html">ne_countries</a></span><span class="op">(</span>country <span class="op">=</span> <span class="st">"kenya"</span>, scale <span class="op">=</span> <span class="st">"medium"</span><span class="op">)</span>
+<span class="fu">sp</span><span class="fu">::</span><span class="fu">plot</span><span class="op">(</span><span class="va">kenya_sp</span>, col <span class="op">=</span> <span class="st">"lightblue"</span>, main <span class="op">=</span> <span class="st">"Kenya"</span><span class="op">)</span>
+<span class="co">#&gt; Warning in wkt(obj): CRS object has no comment</span></code></pre></div>
+<p><img src="get_started_files/figure-html/unnamed-chunk-7-3.png" width="672" style="display: block; margin: auto;"></p>
+<div id="method-1-points-over-map" class="section level2">
+<h2 class="hasAnchor">
+<a href="#method-1-points-over-map" class="anchor"></a>Method 1: points over map</h2>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">locid_fl</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_locid.html">get_locid</a></span><span class="op">(</span><span class="va">florida_sp</span>, method <span class="op">=</span> <span class="st">"points"</span><span class="op">)</span>
 
-<span class="co"># florida_sf &lt;- usa49_tiny_sf[usa49_tiny_sf$NAME_1 == "Florida",]</span>
-<span class="co"># plot(florida_sf)</span>
+<span class="va">locid_fl_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getGrid.html">getGrid</a></span><span class="op">(</span>locid <span class="op">=</span> <span class="va">locid_fl</span>, class <span class="op">=</span> <span class="st">"df"</span><span class="op">)</span>
+<span class="co">#&gt; Converting sp object to data.frame format</span>
 
-<span class="va">florida_sp</span> <span class="op">&lt;-</span> <span class="va">usa_49</span><span class="op">[</span><span class="va">usa_49</span><span class="op">$</span><span class="va">NAME_1</span> <span class="op">==</span> <span class="st">"Florida"</span>,<span class="op">]</span>
-<span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">florida_sp</span><span class="op">)</span>
-<span class="fu">sp</span><span class="fu">::</span><span class="fu">plot</span><span class="op">(</span><span class="va">florida_sp</span><span class="op">)</span>
+<span class="fu">sp</span><span class="fu">::</span><span class="fu">plot</span><span class="op">(</span><span class="va">florida_sp</span>, axes <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>
+<span class="co">#&gt; Warning in wkt(obj): CRS object has no comment</span>
 
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"grid"</span><span class="op">)</span>
-<span class="va">grid</span><span class="op">@</span><span class="va">proj4string</span> <span class="op">&lt;-</span> <span class="va">florida_sp</span><span class="op">@</span><span class="va">proj4string</span>
+<span class="co">#&gt; Warning in wkt(obj): CRS object has no comment</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/points.html">points</a></span><span class="op">(</span><span class="va">locid_fl_df</span><span class="op">$</span><span class="va">lon</span>, <span class="va">locid_fl_df</span><span class="op">$</span><span class="va">lat</span>, pch <span class="op">=</span> <span class="fl">16</span>, col <span class="op">=</span> <span class="st">"red"</span><span class="op">)</span></code></pre></div>
+<p><img src="get_started_files/figure-html/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto;"></p>
+</div>
+<div id="method-2-intersection" class="section level2">
+<h2 class="hasAnchor">
+<a href="#method-2-intersection" class="anchor"></a>Method 2: intersection</h2>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R">
+<span class="va">locid_fl2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_locid.html">get_locid</a></span><span class="op">(</span><span class="va">florida_sp</span><span class="op">)</span>
+<span class="co">#&gt; Loading required namespace: rgeos</span>
 
-<span class="op">?</span><span class="fu">rgeos</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/rgeos/man/topo-bin-gIntersection.html">gIntersection</a></span>
-<span class="va">rg</span> <span class="op">&lt;-</span> <span class="fu">rgeos</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/rgeos/man/topo-bin-gIntersection.html">gIntersection</a></span><span class="op">(</span><span class="va">grid</span>, <span class="va">florida_sp</span>, byid <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">rg</span><span class="op">)</span>; <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">rg</span><span class="op">)</span>; 
-<span class="fu">sp</span><span class="fu">::</span><span class="fu">plot</span><span class="op">(</span><span class="va">rg</span><span class="op">)</span>
+<span class="va">locid_fl_df2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getGrid.html">getGrid</a></span><span class="op">(</span>locid <span class="op">=</span> <span class="va">locid_fl2</span>, class <span class="op">=</span> <span class="st">"df"</span><span class="op">)</span>
+<span class="co">#&gt; Converting sp object to data.frame format</span>
+<span class="va">locid_fl_df2</span>
+<span class="co">#&gt; # A tibble: 73 x 3</span>
+<span class="co">#&gt;     locid   lon   lat</span>
+<span class="co">#&gt;     &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
+<span class="co">#&gt;  1 132062 -81.9  24.5</span>
+<span class="co">#&gt;  2 132063 -81.2  24.5</span>
+<span class="co">#&gt;  3 132639 -81.2  25  </span>
+<span class="co">#&gt;  4 132640 -80.6  25  </span>
+<span class="co">#&gt;  5 133215 -81.2  25.5</span>
+<span class="co">#&gt;  6 133216 -80.6  25.5</span>
+<span class="co">#&gt;  7 133217 -80    25.5</span>
+<span class="co">#&gt;  8 133790 -81.9  26  </span>
+<span class="co">#&gt;  9 133791 -81.2  26  </span>
+<span class="co">#&gt; 10 133792 -80.6  26  </span>
+<span class="co">#&gt; # ... with 63 more rows</span>
 
-<span class="op">?</span><span class="fu">raster</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/raster/man/intersect.html">intersect</a></span>
-<span class="va">ri</span> <span class="op">&lt;-</span> <span class="fu">raster</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/intersect.html">intersect</a></span><span class="op">(</span><span class="va">grid</span>, <span class="va">florida_sp</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">ri</span><span class="op">)</span>; <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">ri</span><span class="op">)</span>; 
-<span class="fu">sp</span><span class="fu">::</span><span class="fu">plot</span><span class="op">(</span><span class="va">ri</span><span class="op">)</span>
+<span class="fu">sp</span><span class="fu">::</span><span class="fu">plot</span><span class="op">(</span><span class="va">florida_sp</span>, axes <span class="op">=</span> <span class="cn">T</span>, col <span class="op">=</span> <span class="st">"wheat"</span><span class="op">)</span>
+<span class="co">#&gt; Warning in wkt(obj): CRS object has no comment</span>
 
-<span class="va">ii</span> <span class="op">&lt;-</span> <span class="va">locid</span><span class="op">$</span><span class="va">locid</span> <span class="op">%in%</span> <span class="va">ri</span><span class="op">$</span><span class="va">loc_id</span>; <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">ii</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/points.html">points</a></span><span class="op">(</span><span class="va">locid</span><span class="op">$</span><span class="va">lon</span><span class="op">[</span><span class="va">ii</span><span class="op">]</span>, <span class="va">locid</span><span class="op">$</span><span class="va">lat</span><span class="op">[</span><span class="va">ii</span><span class="op">]</span>, pch <span class="op">=</span> <span class="fl">16</span>, col <span class="op">=</span> <span class="st">"red"</span><span class="op">)</span>
+<span class="co">#&gt; Warning in wkt(obj): CRS object has no comment</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/points.html">points</a></span><span class="op">(</span><span class="va">locid_fl_df2</span><span class="op">$</span><span class="va">lon</span>, <span class="va">locid_fl_df2</span><span class="op">$</span><span class="va">lat</span>, col <span class="op">=</span> <span class="st">"red"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/points.html">points</a></span><span class="op">(</span><span class="va">locid_fl_df</span><span class="op">$</span><span class="va">lon</span>, <span class="va">locid_fl_df</span><span class="op">$</span><span class="va">lat</span>, col <span class="op">=</span> <span class="st">"red"</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span>
 
-<span class="va">ir</span> <span class="op">&lt;-</span> <span class="fu">raster</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/intersect.html">intersect</a></span><span class="op">(</span><span class="va">florida_sp</span>, <span class="va">grid</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">ir</span><span class="op">)</span>; <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">ir</span><span class="op">)</span>
-<span class="fu">sp</span><span class="fu">::</span><span class="fu">plot</span><span class="op">(</span><span class="va">ir</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">ir</span><span class="op">@</span><span class="va">data</span><span class="op">)</span>
-
-<span class="fu">raster</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/area.html">area</a></span><span class="op">(</span><span class="va">rg</span><span class="op">)</span> <span class="co">#sq. meters</span>
-
-<span class="va">ri</span><span class="op">@</span><span class="va">data</span> <span class="op">%&gt;%</span> <span class="fu">as_tibble</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<span class="va">locid_fl_sp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_locid.html">get_locid</a></span><span class="op">(</span><span class="va">florida_sp</span>, return_sp <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>
+<span class="fu">sp</span><span class="fu">::</span><span class="fu">plot</span><span class="op">(</span><span class="va">locid_fl_sp</span>, add <span class="op">=</span> <span class="cn">T</span>, border <span class="op">=</span> <span class="st">"darkgrey"</span><span class="op">)</span></code></pre></div>
+<p><img src="get_started_files/figure-html/unnamed-chunk-9-1.png" width="672" style="display: block; margin: auto;"></p>
+</div>
 </div>
   </div>
 
