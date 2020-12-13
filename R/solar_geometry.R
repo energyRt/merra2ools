@@ -64,6 +64,7 @@ solar_declination <- function(yday, check_yday = TRUE) {
 #'                         \sin{(latitude)}\cos{(zenith)}}{\cos{(latitude)}\sin{(zenith)}}}
 #' }
 #' @export
+#' @import mathjaxr
 #'
 #' @examples
 #' NA
@@ -85,4 +86,9 @@ solar_geometry <- function(datetime = NULL, yday = NULL, tz = lubridate::tz(date
     declination = declination
   ))
 
+}
+
+if (F) {
+  mathjaxr::preview_rd("solar_geometry", type = "pdf")
+  
 }
