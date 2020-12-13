@@ -9,7 +9,8 @@
 #' @export
 #'
 #' @examples
-#' getGrid()
+#' x <- getGrid()
+#' head(x)
 #' getGrid("poly", "sf")
 #' getGrid(lon = c(-70, -60), lat = c(30, 40), class = "df")
 getGrid <- function(type = "points", class = "sp", 

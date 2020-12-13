@@ -28,7 +28,8 @@ Returns object with MERRA-2 grid information
 Get MERRA-2 grid
 }
 \examples{
-getGrid()
+x <- getGrid()
+head(x)
 getGrid("poly", "sf")
 getGrid(lon = c(-70, -60), lat = c(30, 40), class = "df")
 }
