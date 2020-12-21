@@ -14,6 +14,12 @@ solar_geometry(datetime = NULL, yday = NULL, tz = lubridate::tz(datetime))
 \item{tz}{timezone}
 }
 \value{
+
+}
+\description{
+Solar geometry
+}
+\details{
 \loadmathjax
 List or data.frame with estimated following solar geometry variables:
 \itemize{
@@ -54,9 +60,6 @@ List or data.frame with estimated following solar geometry variables:
             \mjseqn{B = \cos{(azimuth)} = \frac{\sin{(\theta_d)}-
                         \sin{(latitude)}\cos{(zenith)}}{\cos{(latitude)}\sin{(zenith)}}}
 }
-}
-\description{
-Solar geometry
 }
 \examples{
 NA

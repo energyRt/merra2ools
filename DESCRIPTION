@@ -17,10 +17,13 @@ BugReports: https://github.com/olugovoy/merra2ools/issues
 Description: More about what it does (maybe more than one line)
     Use four spaces when indenting paragraphs within the Description.
 Depends: R (>= 4.0.0)
-Imports: tidyverse, lubridate, mathjaxr
+Imports: tidyverse, lubridate, mathjaxr, data.table, fst
 Suggests: 
+    knitr,
+    rmarkdown
 License: AGLP-3.0
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.1
 RdMacros: mathjaxr
+VignetteBuilder: knitr

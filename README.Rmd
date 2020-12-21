@@ -1,0 +1,30 @@
+---
+output: github_document
+---
+
+```{r, include=FALSE, echo = FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE,
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/"
+)
+```
+
+# merra2ools
+Tools to process MERRA-2 data (NASA) with focus on renewable energy
+
+(UNDER CONSTRUCTION)
+
+## Estimated annual wind power output at 50 meters height, 40-years average  
+```{r}
+
+```
+
+
+## Estimated annual solar power output (fixed, optimal tilt angle), 40-years average  
+
+```{r}
+
+```
+

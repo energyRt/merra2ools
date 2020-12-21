@@ -89,6 +89,9 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
+  <a href="../articles/merra2ools.html">Get started</a>
+</li>
+<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
@@ -99,7 +102,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/get_started.html">Get started</a>
+      <a href="../articles/subset.html">subset</a>
+    </li>
+    <li>
+      <a href="../articles/windpower.html">windpower</a>
     </li>
   </ul>
 </li>
@@ -107,7 +113,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/olugovoy/merra2ools/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -133,9 +139,9 @@
     <p>Hellmann function to extrapolate wind speed from 10 and 50 meters to higher altitudes</p>
     </div>
 
-    <pre class="usage"><span class='fu'>fHellmann</span><span class='op'>(</span><span class='va'>W10M</span>, <span class='va'>W50M</span>, na <span class='op'>=</span> <span class='fl'>0</span>, inf <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span>
+    <pre class="usage"><span class='fu'>fHellmann</span><span class='op'>(</span><span class='va'>W10M</span>, <span class='va'>W50M</span>, na <span class='op'>=</span> <span class='fl'>0</span>, inf <span class='op'>=</span> <span class='fl'>0</span>, lo <span class='op'>=</span> <span class='fl'>0</span>, up <span class='op'>=</span> <span class='fl'>0.6</span><span class='op'>)</span>
 
-<span class='fu'>fH</span><span class='op'>(</span><span class='va'>W10M</span>, <span class='va'>W50M</span>, na <span class='op'>=</span> <span class='fl'>0</span>, inf <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span></pre>
+<span class='fu'>fH</span><span class='op'>(</span><span class='va'>W10M</span>, <span class='va'>W50M</span>, na <span class='op'>=</span> <span class='fl'>0</span>, inf <span class='op'>=</span> <span class='fl'>0</span>, lo <span class='op'>=</span> <span class='fl'>0</span>, up <span class='op'>=</span> <span class='fl'>0.6</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -155,6 +161,14 @@
     <tr>
       <th>inf</th>
       <td><p>values to return instead of infinite</p></td>
+    </tr>
+    <tr>
+      <th>lo</th>
+      <td><p>lower limit, zero by default to control negative values</p></td>
+    </tr>
+    <tr>
+      <th>up</th>
+      <td><p>lower limit, 0.6 by default to control excessive values</p></td>
     </tr>
     </table>
 

@@ -5,9 +5,9 @@
 \alias{fH}
 \title{Hellmann function to extrapolate wind speed from 10 and 50 meters to higher altitudes}
 \usage{
-fHellmann(W10M, W50M, na = 0, inf = 0)
+fHellmann(W10M, W50M, na = 0, inf = 0, lo = 0, up = 0.6)
 
-fH(W10M, W50M, na = 0, inf = 0)
+fH(W10M, W50M, na = 0, inf = 0, lo = 0, up = 0.6)
 }
 \arguments{
 \item{W10M}{wind speed (m/s) at 10 meters altitude}
@@ -17,6 +17,10 @@ fH(W10M, W50M, na = 0, inf = 0)
 \item{na}{values to return in the case of NA}
 
 \item{inf}{values to return instead of infinite}
+
+\item{lo}{lower limit, zero by default to control negative values}
+
+\item{up}{lower limit, 0.6 by default to control excessive values}
 }
 \value{
 a numeric vector with estimated Hellmann exponent.

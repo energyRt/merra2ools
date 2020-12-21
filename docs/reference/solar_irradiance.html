@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Irradiance and its components — solar_irradiance • merra2ools</title>
+<title>Irradiance decomposition — solar_irradiance • merra2ools</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Irradiance and its components — solar_irradiance" />
-<meta property="og:description" content="Irradiance and its components" />
+<meta property="og:title" content="Irradiance decomposition — solar_irradiance" />
+<meta property="og:description" content="Irradiance decomposition" />
 
 
 
@@ -89,6 +89,9 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
+  <a href="../articles/merra2ools.html">Get started</a>
+</li>
+<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
@@ -99,7 +102,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/get_started.html">Get started</a>
+      <a href="../articles/subset.html">subset</a>
+    </li>
+    <li>
+      <a href="../articles/windpower.html">windpower</a>
     </li>
   </ul>
 </li>
@@ -107,7 +113,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/olugovoy/merra2ools/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -124,37 +130,72 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Irradiance and its components</h1>
+    <h1>Irradiance decomposition</h1>
     <small class="dont-index">Source: <a href='https://github.com/olugovoy/merra2ools/blob/master/R/solar_irradiance.R'><code>R/solar_irradiance.R</code></a></small>
     <div class="hidden name"><code>solar_irradiance.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Irradiance and its components</p>
+    <p>Irradiance decomposition</p>
     </div>
 
-    <pre class="usage"><span class='fu'>solar_irradiance</span><span class='op'>(</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>solar_irradiance</span><span class='op'>(</span><span class='va'>yday</span>, <span class='va'>GHI</span>, <span class='va'>zenith</span><span class='op'>)</span></pre>
 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>yday</th>
+      <td><p>day of a year, integer vector</p></td>
+    </tr>
+    <tr>
+      <th>GHI</th>
+      <td><p>Global Horizontal Irradiance (\(GHI, W/m^2\))</p></td>
+    </tr>
+    <tr>
+      <th>zenith</th>
+      <td><p>Zenith angle, degrees</p></td>
+    </tr>
+    </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    
+
+
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p><script id="MathJax-script" async src="../../mathjaxr/doc/mathjax/es5/tex-chtml-full.js"></script>
 
 List or data.frame with estimated following solar geometry variables:</p><ul>
 <li><p>Extraterrestrial irradiance (\(G_e\))
     \[G_e = G_{sc}\times\big(1+0.033\cos{(\frac{360n}{365})}\big)\]
-    <code>  </code> where: <br />
-    <code>  </code> 
+    where: <br />
     \(G_{sc} = 1360.8W/m^2\), is the solar constant based on the latest 
-    NASA observation (Kopp \&amp; Lean, 2011); <br />
-    \(n - \text{day of the year}\) <br /></p></li>
-<li><p>Clearness index (\(G_e\))
+    NASA observation (Kopp and Lean, 2011); <br />
+    \(n - \) day of the year. <br /></p></li>
+<li><p>Clearness index (\(k_t\))
     \[k_t = \frac{GHI}{G_e\cos{(zenith)}}\]</p></li>
-<li><p>Diffuse fraction (\( k_d\))</p></li>
-<li><p>DHI and DNI</p></li>
+<li><p>Diffuse fraction (\(k_d\))
+     \[k_d = \begin{cases}
+         1-0.09k_t & & {k_t < 0.22}\newline
+         0.9511-0.1604k_t+4.388k_t^2-16.638k_t^3+12.336k_t^4 & & {0.22 \leq k_t \leq 0.8}\newline
+         0.165& & {k_t > 0.8}
+         \end{cases}
+         \]</p></li>
+<li><p>Direct Normal Irradiance (\(DNI, W/m^2\))
+     \[DNI = \frac{(1-k_d)}{\cos{(zenith)}}\times{GHI}\]</p></li>
+<li><p>Diffuse Horizontal Irradiance (\(DHI, W/m^2\))
+     \[DHI = k_d\times{GHI}\]
+    where: <br />
+    \(GHI\) - Global Horizontal Irradiance (\(GHI, W/m^2\)) from MERRA-2 dataset.
+    \[GHI = DHI + DNI \times{\cos{(zenith)}}\]</p></li>
 </ul>
 
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='cn'>NA</span>
+</div><div class='output co'>#&gt; [1] NA</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

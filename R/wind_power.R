@@ -47,6 +47,8 @@ if (F) {
 #' @param W50M wind speed (m/s) at 50 meters altitude
 #' @param na values to return in the case of NA
 #' @param inf values to return instead of infinite
+#' @param lo lower limit, zero by default to control negative values
+#' @param up lower limit, 0.6 by default to control excessive values
 #'
 #' @return
 #' a numeric vector with estimated Hellmann exponent.
@@ -56,7 +58,7 @@ if (F) {
 #'
 #' @examples
 #' fH(5, 10)
-fHellmann <- function(W10M, W50M, na = 0, inf = 0) {
+fHellmann <- function(W10M, W50M, na = 0, inf = 0, lo = 0, up = 0.6) {
   # checks
   if (length(W10M) > 1 & length(W50M) > 1) {
     stopifnot(length(W50M) == length(W10M))
@@ -67,6 +69,8 @@ fHellmann <- function(W10M, W50M, na = 0, inf = 0) {
   h <- log(W50M / W10M) / log(50 / 10)
   h[is.na(h)] <- na
   h[is.infinite(h)] <- inf
+  h[h < lo] <- lo
+  h[h > up] <- up
   return(h)
 }
 

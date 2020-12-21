@@ -22,7 +22,7 @@ solar_declination <- function(yday, check_yday = TRUE) {
 #' @param yday day of a year
 #' @param tz timezone
 #'
-#' @return 
+#' @details  
 #' \loadmathjax
 #' List or data.frame with estimated following solar geometry variables:
 #' \itemize{
@@ -63,6 +63,9 @@ solar_declination <- function(yday, check_yday = TRUE) {
 #'             \mjseqn{B = \cos{(azimuth)} = \frac{\sin{(\theta_d)}-
 #'                         \sin{(latitude)}\cos{(zenith)}}{\cos{(latitude)}\sin{(zenith)}}}
 #' }
+#' 
+#' @return
+#' 
 #' @export
 #' @import mathjaxr
 #'

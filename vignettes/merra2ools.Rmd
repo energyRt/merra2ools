@@ -1,0 +1,164 @@
+---
+title: "merra2ools"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{merra2ools}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  knitr::opts_chunk$set(fig.width = 7, fig.height = 6, fig.align = "center") 
+)
+```
+
+# Installation
+```{r}
+# Installation of `merra2ools` package
+pkg <- function() rownames(installed.packages()) # returns names of installed packages
+if (!("devtools" %in% pkg())) install.packages("devtools")
+if (!("merra2ools" %in% pkg())) devtools::install_github("olugovoy/merra2ools")
+  
+# Installation of packages used in the vignette
+## gis/spatial objects and method
+if (!("sp" %in% pkg())) install.packages("sp")
+if (!("rgeos" %in% pkg())) install.packages("rgeos")
+if (!("sf" %in% pkg())) install.packages("sf")
+## gis-datasets by OpenSci project 
+## (alternative packages might be used instead)
+if (!("rnaturalearth" %in% pkg())) install.packages("rnaturalearth")
+if (!("rnaturalearthdata" %in% pkg())) install.packages("rnaturalearthdata")
+if (!("rnaturalearthhires" %in% pkg())) 
+  devtools::install_github("ropensci/rnaturalearthhires")
+# rm(pkg)
+
+# Load packages used in the vignette
+library(tidyverse)
+library(merra2ools)
+check_merra2()
+
+```
+
+# Downloading the data
+<https://datadryad.org/stash/submission_process>
+```{r, eval=FALSE}
+
+```
+
+# Setting up  
+```{r setup, eval=FALSE}
+
+check_merra2("MERRA2 SUBSET LOCAL DIRECTORY")
+set_merra2("MERRA2 SUBSET LOCAL DIRECTORY")
+str(check_merra2(detailed = T))
+
+```
+
+
+# Locations IDs in MERRA-2 dataset  
+```{r}
+data("locid")
+# locid
+
+lon <- unique(locid$lon)
+head(lon, 10)
+length(lon)
+
+lat <- unique(locid$lat)
+head(lat, 10)
+length(lat)
+
+lo <- unique(c(seq(-180, max(lon), by = 30), max(lon))) %>% sort()
+la <- seq(-90, 90, by = 15)
+
+locid_sample <- filter(locid, lon %in% lo, lat %in% la)
+world_map <- map_data(map = "world") %>% as_tibble()
+
+ggplot() + 
+  geom_map(data = world_map, map = world_map, 
+           aes(x = long, y = lat, map_id = region), 
+           fill = "wheat", alpha = .75, colour = "grey", size = 0.25) +
+  theme_bw() +
+  geom_rect(aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax),
+    data = data.frame(xmin = -180, xmax = 180, ymin = -90, ymax = 90),
+    alpha = .5, fill = NA, colour = "grey85") +
+  geom_point(aes(x = lon, y = lat), data = locid_sample, size = 1, colour = "red") + 
+  geom_text(aes(x = lon, y = lat, label = locid), data = locid_sample, 
+             position = position_nudge(y = 4),
+             alpha = 0.75,
+             size = unit(3, "lines")) +
+  scale_x_continuous(breaks = ceiling(lo), minor_breaks = ceiling(lo)) +
+  scale_y_continuous(breaks = round(la), minor_breaks = ceiling(la)) + 
+  labs(x = "lon", title = "Location ID (`locid`) layout of MERRA-2 subset") +
+  theme(plot.title = element_text(hjust = 0.5)) + 
+  coord_fixed(1.2)
+```
+
+## Spatial points
+```{r}
+
+```
+
+## Spatial polygons
+```{r}
+
+```
+
+# Location IDs for your project
+```{r}
+# get US-data
+usa_sp <- rnaturalearth::ne_states(iso_a2 = "us")
+class(usa_sp)
+usa_sp@data %>% head()
+florida_sp <- usa_sp[usa_sp$name_en == "Florida",]
+sp::plot(florida_sp, col = "lightblue", main = "Florida, USA")
+energyRt::size(florida_sp)
+florida_sp@proj4string
+
+iceland_sp <- rnaturalearth::ne_states(country = "iceland")
+# iceland_sp <- rnaturalearth::ne_countries(country = "iceland", scale = "large")
+sp::plot(iceland_sp, col = "lightblue", main = "Iceland")
+
+kenya_sp <- rnaturalearth::ne_countries(country = "kenya", scale = "medium")
+sp::plot(kenya_sp, col = "lightblue", main = "Kenya")
+
+```
+
+## Method 1: points over map
+```{r}
+locid_fl <- get_locid(florida_sp, method = "points")
+
+locid_fl_df <- getGrid(locid = locid_fl, class = "df")
+
+sp::plot(florida_sp, axes = T)
+points(locid_fl_df$lon, locid_fl_df$lat, pch = 16, col = "red")
+
+
+```
+
+
+## Method 2: intersection
+```{r}
+
+locid_fl2 <- get_locid(florida_sp)
+
+locid_fl_df2 <- getGrid(locid = locid_fl2, class = "df")
+locid_fl_df2
+
+sp::plot(florida_sp, axes = T, col = "wheat")
+points(locid_fl_df2$lon, locid_fl_df2$lat, col = "red")
+points(locid_fl_df$lon, locid_fl_df$lat, col = "red", pch = 16)
+
+locid_fl_sp <- get_locid(florida_sp, return_sp = T)
+sp::plot(locid_fl_sp, add = T, border = "darkgrey")
+
+
+
+```
+
+
+
+

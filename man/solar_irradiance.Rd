@@ -2,11 +2,24 @@
 % Please edit documentation in R/solar_irradiance.R
 \name{solar_irradiance}
 \alias{solar_irradiance}
-\title{Irradiance and its components}
+\title{Irradiance decomposition}
 \usage{
-solar_irradiance()
+solar_irradiance(yday, GHI, zenith)
+}
+\arguments{
+\item{yday}{day of a year, integer vector}
+
+\item{GHI}{Global Horizontal Irradiance (\mjseqn{GHI, W/m^2})}
+
+\item{zenith}{Zenith angle, degrees}
 }
 \value{
+
+}
+\description{
+Irradiance decomposition
+}
+\details{
 \loadmathjax
 List or data.frame with estimated following solar geometry variables:
 \itemize{
@@ -28,9 +41,16 @@ List or data.frame with estimated following solar geometry variables:
          \end{cases}
          }
          
-  \item Diffuse Horizontal Irradiance (\mjseqn{DHI, Watt/m^2})
+  \item Direct Normal Irradiance (\mjseqn{DNI, W/m^2})
+     \mjsdeqn{DNI = \frac{(1-k_d)}{\cos{(zenith)}}\times{GHI}}
+         
+  \item Diffuse Horizontal Irradiance (\mjseqn{DHI, W/m^2})
+     \mjsdeqn{DHI = k_d\times{GHI}}
+    where: \cr
+    \mjseqn{GHI} - Global Horizontal Irradiance (\mjseqn{GHI, W/m^2}) from MERRA-2 dataset.
+    \mjsdeqn{GHI = DHI + DNI \times{\cos{(zenith)}}}
 }
 }
-\description{
-Irradiance and its components
+\examples{
+NA
 }

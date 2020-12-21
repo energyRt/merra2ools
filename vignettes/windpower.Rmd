@@ -1,0 +1,211 @@
+---
+title: "windpower"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{windpower}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+library(knitr)
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  knitr::opts_chunk$set(fig.width = 6, fig.height = 4.5, fig.align = "center") 
+)
+```
+
+```{r setup, echo=TRUE, warning=FALSE, message=FALSE}
+library(merra2ools)
+library(tidyverse)
+library(data.table)
+# library(kableExtra)
+```
+
+## Wind speed extrapolation
+
+### Hellmann constant
+```{r}
+dat <- merra2ools::merra2_sample %>%
+  select(-SWGDN,	-ALBEDO) %>% # drop solar radiation
+  mutate(h = fH(W10M = W10M, W50M = W50M)) # Hellmann constant
+
+summary(dat$h) # check basic statistics
+
+```
+
+
+```{r, echo=FALSE}
+kableExtra::kbl(
+  head(dat), caption = "MERRA-2 subset with estimated Hellmann exponent (h)") %>% 
+  kableExtra::kable_styling(position = "center")
+
+```
+
+
+<details>
+  <summary>Figure code</summary>
+```{r}
+(h_mean <- mean(dat$h))
+(h_median <- median(dat$h))
+
+# .GeomVline_draw_key <- GeomVline$draw_key
+GeomVline$draw_key <- GeomHline$draw_key # adjusting legend
+
+fig <- ggplot(dat) +
+  geom_histogram(aes(h, after_stat(density), 
+                     fill = "Hellmann", colour = "NA"),
+                 alpha = .75, show.legend = F, bins = 50) +
+  labs(x = "Hellmann exponent (h)") +
+  geom_vline(aes(xintercept = x, linetype = name),
+             data = tibble(name = c("mean", "median"),
+                           x = c(h_mean, h_median)),
+             colour = "blue") +
+  scale_linetype(name = "Statistics") +
+  theme_bw() + 
+  theme(legend.position = c(0.9, .8),
+        legend.box.background = element_rect(
+          colour = "black", fill = "grey"
+          ))
+
+```
+</details>
+
+```{r, fig.cap="Distribution of Hellmann constant, estimated on MERRA-2 sample", echo=FALSE}
+fig
+```
+
+
+### Extrapolation
+```{r}
+# extrapolation
+for (i in seq(10, 200, 10)) {
+  if (i == 10) cat("Height, m: ")
+  cat(i)
+  dat[[paste0("w", i)]] <- fWSE(i, dat$W10M, dat$h)
+  cat(" ")
+}
+```
+
+Figure below shows a sample of extrapolated speed of wind from 10 and 50 to up to 200 meters height.  
+
+<details>
+  <summary>Figure code</summary>
+```{r}
+dd <- dat %>% ungroup() %>%
+  select(datetime, locid, starts_with("w", ignore.case = F)) %>%
+  pivot_longer(cols = starts_with("w"), names_prefix = "w") %>%
+  mutate(name = as.integer(name))
+
+set.seed(0)
+fig <- ggplot(filter(dd, locid %in% sample(locid, 100), datetime == dd$datetime[1])) +
+  geom_line(aes(value, name, group = locid, colour = locid), 
+            alpha = .75, show.legend = F, size = .75) +
+  scale_colour_distiller(palette = "Spectral") +
+  geom_hline(yintercept = 10, linetype = "dashed", colour = "blue", alpha = 1) + 
+  geom_hline(yintercept = 50, linetype = "dashed", colour = "blue", alpha = 1) +
+  # ylim(0, NA) +
+  labs(x = "Wind speed, m/s", y = "Height, m") +
+  scale_x_continuous(expand = c(0,0)) + 
+  scale_y_continuous(expand = c(0,0), limits = c(0, NA), 
+                     breaks = c(0, 10, 50, 100, 150, 200),
+                     minor_breaks = c(0, 10, seq(25, 200, by = 25)),
+                     labels = c(0, 10, 50, 100, 150, 200)) +
+  geom_text(data = tibble(name = c("wind speed at 10m from MERRA-2 (W10M)", 
+                                   "wind speed at 10m from MERRA-2 (W50M)"), 
+                          x = c(19.2, 19.2), y = c(11, 51)),
+                          size = 3, colour = "black", alpha = .85,
+             aes(x, y, label = name), vjust = 0, hjust = 1) +
+             # nudge_x = 0.25, nudge_y = 7) +
+  theme_bw()
+
+```
+</details>
+
+```{r, fig.cap="Wind speed extrapolation using estimated Hellmann constant.", echo=F}
+fig
+```
+
+
+### Wind speed at 50m
+```{r}
+locid <- merra2ools::locid %>% select(locid, lon, lat) 
+dat2 <- select(dat, datetime, locid, w10, w50, w100, w200) %>%
+  full_join(locid)
+
+```
+
+<details>
+  <summary>Figure code</summary>
+```{r, eval=FALSE}
+wind_GIF(dat2, "w50", 1, fps = 12, filename = "merra_wind_50m_12fps.gif")
+
+```
+</details>
+
+```{r, fig.cap="Wind speed at 50 meters height, m/s", echo=FALSE}
+gif1 <- "../man/figures/merra_wind_50m_12fps.gif"
+if (file.exists(gif1)) include_graphics(gif1)
+
+```
+
+## Wind power curve
+
+<details>
+  <summary>Figure code</summary>
+```{r}
+# Simplified wind power curve
+wpc <- tibble( 
+  mps = 0:30, # wind speed m/s
+  af = fWPC(mps) # availability factor [0,1]
+)
+
+fig <- ggplot(wpc) + 
+  geom_line(aes(x = mps, y = af), colour = "red", size = 2) +
+  labs(x = "Wind speed, m/s", 
+       y = "Wind turbine availability (capacity) factor") +
+  theme_bw()
+```
+</details>
+
+```{r, fig.cap="Simplified wind power curve", echo=F}
+fig
+```
+
+
+## Estimated hourly availabillity factor
+```{r, eval=FALSE}
+
+dat2 <- mutate(
+  dat2,
+  af10 = fWPC(w10),
+  af50 = fWPC(w50),
+  af100 = fWPC(w100),
+  af200 = fWPC(w200)
+)
+
+summary(dat2$w200)
+
+wind_plot(dat2, "af50", 1, limits = c(0, 1), 
+          palette = "PuBu", direction = 1, legend.name = "AF")
+wind_plot(dat2, "af10", 1, limits = c(0, 1),
+          palette = "BuPu", direction = 1, legend.name = "AF")
+wind_plot(dat2, "af100", 1, limits = c(0, 1),
+          palette = "Blues", direction = 1, legend.name = "AF")
+wind_plot(dat2, "af200", 1, limits = c(0, 2))
+
+wind_GIF(dat2, "af50", 1, limits = c(0, 1), fps = 12, 
+         palette = "PuBu", direction = 1,
+         legend.name = "AF",
+         filename = "merra_wind_af50_12fps.gif")
+
+
+```
+
+```{r, fig.cap="Wind speed at 50 meters height, m/s", echo=FALSE}
+gif2 <- "../man/merra_wind_af50_12fps.gif"
+if (file.exists(gif2)) include_graphics(gif2)
+
+```

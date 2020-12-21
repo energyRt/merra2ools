@@ -1,7 +1,11 @@
 
-#' Irradiance and its components
+#' Irradiance decomposition
 #'
-#' @return
+#' @param yday day of a year, integer vector
+#' @param GHI Global Horizontal Irradiance (\mjseqn{GHI, W/m^2})
+#' @param zenith Zenith angle, degrees
+#'
+#' @details 
 #' \loadmathjax
 #' List or data.frame with estimated following solar geometry variables:
 #' \itemize{
@@ -23,14 +27,23 @@
 #'          \end{cases}
 #'          }
 #'          
+#'   \item Direct Normal Irradiance (\mjseqn{DNI, W/m^2})
+#'      \mjsdeqn{DNI = \frac{(1-k_d)}{\cos{(zenith)}}\times{GHI}}
+#'          
 #'   \item Diffuse Horizontal Irradiance (\mjseqn{DHI, W/m^2})
-#'   
+#'      \mjsdeqn{DHI = k_d\times{GHI}}
+#'     where: \cr
+#'     \mjseqn{GHI} - Global Horizontal Irradiance (\mjseqn{GHI, W/m^2}) from MERRA-2 dataset.
+#'     \mjsdeqn{GHI = DHI + DNI \times{\cos{(zenith)}}}
 #' } 
 #'     
+#' @return
+#' 
 #' @export
 #' @import mathjaxr
 #'
-# @examples
-solar_irradiance <- function() {
+#' @examples
+#' NA
+solar_irradiance <- function(yday, GHI, zenith) {
   
 }
