@@ -102,6 +102,9 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="../articles/solarpower.html">Solar geometry, irradiance, and PV output</a>
+    </li>
+    <li>
       <a href="../articles/subset.html">subset</a>
     </li>
     <li>
@@ -131,7 +134,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Plane-Of-Array (POA) isotropic irradiance model</h1>
-    <small class="dont-index">Source: <a href='https://github.com/olugovoy/merra2ools/blob/master/R/solar_pv_position.R'><code>R/solar_pv_position.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/olugovoy/merra2ools/blob/master/R/solar_pv_models.R'><code>R/solar_pv_models.R</code></a></small>
     <div class="hidden name"><code>plane_of_array.Rd</code></div>
     </div>
 
@@ -139,9 +142,31 @@
     <p>Plane-Of-Array (POA) isotropic irradiance model</p>
     </div>
 
-    <pre class="usage"><span class='fu'>plane_of_array</span><span class='op'>(</span><span class='va'>AOI</span>, <span class='va'>GHI</span>, <span class='va'>DNI</span>, <span class='va'>DHI</span>, <span class='va'>albedo</span>, <span class='va'>array.tilt</span><span class='op'>)</span>
+    <pre class="usage"><span class='fu'>plane_of_array</span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  type <span class='op'>=</span> <span class='st'>"fx"</span>,
+  add.suffix <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  AOI <span class='op'>=</span> <span class='cn'>NULL</span>,
+  GHI <span class='op'>=</span> <span class='cn'>NULL</span>,
+  DNI <span class='op'>=</span> <span class='cn'>NULL</span>,
+  DHI <span class='op'>=</span> <span class='cn'>NULL</span>,
+  ALBEDO <span class='op'>=</span> <span class='cn'>NULL</span>,
+  array.tilt <span class='op'>=</span> <span class='cn'>NULL</span>,
+  ALL <span class='op'>=</span> <span class='cn'>FALSE</span>
+<span class='op'>)</span>
 
-<span class='fu'>fPOA</span><span class='op'>(</span><span class='va'>AOI</span>, <span class='va'>GHI</span>, <span class='va'>DNI</span>, <span class='va'>DHI</span>, <span class='va'>albedo</span>, <span class='va'>array.tilt</span><span class='op'>)</span></pre>
+<span class='fu'>fPOA</span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  type <span class='op'>=</span> <span class='st'>"fx"</span>,
+  add.suffix <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  AOI <span class='op'>=</span> <span class='cn'>NULL</span>,
+  GHI <span class='op'>=</span> <span class='cn'>NULL</span>,
+  DNI <span class='op'>=</span> <span class='cn'>NULL</span>,
+  DHI <span class='op'>=</span> <span class='cn'>NULL</span>,
+  ALBEDO <span class='op'>=</span> <span class='cn'>NULL</span>,
+  array.tilt <span class='op'>=</span> <span class='cn'>NULL</span>,
+  ALL <span class='op'>=</span> <span class='cn'>FALSE</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -163,12 +188,12 @@
       <td><p>Diffuse Horizontal Irradiance (\(W/m^2\))</p></td>
     </tr>
     <tr>
-      <th>albedo</th>
-      <td><p>ground-reflected portion of the POA irradiance (\(W/m^2\))</p></td>
-    </tr>
-    <tr>
       <th>array.tilt</th>
       <td><p>the PV tilt angle, degrees</p></td>
+    </tr>
+    <tr>
+      <th>albedo</th>
+      <td><p>ground-reflected portion of the POA irradiance (\(W/m^2\))</p></td>
     </tr>
     </table>
 

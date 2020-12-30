@@ -5,17 +5,18 @@
 \title{Get MERRA-2 subset for}
 \usage{
 get_merra2_subset(
-  IDs,
+  locid = 1:207936L,
   from = "1980-01-01 00",
   to = "2019-12-31 23",
   tz = "UTC",
   cols = NULL,
   quiet = FALSE,
-  rows_lim = 2 * 10^9
+  rows_lim = 2 * 10^9,
+  original.units = TRUE
 )
 }
 \arguments{
-\item{IDs}{integer vector with location IDs (values from 1 to 207936)}
+\item{locid}{integer vector with location locid (values from 1 to 207936)}
 
 \item{from}{starting date and time of the subset in "YYYY-MM-DD HH" format}
 
@@ -28,6 +29,8 @@ get_merra2_subset(
 \item{quiet}{if process should be reported}
 
 \item{rows_lim}{}
+
+\item{original.units}{}
 }
 \value{
 data.table with the subset of

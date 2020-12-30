@@ -13,7 +13,7 @@ library(knitr)
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  knitr::opts_chunk$set(fig.width = 6, fig.height = 4.5, fig.align = "center") 
+  knitr::opts_chunk$set(fig.width = 6, fig.height = 4, fig.align = "center") 
 )
 ```
 
@@ -158,12 +158,12 @@ if (file.exists(gif1)) include_graphics(gif1)
 ```{r}
 # Simplified wind power curve
 wpc <- tibble( 
-  mps = 0:30, # wind speed m/s
+  mps = c(0:25, NA, 25.01, 26:30), # wind speed m/s
   af = fWPC(mps) # availability factor [0,1]
 )
 
 fig <- ggplot(wpc) + 
-  geom_line(aes(x = mps, y = af), colour = "red", size = 2) +
+  geom_line(aes(x = mps, y = af, colour = "red"), size = 2, show.legend = F) +
   labs(x = "Wind speed, m/s", 
        y = "Wind turbine availability (capacity) factor") +
   theme_bw()
@@ -186,15 +186,18 @@ dat2 <- mutate(
   af200 = fWPC(w200)
 )
 
-summary(dat2$w200)
+summary(dat2$w50); summary(dat2$af50)
+summary(dat2$af50[dat2$w50 > 25])
 
+wind_plot(dat2, "w50", 1)
 wind_plot(dat2, "af50", 1, limits = c(0, 1), 
-          palette = "PuBu", direction = 1, legend.name = "AF")
+          palette = "Blues", direction = 1, legend.name = "AF")
 wind_plot(dat2, "af10", 1, limits = c(0, 1),
-          palette = "BuPu", direction = 1, legend.name = "AF")
+          palette = "Blues", direction = 1, legend.name = "AF")
 wind_plot(dat2, "af100", 1, limits = c(0, 1),
           palette = "Blues", direction = 1, legend.name = "AF")
-wind_plot(dat2, "af200", 1, limits = c(0, 2))
+wind_plot(dat2, "af200", 1, limits = c(0, 1), 
+          palette = "Blues", direction = 1, legend.name = "AF")
 
 wind_GIF(dat2, "af50", 1, limits = c(0, 1), fps = 12, 
          palette = "PuBu", direction = 1,
@@ -204,8 +207,9 @@ wind_GIF(dat2, "af50", 1, limits = c(0, 1), fps = 12,
 
 ```
 
-```{r, fig.cap="Wind speed at 50 meters height, m/s", echo=FALSE}
-gif2 <- "../man/merra_wind_af50_12fps.gif"
+
+```{r, fig.cap="Hourly capacity factor for a generic wind turbine with 50 meters hub height.", echo=FALSE}
+gif2 <- "../man/figures/merra_wind_af50_12fps.gif"
 if (file.exists(gif2)) include_graphics(gif2)
 
 ```

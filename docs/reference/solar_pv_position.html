@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Photovoltaic Solar Panel Orientation and Positioning models — solar_pv_position • merra2ools</title>
+<title>Photovoltaic Solar Panel Orientation and Performance Models — solar_pv_position • merra2ools</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Photovoltaic Solar Panel Orientation and Positioning models — solar_pv_position" />
-<meta property="og:description" content="Photovoltaic Solar Panel Orientation and Positioning models" />
+<meta property="og:title" content="Photovoltaic Solar Panel Orientation and Performance Models — solar_pv_position" />
+<meta property="og:description" content="Photovoltaic Solar Panel Orientation and Performance Models" />
 
 
 
@@ -102,6 +102,9 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="../articles/solarpower.html">Solar geometry, irradiance, and PV output</a>
+    </li>
+    <li>
       <a href="../articles/subset.html">subset</a>
     </li>
     <li>
@@ -130,20 +133,46 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Photovoltaic Solar Panel Orientation and Positioning models</h1>
-    <small class="dont-index">Source: <a href='https://github.com/olugovoy/merra2ools/blob/master/R/solar_pv_position.R'><code>R/solar_pv_position.R</code></a></small>
+    <h1>Photovoltaic Solar Panel Orientation and Performance Models</h1>
+    <small class="dont-index">Source: <a href='https://github.com/olugovoy/merra2ools/blob/master/R/solar_pv_models.R'><code>R/solar_pv_models.R</code></a></small>
     <div class="hidden name"><code>solar_pv_position.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Photovoltaic Solar Panel Orientation and Positioning models</p>
+    <p>Photovoltaic Solar Panel Orientation and Performance Models</p>
     </div>
 
-    <pre class="usage"><span class='fu'>solar_pv_position</span><span class='op'>(</span><span class='va'>lon</span>, <span class='va'>lat</span>, <span class='va'>azimuth</span>, <span class='va'>zenith</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>solar_pv_position</span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  type <span class='op'>=</span> <span class='st'>"fx"</span>,
+  add.suffix <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  lon <span class='op'>=</span> <span class='cn'>NULL</span>,
+  lat <span class='op'>=</span> <span class='cn'>NULL</span>,
+  azimuth <span class='op'>=</span> <span class='cn'>NULL</span>,
+  zenith <span class='op'>=</span> <span class='cn'>NULL</span>,
+  array.tilt.range.00 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>0</span><span class='op'>)</span>,
+  array.tilt.range.fx <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>60</span><span class='op'>)</span>,
+  array.tilt.range.hz <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>45</span><span class='op'>)</span>,
+  array.tilt.range.tl <span class='op'>=</span> <span class='va'>array.tilt.range.hz</span>,
+  array.tilt.range.vt <span class='op'>=</span> <span class='va'>array.tilt.range.fx</span>,
+  array.tilt.range.dl <span class='op'>=</span> <span class='va'>array.tilt.range.hz</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td></td>
+    </tr>
+    <tr>
+      <th>type</th>
+      <td></td>
+    </tr>
+    <tr>
+      <th>add.suffix</th>
+      <td></td>
+    </tr>
     <tr>
       <th>lon</th>
       <td><p>longitude of PV location (\(-180 \leq lon \leq 180\))</p></td>
@@ -159,6 +188,26 @@
     <tr>
       <th>zenith</th>
       <td><p>solar zenith angle for the PV location (\(0 \leq azimuth \leq 90\))</p></td>
+    </tr>
+    <tr>
+      <th>array.tilt.range.fx</th>
+      <td></td>
+    </tr>
+    <tr>
+      <th>array.tilt.range.hz</th>
+      <td></td>
+    </tr>
+    <tr>
+      <th>array.tilt.range.tl</th>
+      <td></td>
+    </tr>
+    <tr>
+      <th>array.tilt.range.vt</th>
+      <td></td>
+    </tr>
+    <tr>
+      <th>array.tilt.range.dl</th>
+      <td></td>
     </tr>
     </table>
 

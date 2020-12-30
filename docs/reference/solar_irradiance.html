@@ -102,6 +102,9 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="../articles/solarpower.html">Solar geometry, irradiance, and PV output</a>
+    </li>
+    <li>
       <a href="../articles/subset.html">subset</a>
     </li>
     <li>
@@ -139,7 +142,14 @@
     <p>Irradiance decomposition</p>
     </div>
 
-    <pre class="usage"><span class='fu'>solar_irradiance</span><span class='op'>(</span><span class='va'>yday</span>, <span class='va'>GHI</span>, <span class='va'>zenith</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>solar_irradiance</span><span class='op'>(</span>
+  x <span class='op'>=</span> <span class='cn'>NULL</span>,
+  yday <span class='op'>=</span> <span class='cn'>NULL</span>,
+  SWGDN <span class='op'>=</span> <span class='cn'>NULL</span>,
+  zenith <span class='op'>=</span> <span class='cn'>NULL</span>,
+  ALL <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  zenith_max <span class='op'>=</span> <span class='fl'>85</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -149,8 +159,8 @@
       <td><p>day of a year, integer vector</p></td>
     </tr>
     <tr>
-      <th>GHI</th>
-      <td><p>Global Horizontal Irradiance (\(GHI, W/m^2\))</p></td>
+      <th>SWGDN</th>
+      <td><p>Global Horizontal Irradiance from MERRA-2 subset (\(GHI, W/m^2\))</p></td>
     </tr>
     <tr>
       <th>zenith</th>

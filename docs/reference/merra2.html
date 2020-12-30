@@ -105,6 +105,9 @@ check_merra2 checks the content of the merra2 directory, and lists data-files." 
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="../articles/solarpower.html">Solar geometry, irradiance, and PV output</a>
+    </li>
+    <li>
       <a href="../articles/subset.html">subset</a>
     </li>
     <li>
@@ -145,11 +148,11 @@ check_merra2 checks the content of the merra2 directory, and lists data-files." 
 <p><code>check_merra2</code> checks the content of the <code>merra2</code> directory, and lists data-files.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>get_merra2</span><span class='op'>(</span><span class='op'>)</span>
+    <pre class="usage"><span class='fu'>get_merra2_dir</span><span class='op'>(</span><span class='op'>)</span>
 
-<span class='fu'>set_merra2</span><span class='op'>(</span><span class='va'>path</span>, verbose <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+<span class='fu'>set_merra2_options</span><span class='op'>(</span>merra2.dir <span class='op'>=</span> <span class='cn'>NULL</span>, pwatts.api.key <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
 
-<span class='fu'>check_merra2</span><span class='op'>(</span>path <span class='op'>=</span> <span class='fu'>get_merra2</span><span class='op'>(</span><span class='op'>)</span>, detailed <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+<span class='fu'>check_merra2</span><span class='op'>(</span>path <span class='op'>=</span> <span class='fu'>get_merra2_dir</span><span class='op'>(</span><span class='op'>)</span>, detailed <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 
 <span class='fu'>merra2</span><span class='op'>(</span><span class='op'>)</span></pre>
 

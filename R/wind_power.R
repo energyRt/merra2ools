@@ -10,10 +10,11 @@
 #' @examples
 #' fWPC(0:30)
 #' plot(0:35, WindPowerCurve(0:35), type = "l", col = "red", lwd = 2)
-fWindPowerCurve <- function(mps, cutin = 3, cutoff = 30, data = NULL) {
+fWindPowerCurve <- function(mps, cutin = 3, cutoff = 25, data = NULL) {
+  # browser()
   if (is.null(data)) {
     data <- data.frame(
-      # use averaged data from "WindCurves" package
+      # averaged data from "WindCurves" package
       speed <- c(1:25, 30),
       af <- c(
         0, 0, 0, 0.017, 0.066, 0.138, 0.235, 0.362, 0.518, 0.688,
@@ -24,7 +25,8 @@ fWindPowerCurve <- function(mps, cutin = 3, cutoff = 30, data = NULL) {
   }
   f <- approxfun(data$speed, data$af)
   y <- rep(0, length(mps))
-  ii <- mps >= cutin & mps <= cutoff
+  y[is.na(mps)] <- NA
+  ii <- mps >= cutin & mps <= cutoff & !is.na(mps)
   y[ii] <- f(mps[ii])
   return(y)
 }

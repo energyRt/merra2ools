@@ -7,6 +7,9 @@
     <loc>https://olugovoy.github.io/merra2ools//reference/angle_of_incidence.html</loc>
   </url>
   <url>
+    <loc>https://olugovoy.github.io/merra2ools//reference/deg2rad.html</loc>
+  </url>
+  <url>
     <loc>https://olugovoy.github.io/merra2ools//reference/fHellmann.html</loc>
   </url>
   <url>
@@ -34,10 +37,10 @@
     <loc>https://olugovoy.github.io/merra2ools//reference/plane_of_array.html</loc>
   </url>
   <url>
-    <loc>https://olugovoy.github.io/merra2ools//reference/solar_geometry.html</loc>
+    <loc>https://olugovoy.github.io/merra2ools//reference/solar_irradiance.html</loc>
   </url>
   <url>
-    <loc>https://olugovoy.github.io/merra2ools//reference/solar_irradiance.html</loc>
+    <loc>https://olugovoy.github.io/merra2ools//reference/solar_position.html</loc>
   </url>
   <url>
     <loc>https://olugovoy.github.io/merra2ools//reference/solar_pv_position.html</loc>
@@ -50,6 +53,9 @@
   </url>
   <url>
     <loc>https://olugovoy.github.io/merra2ools//articles/merra2ools.html</loc>
+  </url>
+  <url>
+    <loc>https://olugovoy.github.io/merra2ools//articles/solarpower.html</loc>
   </url>
   <url>
     <loc>https://olugovoy.github.io/merra2ools//articles/subset.html</loc>

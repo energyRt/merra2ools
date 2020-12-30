@@ -4,12 +4,19 @@
 \alias{solar_irradiance}
 \title{Irradiance decomposition}
 \usage{
-solar_irradiance(yday, GHI, zenith)
+solar_irradiance(
+  x = NULL,
+  yday = NULL,
+  SWGDN = NULL,
+  zenith = NULL,
+  ALL = FALSE,
+  zenith_max = 85
+)
 }
 \arguments{
 \item{yday}{day of a year, integer vector}
 
-\item{GHI}{Global Horizontal Irradiance (\mjseqn{GHI, W/m^2})}
+\item{SWGDN}{Global Horizontal Irradiance from MERRA-2 subset (\mjseqn{GHI, W/m^2})}
 
 \item{zenith}{Zenith angle, degrees}
 }

@@ -1,8 +1,9 @@
 .onLoad <- function(libname, pkgname) {
-  if (file.exists(".merra")) {
-    source(".merra")
+  if (file.exists(".merra2ools")) {
+    source(".merra2ools")
   } else {
-    warning("MERRA2 data directory is not found. Use '?set_merra' for help")
+    warning("MERRA2 data directory is not found.\n
+            Use '?set_merra' for help")
   }
   # options(merra2 = path.expand("data/merra2_subset"))
 }
@@ -42,29 +43,43 @@ NULL
 
 #' @export
 #' @rdname merra2
-get_merra2 <- function() {
-  getOption("merra2")
+get_merra2_dir <- function() {
+  getOption("merra2.dir")
 }
 
 #' @export
 #' @rdname merra2
-set_merra2 <- function(path, verbose = TRUE) {
-  if (!dir.exists(path)) stop("Directory '", path, "' does not exist")
-  if (!check_merra2()) warning("Directory '", path, "' does not have MERRA-2 data")
-  options(merra2 = path)
-  x <- getOption("merra2")
-  con <- file(".merra")
-  writeLines(paste0("options(merra2 = '", path, "')"), con)
+set_merra2_options <- function(merra2.dir = NULL, pwatts.api.key = NULL) {
+  # browser()
+  if (!is.null(merra2.dir)) {
+    if (!dir.exists(merra2.dir)) stop("Directory '", merra2.dir, "' does not exist")
+    if (!check_merra2(path = merra2.dir)) {
+      warning("Directory '", merra2.dir, "' does not have MERRA-2 data")
+    }
+  }
+  if (is.null(merra2.dir)) merra2.dir <- getOption("merra2.dir")
+  if (is.null(pwatts.api.key)) pwatts.api.key <- getOption("pwatts.api.key")
+  options(merra2.dir = merra2.dir)
+  options(pwatts.api.key = pwatts.api.key)
+  # x <- getOption("merra2")
+  con <- file(".merra2ools")
+  writeLines(c(
+    paste0("options(merra2.dir = '", merra2.dir, "')"),
+    paste0("options(pwatts.api.key = '", pwatts.api.key, "')")),
+    con)
   close(con)
-  invisible(x)
+  # invisible(x)
 }
 
+if (F) {
+  set_merra2_options()
+}
 
 #' Check if MERRA2 data-files exist in provided directory
 #'
 #' @export
 #' @rdname merra2
-check_merra2 <- function(path = get_merra2(), detailed = FALSE) {
+check_merra2 <- function(path = get_merra2_dir(), detailed = FALSE) {
   if (is.null(path) || is.na(path)) return(FALSE)
   if (!dir.exists(path)) {
     message("The dirrectory ", path, " doesn't exists")

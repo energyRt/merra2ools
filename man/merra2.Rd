@@ -2,16 +2,16 @@
 % Please edit documentation in R/options.R
 \name{merra2}
 \alias{merra2}
-\alias{get_merra2}
-\alias{set_merra2}
+\alias{get_merra2_dir}
+\alias{set_merra2_options}
 \alias{check_merra2}
 \title{Get, Set, or Check content of the Directory with the MERRA2 database Subset}
 \usage{
-get_merra2()
+get_merra2_dir()
 
-set_merra2(path, verbose = TRUE)
+set_merra2_options(merra2.dir = NULL, pwatts.api.key = NULL)
 
-check_merra2(path = get_merra2(), detailed = FALSE)
+check_merra2(path = get_merra2_dir(), detailed = FALSE)
 
 merra2()
 }

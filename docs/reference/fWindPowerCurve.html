@@ -102,6 +102,9 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="../articles/solarpower.html">Solar geometry, irradiance, and PV output</a>
+    </li>
+    <li>
       <a href="../articles/subset.html">subset</a>
     </li>
     <li>
@@ -139,9 +142,9 @@
     <p>Wind power curve function. Estimates power output based on the speed of wind.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>fWindPowerCurve</span><span class='op'>(</span><span class='va'>mps</span>, cutin <span class='op'>=</span> <span class='fl'>3</span>, cutoff <span class='op'>=</span> <span class='fl'>30</span>, data <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
+    <pre class="usage"><span class='fu'>fWindPowerCurve</span><span class='op'>(</span><span class='va'>mps</span>, cutin <span class='op'>=</span> <span class='fl'>3</span>, cutoff <span class='op'>=</span> <span class='fl'>25</span>, data <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
 
-<span class='fu'>fWPC</span><span class='op'>(</span><span class='va'>mps</span>, cutin <span class='op'>=</span> <span class='fl'>3</span>, cutoff <span class='op'>=</span> <span class='fl'>30</span>, data <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
+<span class='fu'>fWPC</span><span class='op'>(</span><span class='va'>mps</span>, cutin <span class='op'>=</span> <span class='fl'>3</span>, cutoff <span class='op'>=</span> <span class='fl'>25</span>, data <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -172,7 +175,7 @@
     <pre class="examples"><div class='input'><span class='fu'>fWPC</span><span class='op'>(</span><span class='fl'>0</span><span class='op'>:</span><span class='fl'>30</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;  [1] 0.000 0.000 0.000 0.000 0.017 0.066 0.138 0.235 0.362 0.518 0.688 0.840
 #&gt; [13] 0.941 0.983 0.995 0.999 1.000 1.000 1.000 1.000 1.000 1.000 1.000 1.000
-#&gt; [25] 1.000 1.000 1.000 1.000 1.000 1.000 1.000</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='fl'>0</span><span class='op'>:</span><span class='fl'>35</span>, <span class='fu'>WindPowerCurve</span><span class='op'>(</span><span class='fl'>0</span><span class='op'>:</span><span class='fl'>35</span><span class='op'>)</span>, type <span class='op'>=</span> <span class='st'>"l"</span>, col <span class='op'>=</span> <span class='st'>"red"</span>, lwd <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
+#&gt; [25] 1.000 1.000 0.000 0.000 0.000 0.000 0.000</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='fl'>0</span><span class='op'>:</span><span class='fl'>35</span>, <span class='fu'>WindPowerCurve</span><span class='op'>(</span><span class='fl'>0</span><span class='op'>:</span><span class='fl'>35</span><span class='op'>)</span>, type <span class='op'>=</span> <span class='st'>"l"</span>, col <span class='op'>=</span> <span class='st'>"red"</span>, lwd <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='error'>Error in WindPowerCurve(0:35): could not find function "WindPowerCurve"</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

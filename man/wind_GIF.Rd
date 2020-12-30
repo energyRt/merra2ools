@@ -9,7 +9,7 @@ wind_GIF(
   name = "W50M",
   mult = 1,
   filename = "merra_wind.gif",
-  nmax = 48,
+  nmax = 24 * 12,
   fps = 24,
   gif.width = 1920/3,
   gif.height = 1080/3,
