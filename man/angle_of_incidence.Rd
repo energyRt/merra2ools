@@ -7,30 +7,28 @@
 \usage{
 angle_of_incidence(
   x,
-  type = "fx",
-  add.suffix = TRUE,
-  azimuth = NULL,
-  zenith = NULL,
-  array.tilt = NULL,
-  array.azimuth = NULL,
+  array.type = "fh",
+  suffix = TRUE,
+  azimuth = "azimuth",
+  zenith = "zenith",
   na.val = NA,
   zenith.max = 90,
   AOI.max = 90,
-  rad = TRUE
+  rad = TRUE,
+  verbose = TRUE
 )
 
 fAOI(
   x,
-  type = "fx",
-  add.suffix = TRUE,
-  azimuth = NULL,
-  zenith = NULL,
-  array.tilt = NULL,
-  array.azimuth = NULL,
+  array.type = "fh",
+  suffix = TRUE,
+  azimuth = "azimuth",
+  zenith = "zenith",
   na.val = NA,
   zenith.max = 90,
   AOI.max = 90,
-  rad = TRUE
+  rad = TRUE,
+  verbose = TRUE
 )
 }
 \arguments{

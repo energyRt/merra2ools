@@ -102,6 +102,9 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="../articles/data.html">An overview of MERRA-2 subset</a>
+    </li>
+    <li>
       <a href="../articles/solarpower.html">Solar geometry, irradiance, and PV output</a>
     </li>
     <li>
@@ -134,7 +137,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Solar position</h1>
-    <small class="dont-index">Source: <a href='https://github.com/olugovoy/merra2ools/blob/master/R/solar_position.R'><code>R/solar_position.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/olugovoy/merra2ools/blob/master/R/solar_geometry.R'><code>R/solar_geometry.R</code></a></small>
     <div class="hidden name"><code>solar_position.Rd</code></div>
     </div>
 
@@ -143,13 +146,13 @@
     </div>
 
     <pre class="usage"><span class='fu'>solar_position</span><span class='op'>(</span>
-  x <span class='op'>=</span> <span class='cn'>NULL</span>,
-  datetime <span class='op'>=</span> <span class='cn'>NULL</span>,
-  yday <span class='op'>=</span> <span class='cn'>NULL</span>,
-  hour <span class='op'>=</span> <span class='cn'>NULL</span>,
-  lon <span class='op'>=</span> <span class='cn'>NULL</span>,
-  lat <span class='op'>=</span> <span class='cn'>NULL</span>,
-  ALL <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  <span class='va'>x</span>,
+  datetime <span class='op'>=</span> <span class='st'>"datetime"</span>,
+  yday <span class='op'>=</span> <span class='st'>"yday"</span>,
+  hour <span class='op'>=</span> <span class='st'>"hour"</span>,
+  lon <span class='op'>=</span> <span class='st'>"lon"</span>,
+  lat <span class='op'>=</span> <span class='st'>"lat"</span>,
+  keep.all <span class='op'>=</span> <span class='cn'>TRUE</span>,
   verbose <span class='op'>=</span> <span class='cn'>TRUE</span>
 <span class='op'>)</span></pre>
 

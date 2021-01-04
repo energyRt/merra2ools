@@ -43,30 +43,32 @@
 #'
 #' @examples
 #' NA
-solar_irradiance <- function(x = NULL, yday = NULL, SWGDN = NULL, zenith = NULL,
-                             ALL = FALSE, zenith_max = 85) {
+solar_irradiance <- function(x, yday = "yday", GHI = "SWGDN", 
+                             zenith = "zenith", zenith_max = 85,
+                             keep.all = FALSE, verbose = TRUE) {
   # browser()
-  if (is.null(x)) {
-    stopifnot(!is.null(yday))
-    stopifnot(!is.null(SWGDN))
-    stopifnot(!is.null(zenith))
-    x <- data.table(
-      yday = yday,
-      SWGDN = SWGDN,
-      zenith = zenith
-    )
-    rm(yday, SWGDN, zenith)
-  }
-  stopifnot(!is.null(x$yday))
-  stopifnot(!is.null(x$SWGDN))
-  stopifnot(!is.null(x$zenith))
-  zz <- x$zenith <= zenith_max # avoiding excessive values at horizon
+  # if (is.null(x)) {
+  #   stopifnot(!is.null(yday))
+  #   stopifnot(!is.null(GHI))
+  #   stopifnot(!is.null(zenith))
+  #   x <- data.table(
+  #     yday = yday,
+  #     GHI = GHI,
+  #     zenith = zenith
+  #   )
+  #   rm(yday, GHI, zenith)
+  # }
+  stopifnot(!is.null(x[[yday]]))
+  stopifnot(!is.null(x[[GHI]]))
+  stopifnot(!is.null(x[[zenith]]))
+  if (verbose) cat("   DNI and DHI\n")
+  zz <- x[[zenith]] <= zenith_max # avoiding excessive values at horizon
   # the solar constant
   Gsc <- 1360.8
   # Extraterrestrial irradiance
-  Ge <- (1 + 0.033 * cos(360 * x$yday / 365)) * Gsc
+  Ge <- (1 + 0.033 * cos(360 * x[[yday]] / 365)) * Gsc
   # Clearness index
-  k.t <- x$SWGDN / Ge / cospi(x$zenith / 180)
+  k.t <- x[[GHI]] / Ge / cospi(x[[zenith]] / 180)
   # k.t[!zz] <- 0
   k.t[k.t < 0] <- 0
   k.t[k.t > 1] <- 1
@@ -79,14 +81,13 @@ solar_irradiance <- function(x = NULL, yday = NULL, SWGDN = NULL, zenith = NULL,
     16.638 * k.t[ii]^3 + 12.336 * k.t[ii]^4
   ii <- k.t > 0.8
   k.d[ii] <-  0.165
-  # k.d[k.t == 0] <- 1
   # Direct Normal Irradiance
-  # DNI <- x$SWGDN * (1 - k.d) / cospi(x$zenith_avr / 180)
+  # DNI <- x[[GHI]] * (1 - k.d) / cospi(x$zenith_avr / 180)
   DNI <- rep(0, nrow(x)); DHI <- DNI
-  DNI[zz] <- x$SWGDN[zz] * (1 - k.d[zz]) / cospi(x$zenith[zz] / 180)
+  DNI[zz] <- x[[GHI]][zz] * (1 - k.d[zz]) / cospi(x[[zenith]][zz] / 180)
   # Diffuse Horizontal Irradiance
-  DHI <- x$SWGDN * k.d 
-  if (ALL) {
+  DHI <- x[[GHI]] * k.d 
+  if (keep.all) {
     x$ext_irrad <- Ge
     x$clearness_index <- k.t
     x$diffuse_fraction <- k.d
@@ -97,13 +98,13 @@ solar_irradiance <- function(x = NULL, yday = NULL, SWGDN = NULL, zenith = NULL,
 }
 
 
-diffuse_fraction <- function(yday, zenith, SWGDN) {
+diffuse_fraction <- function(yday, zenith, GHI) {
   # the solar constant
   Gsc <- 1360.8
   # Extraterrestrial irradiance
   Ge <- (1 + 0.033 * cos(360 * yday / 365)) * Gsc
   # Clearness index
-  k.t <- SWGDN / Ge / cospi(zenith / 180)
+  k.t <- GHI / Ge / cospi(zenith / 180)
   # Diffuse fraction
   k.d <- rep(0, nrow(x))
   ii <- k.t > 0 & k.t < 0.22
@@ -118,10 +119,10 @@ diffuse_fraction <- function(yday, zenith, SWGDN) {
 
 if (F) {
   # system.time(z1 <- solar_irradiance(y))
-  # system.time(z2 <- diffuse_fraction(y$yday, y$zenith, y$SWGDN))
+  # system.time(z2 <- diffuse_fraction(y$yday, y$zenith, y$GHI))
   # identical(z1, z2)
   
-  z <- solar_irradiance(y, ALL = T, zenith_max = 85)
+  z <- solar_irradiance(y, keep.all = T, zenith_max = 85)
   summary(z$DNI)
   summary(z$DHI)
   summary(z$clearness_index)

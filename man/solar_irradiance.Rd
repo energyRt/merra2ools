@@ -5,20 +5,21 @@
 \title{Irradiance decomposition}
 \usage{
 solar_irradiance(
-  x = NULL,
-  yday = NULL,
-  SWGDN = NULL,
-  zenith = NULL,
-  ALL = FALSE,
-  zenith_max = 85
+  x,
+  yday = "yday",
+  GHI = "SWGDN",
+  zenith = "zenith",
+  zenith_max = 85,
+  keep.all = FALSE,
+  verbose = TRUE
 )
 }
 \arguments{
 \item{yday}{day of a year, integer vector}
 
-\item{SWGDN}{Global Horizontal Irradiance from MERRA-2 subset (\mjseqn{GHI, W/m^2})}
-
 \item{zenith}{Zenith angle, degrees}
+
+\item{SWGDN}{Global Horizontal Irradiance from MERRA-2 subset (\mjseqn{GHI, W/m^2})}
 }
 \value{
 

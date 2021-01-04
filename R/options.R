@@ -1,6 +1,6 @@
 .onLoad <- function(libname, pkgname) {
-  if (file.exists(".merra2ools")) {
-    source(".merra2ools")
+  if (file.exists("~/.merra2ools")) {
+    source("~/.merra2ools")
   } else {
     warning("MERRA2 data directory is not found.\n
             Use '?set_merra' for help")
@@ -62,7 +62,7 @@ set_merra2_options <- function(merra2.dir = NULL, pwatts.api.key = NULL) {
   options(merra2.dir = merra2.dir)
   options(pwatts.api.key = pwatts.api.key)
   # x <- getOption("merra2")
-  con <- file(".merra2ools")
+  con <- file("~/.merra2ools")
   writeLines(c(
     paste0("options(merra2.dir = '", merra2.dir, "')"),
     paste0("options(pwatts.api.key = '", pwatts.api.key, "')")),

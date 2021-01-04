@@ -7,7 +7,16 @@
     <loc>https://olugovoy.github.io/merra2ools//reference/angle_of_incidence.html</loc>
   </url>
   <url>
+    <loc>https://olugovoy.github.io/merra2ools//reference/closest_locid.html</loc>
+  </url>
+  <url>
     <loc>https://olugovoy.github.io/merra2ools//reference/deg2rad.html</loc>
+  </url>
+  <url>
+    <loc>https://olugovoy.github.io/merra2ools//reference/fDate.html</loc>
+  </url>
+  <url>
+    <loc>https://olugovoy.github.io/merra2ools//reference/fetch_pvwatts.html</loc>
   </url>
   <url>
     <loc>https://olugovoy.github.io/merra2ools//reference/fHellmann.html</loc>
@@ -34,7 +43,10 @@
     <loc>https://olugovoy.github.io/merra2ools//reference/merra2.html</loc>
   </url>
   <url>
-    <loc>https://olugovoy.github.io/merra2ools//reference/plane_of_array.html</loc>
+    <loc>https://olugovoy.github.io/merra2ools//reference/poa_irradiance.html</loc>
+  </url>
+  <url>
+    <loc>https://olugovoy.github.io/merra2ools//reference/pv_array_position.html</loc>
   </url>
   <url>
     <loc>https://olugovoy.github.io/merra2ools//reference/solar_irradiance.html</loc>
@@ -43,13 +55,13 @@
     <loc>https://olugovoy.github.io/merra2ools//reference/solar_position.html</loc>
   </url>
   <url>
-    <loc>https://olugovoy.github.io/merra2ools//reference/solar_pv_position.html</loc>
-  </url>
-  <url>
     <loc>https://olugovoy.github.io/merra2ools//reference/wind_GIF.html</loc>
   </url>
   <url>
     <loc>https://olugovoy.github.io/merra2ools//reference/wind_plot.html</loc>
+  </url>
+  <url>
+    <loc>https://olugovoy.github.io/merra2ools//articles/data.html</loc>
   </url>
   <url>
     <loc>https://olugovoy.github.io/merra2ools//articles/merra2ools.html</loc>

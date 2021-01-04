@@ -102,6 +102,9 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="../articles/data.html">An overview of MERRA-2 subset</a>
+    </li>
+    <li>
       <a href="../articles/solarpower.html">Solar geometry, irradiance, and PV output</a>
     </li>
     <li>
@@ -143,12 +146,13 @@
     </div>
 
     <pre class="usage"><span class='fu'>solar_irradiance</span><span class='op'>(</span>
-  x <span class='op'>=</span> <span class='cn'>NULL</span>,
-  yday <span class='op'>=</span> <span class='cn'>NULL</span>,
-  SWGDN <span class='op'>=</span> <span class='cn'>NULL</span>,
-  zenith <span class='op'>=</span> <span class='cn'>NULL</span>,
-  ALL <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  zenith_max <span class='op'>=</span> <span class='fl'>85</span>
+  <span class='va'>x</span>,
+  yday <span class='op'>=</span> <span class='st'>"yday"</span>,
+  GHI <span class='op'>=</span> <span class='st'>"SWGDN"</span>,
+  zenith <span class='op'>=</span> <span class='st'>"zenith"</span>,
+  zenith_max <span class='op'>=</span> <span class='fl'>85</span>,
+  keep.all <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  verbose <span class='op'>=</span> <span class='cn'>TRUE</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -159,12 +163,12 @@
       <td><p>day of a year, integer vector</p></td>
     </tr>
     <tr>
-      <th>SWGDN</th>
-      <td><p>Global Horizontal Irradiance from MERRA-2 subset (\(GHI, W/m^2\))</p></td>
-    </tr>
-    <tr>
       <th>zenith</th>
       <td><p>Zenith angle, degrees</p></td>
+    </tr>
+    <tr>
+      <th>SWGDN</th>
+      <td><p>Global Horizontal Irradiance from MERRA-2 subset (\(GHI, W/m^2\))</p></td>
     </tr>
     </table>
 

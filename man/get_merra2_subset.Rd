@@ -2,7 +2,7 @@
 % Please edit documentation in R/gis_subset.R
 \name{get_merra2_subset}
 \alias{get_merra2_subset}
-\title{Get MERRA-2 subset for}
+\title{Get MERRA-2 subset}
 \usage{
 get_merra2_subset(
   locid = 1:207936L,
@@ -36,7 +36,7 @@ get_merra2_subset(
 data.table with the subset of
 }
 \description{
-Get MERRA-2 subset for
+Get MERRA-2 subset
 }
 \examples{
 NA

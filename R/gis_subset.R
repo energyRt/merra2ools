@@ -1,4 +1,49 @@
-#' Get MERRA-2 subset for
+#' Title
+#'
+#' @param year 
+#' @param month 
+#' @param day 
+#' @param hour 
+#' @param tz 
+#'
+#' @return
+#' @export
+#'
+#' @examples
+fDate <- function(year, month, day, hour, tz = "UTC") {
+  # browser()
+  if (is.numeric(year)) year <- as.integer(year)
+  if (is.numeric(month)) month <- as.integer(month)
+  if (is.numeric(day)) day <- as.integer(day)
+  if (is.numeric(hour)) hour <- as.integer(hour)
+  stopifnot(hour >= 0 & hour <= 23)
+  stopifnot(month >= 1 & month <= 12)
+  f <- function(x) formatC(x, width = 2, flag = "0")
+  if (day == "last" || is.numeric(day) > 31) {
+    day <- days_in_month(ymd(paste(year, f(month), f(1), sep = "-")))
+  }
+  x <- paste(paste(year, f(month), f(day), sep = "-"), f(hour))
+  if (tz != "UTC") {
+    x <- lubridate::ymd_h(x, tz = tz)
+    x <- lubridate::with_tz(x, tzone = "UTC")
+    x <- format(x, format = "%F %H")
+  }
+  return(x)
+}
+
+if (F) {
+  fDate(2010, 12, "last", 23)
+  # OlsonNames()
+  fDate(2010, 1, 1, 0)
+  fDate(2010, 1, 1, 0, tz = "America/New_York")
+  fDate(2010, 1, 1, 0, tz = "Pacific/Auckland")
+  fDate(2010, 1, 1, 0, tz = "Asia/Kolkata")
+  lubridate::with_tz(lubridate::ymd_h("2010-01-01 00", tz = "Asia/Kolkata"), 
+                     tzone = "UTC")
+  
+}
+
+#' Get MERRA-2 subset 
 #'
 #' @param from starting date and time of the subset in "YYYY-MM-DD HH" format
 #' @param to ending date and time of the subset in "YYYY-MM-DD HH" format

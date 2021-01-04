@@ -15,15 +15,47 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup}
-library(merra2ools)
+# library(merra2ools)
+library(tidyverse)
+library(data.table)
+
 ```
 
 
 ```{r, eval=FALSE}
-merra <- merra2ools::merra2_sample
+x <- merra2ools::merra2_oct %>%
+  left_join(locid[,1:3]) %>%
+  solar_position() %>%
+  solar_irradiance() %>%
+  pv_array_position("all") %>%
+  angle_of_incidence("all") %>%
+  poa_irradiance("all")
 
-x <- solar_position(merra$datetime)
-names(x)
+dat <- select(x, datetime, locid, lon, lat, yday, hour, starts_with("POA")) %>%
+  mutate(month = month(datetime)) %>%
+  pivot_longer(cols = starts_with("POA"), names_to = "array_type", values_to = "Wh_m2")
+
+lid <- locid_sample[locid_sample$lon == 0,]$locid
+{
+  # ii <- dat$locid %in% sample(unique(dat$locid), 6)
+  ii <- dat$locid %in% lid
+  ggplot(dat[ii,]) +
+    geom_line(aes(hour, Wh_m2, colour = array_type, linetype = array_type), size = 1) +
+    # scale_color_viridis_d(direction = -1) +
+    scale_color_brewer(palette = "Spectral") +
+    facet_wrap(~locid) +
+    theme_bw()
+}
+
+
+
+```
+
+
+
+# Validation: compare with NREL's PVWAtts  
+
+```{r}
 
 ```
 
