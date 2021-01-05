@@ -18,6 +18,6 @@ knitr::opts_chunk$set(
 # library(merra2ools)
 ```
 
-![Wind speed at 50 meters height, m/s](../docs/merra_wind_50m_12fps.gif)
+![Wind speed at 50 meters height, m/s](../images/merra_wind_50m_12fps.gif)
 
-![Wind speed at 10 meters height, m/s](../docs/merra_wind_10m_24fps.gif)
+![Wind speed at 10 meters height, m/s](../images/merra_wind_10m_24fps.gif)

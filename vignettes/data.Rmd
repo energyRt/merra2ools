@@ -1,8 +1,9 @@
 ---
-title: "An overview of MERRA-2 subset"
+title: "MERRA-2 subset"
+subtitle: "an overview"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{An overview of MERRA-2 subset}
+  %\VignetteIndexEntry{MERRA-2 subset}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

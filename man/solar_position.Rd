@@ -12,7 +12,7 @@ solar_position(
   lon = "lon",
   lat = "lat",
   keep.all = TRUE,
-  verbose = TRUE
+  verbose = getOption("merra2.verbose")
 )
 }
 \arguments{

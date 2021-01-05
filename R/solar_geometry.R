@@ -169,7 +169,7 @@ solar_position <- function(x,
                            datetime = "datetime",
                            yday = "yday", hour = "hour", 
                            lon = "lon", lat = "lat",
-                           keep.all = TRUE, verbose = TRUE) {
+                           keep.all = TRUE, verbose = getOption("merra2.verbose")) {
   # browser()
   stopifnot(!is.null(x[[lon]]))
   stopifnot(!is.null(x[[lat]]))
@@ -205,7 +205,7 @@ solar_position <- function(x,
       if (verbose) message("   Changing the timezone of 'datetime' to UTC\n")
       x[["datetime"]] <- lubridate::with_tz(x[["datetime"]], tzone = "UTC")
     }
-    if (verbose) cat("   Day of year (yday) and Hour (hour) at UTC timezone\n")
+    if (verbose) cat("   The day of the year (yday) and the hour (hour) at UTC timezone\n")
     x[[yday]] <- lubridate::yday(x[[datetime]])
     x[[hour]] <- lubridate::hour(x[[datetime]])
     # rm(datetime)
@@ -286,7 +286,7 @@ solar_position <- function(x,
 }
 
 if (F) {
-  # x <- left_join(merra2_sample, select(locid, 1:3))
+  # x <- left_join(merra2_mar, select(locid, 1:3))
   library(tidyverse)
   library(data.table)
   size <- energyRt::size

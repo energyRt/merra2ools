@@ -6,6 +6,7 @@
             Use '?set_merra' for help")
   }
   # options(merra2 = path.expand("data/merra2_subset"))
+  options(merra2.verbose = TRUE)
 }
 
 #' Get, Set, or Check content of the Directory with the MERRA2 database Subset
@@ -79,7 +80,8 @@ if (F) {
 #'
 #' @export
 #' @rdname merra2
-check_merra2 <- function(path = get_merra2_dir(), detailed = FALSE) {
+check_merra2 <- function(path = get_merra2_dir(), detailed = FALSE,
+                         verbose = getOption("merra2.verbose")) {
   if (is.null(path) || is.na(path)) return(FALSE)
   if (!dir.exists(path)) {
     message("The dirrectory ", path, " doesn't exists")
@@ -91,7 +93,7 @@ check_merra2 <- function(path = get_merra2_dir(), detailed = FALSE) {
   locid <- file.exists(file.path(path, "locid.RData"))
 
   if (!detailed) {
-    cat(length(fls), "MERRA-2 files found")
+    if (verbose) cat(length(fls), "MERRA-2 files found")
     return(invisible(length(fls)))
   }
 
@@ -113,7 +115,7 @@ if (F) {
 #'
 #' @export
 #' @rdname merra2
-merra2 <- function() {
+merra2_info <- function() {
   print("merra2 info...")
   # subset
   
@@ -121,37 +123,3 @@ merra2 <- function() {
   
 }
 
-# a filepath to the currently set directory of MERRA2 database
-# sets path for MERRA2-subset database
-
-
-read_merra <- function(YYYYMM, path = get_merra2(), convert = TRUE) {
-  # library(fst)
-  YYYYMM <- gsub("-", "", YYYYMM)
-  YYYYMM <- gsub("/", "", YYYYMM)
-  YYYYMM <- gsub("_", "", YYYYMM)
-  YYYYMM <- gsub(" ", "", YYYYMM)
-  
-  if (!check_merra2(path)) stop("MERRA-2 subset is not found in path = ", path)
-  fl <- file.path(path, paste0("merra2_", YYYYMM, ".fst"))
-  if (!file.exists(fl)) {
-    warning("File ", fl, " does not exist")
-    return(NULL)
-  }
-  merra <- fst::read_fst(fl, as.data.table = T)
-  if (!is.null(merra[["locid"]])) merra <- rename(merra, loc_id = locid)
-  
-  if (convert) {
-    merra <- merra %>% 
-      mutate(
-        T10M = T10M / 10,
-        W10M = W10M / 10,
-        W50M = W50M / 10
-      )
-  }
-  return(merra)
-}
-
-if (F) {
-  read_merra("200001")
-}

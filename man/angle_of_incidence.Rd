@@ -15,7 +15,7 @@ angle_of_incidence(
   zenith.max = 90,
   AOI.max = 90,
   rad = TRUE,
-  verbose = TRUE
+  verbose = getOption("merra2.verbose")
 )
 
 fAOI(
@@ -28,7 +28,7 @@ fAOI(
   zenith.max = 90,
   AOI.max = 90,
   rad = TRUE,
-  verbose = TRUE
+  verbose = getOption("merra2.verbose")
 )
 }
 \arguments{

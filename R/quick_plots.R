@@ -13,7 +13,7 @@
 #' @export
 #'
 #' @examples
-wind_plot <- function(merra, name = "W50M", mult = 1, 
+plot_merra <- function(merra, name = "W50M", mult = 1, 
                       limits = c(0, 35), 
                       palette = "RdYlBu", direction = -1,
                       legend.position = c(0.91, 0.05),
@@ -104,12 +104,12 @@ wind_plot <- function(merra, name = "W50M", mult = 1,
 }
 
 if (F) {
-  wind_plot(dat2, "w50", 1)
-  wind_plot(dat2, "w200", 1)
-  wind_plot(dat2, "w50", 1, limits = c(0, 30))
-  wind_plot(dat2, "w50", 1, limits = c(0, 50))
-  wind_plot(dat2, "w50", 1, datetime.position = NULL, legend.position = NULL)
-  # a <- wind_plot(dat2, "w50", 1, gif = T, gif_nmax = 48)
+  plot_merra(dat2, "w50", 1)
+  plot_merra(dat2, "w200", 1)
+  plot_merra(dat2, "w50", 1, limits = c(0, 30))
+  plot_merra(dat2, "w50", 1, limits = c(0, 50))
+  plot_merra(dat2, "w50", 1, datetime.position = NULL, legend.position = NULL)
+  # a <- plot_merra(dat2, "w50", 1, gif = T, gif_nmax = 48)
 }
 
 
@@ -133,21 +133,29 @@ if (F) {
 #' @export
 #'
 #' @examples
-wind_GIF <- function(merra, name = "W50M", mult = 1, 
-                     filename = "merra_wind.gif", 
+gif_merra <- function(merra, name = "W50M", mult = 1, 
                      nmax = 24*12,
-                     fps = 24,
-                     gif.width = 1920/3, gif.height = 1080/3,
+                     fps = 12,
+                     gif.width = 576, gif.height = 360,
+                     filename = paste0("merra_", name, "_", 
+                                       round(gif.width), "x", 
+                                       round(gif.height), "_", 
+                                       round(fps), "fps.gif"), 
+                     dirname = "",
                      limits = c(0, 35), 
                      palette = "RdYlBu", direction = -1,
-                     legend.position = c(0.91, 0.05),
+                     legend.position = c(0.9, 0.05),
                      legend.name = "m/s",
-                     datetime.position = c(149, 87),
+                     datetime.position = c(145, 87),
                      datetime.format = "%Y-%b-%d, %Hh %Z",
-                     verbose = TRUE) {
+                     verbose = getOption("merra2.verbose")) {
   # browser()
-  # dr <- dirname(filename)
-  # if (!dir.exists(dr)) dir.create(dr, recursive = TRUE)
+  # dirname <- dirname(filename)
+  if (!dir.exists(dirname)) dir.create(dirname, recursive = TRUE, showWarnings = FALSE)
+  homedir <- getwd()
+  on.exit(setwd(homedir))
+  setwd(dirname)
+  filename <- basename(filename)
   frames <- unique(merra$datetime) %>% sort()
   nframes <- min(length(frames), nmax)
   # browser()
@@ -156,7 +164,7 @@ wind_GIF <- function(merra, name = "W50M", mult = 1,
     for (i in 1:nframes) {
       if (verbose) cat(format(i, width = nchar(nframes) + 1))
       ii <- merra$datetime == frames[i]
-      a <- wind_plot(merra[ii,], name = name, mult = mult,
+      a <- plot_merra(merra[ii,], name = name, mult = mult,
                      limits = limits, palette = palette, direction = direction,
                      legend.name = legend.name,
                      legend.position = legend.position,
@@ -173,15 +181,66 @@ wind_GIF <- function(merra, name = "W50M", mult = 1,
     interval = 1/fps, ani.width = gif.width, ani.height = gif.height, 
     movie.name = filename
   )
+  return(file.path(dirname, filename))
+}
+
+
+ffmpeg_merra <- function(merra, name = "W50M", mult = 1, 
+                      nmax = 24*12,
+                      fps = 8,
+                      width = 576, height = 360,
+                      filename = paste0("merra_", name, ".mp4"), 
+                      limits = c(0, 35), 
+                      palette = "RdYlBu", direction = -1,
+                      legend.position = c(0.91, 0.05),
+                      legend.name = "m/s",
+                      datetime.position = c(149, 87),
+                      datetime.format = "%Y-%b-%d, %Hh %Z",
+                      verbose = getOption("merra2.verbose")) {
+  # browser()
+  dr <- dirname(filename)
+  if (!dir.exists(dr)) dir.create(dr, recursive = TRUE)
+  frames <- unique(merra$datetime) %>% sort()
+  nframes <- min(length(frames), nmax)
+  # browser()
+  animation::saveVideo({
+    if (verbose) cat("frame:")
+    for (i in 1:nframes) {
+      if (verbose) cat(format(i, width = nchar(nframes) + 1))
+      ii <- merra$datetime == frames[i]
+      a <- plot_merra(merra[ii,], name = name, mult = mult,
+                      limits = limits, palette = palette, direction = direction,
+                      legend.name = legend.name,
+                      legend.position = legend.position,
+                      datetime.position = datetime.position,
+                      datetime.format = datetime.format)
+      if (i == nframes) {
+        if (verbose) cat(" -> creating GIF\n")
+      } else {
+        if (verbose) cat(rep("\b", nchar(nframes) + 1), sep = "")
+      }
+      print(a)
+    }
+  }, 
+  video.name = filename,
+  interval = 1/fps,
+  ani.width = width, ani.height = height, 
+  
+  )
 
 }
 
+
 if (F) {
-  wind_GIF(dat2, "w10", 1, fps = 24, filename = "merra_wind_10m_24fps.gif")
-  wind_GIF(dat2, "w50", 1, fps = 24, filename = "merra_wind_50m_24fps.gif")
-  wind_GIF(dat2, "w50", 1, fps = 12, filename = "merra_wind_50m_12fps.gif")
-  wind_GIF(dat2, "w100", 1, fps = 12, filename = "merra_wind_100m_12fps.gif")
-  wind_GIF(dat2, "w200", 1, fps = 6, filename = "merra_wind_200m_6fps.gif")
+  merra <- add_lonlat(merra2_mar)
+  # gif_merra(merra, "W10M", 1, fps = 12, filename = "images/merra_wind_10m_12fps.gif")
+  gif_merra(merra, "W10M", 1, fps = 10, dirname = "gif")
+  ffmpeg_merra(merra, "W10M", 1, fps = 4, filename = "merra_ffmpeg.gif")
+  ffmpeg_merra(merra, "W10M", 1, fps = 12, filename = "merra_ffmpeg4.mp4")
+  gif_merra(dat2, "w50", 1, fps = 24, filename = "merra_wind_50m_24fps.gif")
+  gif_merra(dat2, "w50", 1, fps = 12, filename = "merra_wind_50m_12fps.gif")
+  gif_merra(dat2, "w100", 1, fps = 12, filename = "merra_wind_100m_12fps.gif")
+  gif_merra(dat2, "w200", 1, fps = 6, filename = "merra_wind_200m_6fps.gif")
   
 }
 
@@ -282,7 +341,7 @@ if (F) {
   plot_SWGND(x, mult = 1/1e3, limits = c(0, 1.2),
              palette = "Oranges", legend.name = "kW/m2")
   
-  wind_GIF(x, name = "SWGDN", mult = 1/1e3, limits = c(0, 1.2),
+  gif_merra(x, name = "SWGDN", mult = 1/1e3, limits = c(0, 1.2),
            filename = "merra_SWGDN.gif", #palette = "Oranges", 
            legend.name = "kW/m2", fps = 4)
 
@@ -301,11 +360,11 @@ if (F) {
              direction = -1, palette = "Spectral",
              legend.name = "")
 
-  wind_GIF(y, name = "zenith", mult = 1, limits = c(0, 90),
+  gif_merra(y, name = "zenith", mult = 1, limits = c(0, 90),
            filename = "merra_zenith.gif", direction = 1, 
            legend.name = "", fps = 4)
 
-  wind_GIF(y, name = "azimuth", mult = 1, limits = c(0, 360),
+  gif_merra(y, name = "azimuth", mult = 1, limits = c(0, 360),
            filename = "merra_azimuth_daytime.gif", 
            direction = -1, palette = "Spectral",
            legend.name = "", fps = 4)
@@ -325,7 +384,7 @@ if (F) {
              direction = -1, palette = "Spectral",
              legend.name = "")
   
-  wind_GIF(y, name = "ALBEDO", mult = 1, limits = c(0, 1),
+  gif_merra(y, name = "ALBEDO", mult = 1, limits = c(0, 1),
            filename = "merra_ALBEDO.gif", 
            direction = -1, palette = "Spectral",
            legend.name = "", fps = 4)
@@ -358,7 +417,7 @@ if (F) {
              # limits = range(z$clearness_index[z$datetime == z$datetime[1]])/20,
              direction = -1, palette = "Spectral",
              legend.name = "")
-  wind_GIF(z, name = "clearness_index", mult = 1, limits = c(0, 1),
+  gif_merra(z, name = "clearness_index", mult = 1, limits = c(0, 1),
            filename = "merra_clearness_index.gif", 
            direction = -1, palette = "Spectral",
            legend.name = "", fps = 4)
@@ -367,7 +426,7 @@ if (F) {
   plot_SWGND(z, name = "diffuse_fraction", mult = 1, limits = c(0, 1),
              direction = -1, palette = "Spectral",
              legend.name = "")
-  wind_GIF(z, name = "diffuse_fraction", mult = 1, limits = c(0, 1),
+  gif_merra(z, name = "diffuse_fraction", mult = 1, limits = c(0, 1),
            filename = "merra_diffuse_fraction.gif", 
            direction = -1, palette = "Spectral",
            legend.name = "", fps = 4)
@@ -376,7 +435,7 @@ if (F) {
   plot_SWGND(z, name = "DNI", mult = 1/1e3, limits = c(0, 1.1),
              direction = -1, palette = "Spectral",
              legend.name = "kW/m2")
-  wind_GIF(z, name = "DNI", mult = 1/1e3, limits = c(0, 1.1),
+  gif_merra(z, name = "DNI", mult = 1/1e3, limits = c(0, 1.1),
            filename = "merra_DNI.gif", 
            direction = -1, palette = "Spectral",
            legend.name = "kW/m2", fps = 4)
@@ -386,7 +445,7 @@ if (F) {
              direction = -1, palette = "Spectral",
              legend.name = "kW/m2")
   
-  wind_GIF(z, name = "DHI", mult = 1/1e3, limits = c(0, 1.1),
+  gif_merra(z, name = "DHI", mult = 1/1e3, limits = c(0, 1.1),
            filename = "merra_DHI.gif", 
            direction = -1, palette = "Spectral",
            legend.name = "kW/m2", fps = 4)
@@ -423,7 +482,7 @@ if (F) {
              direction = 1, palette = "Spectral",
              legend.name = "rad")
   
-  wind_GIF(z, name = "AOI.fx", mult = 1, limits = c(0, pi/2),
+  gif_merra(z, name = "AOI.fx", mult = 1, limits = c(0, pi/2),
            filename = "merra_angle_of_incidence_90.gif", 
            direction = 1, palette = "Spectral",
            legend.name = "rad", fps = 4)
@@ -442,7 +501,7 @@ if (F) {
   # plot_SWGND(y, name = "AOI", mult = 1, limits = c(0, pi),
   #            direction = 1, palette = "Spectral",
   #            legend.name = "")
-  # wind_GIF(y, name = "AOI", mult = 1, limits = c(0, 3),
+  # gif_merra(y, name = "AOI", mult = 1, limits = c(0, 3),
   #          filename = "merra_angle_of_incidence_South0_North180.gif", 
   #          direction = 1, palette = "Spectral",
   #          legend.name = "0:pi", fps = 4)
@@ -487,7 +546,7 @@ if (F) {
              legend.position = c(0.9, 0.05),
              legend.name = "kW/m2") 
   
-  wind_GIF(z, name = "POA.fx", mult = 1, limits = c(0, 3000),
+  gif_merra(z, name = "POA.fx", mult = 1, limits = c(0, 3000),
            filename = "POA.fx.gif", 
            direction = -1, palette = "Spectral",
            legend.name = "W/m2", fps = 4)

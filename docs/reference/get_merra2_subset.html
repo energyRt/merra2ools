@@ -102,16 +102,19 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/data.html">An overview of MERRA-2 subset</a>
+      <a href="../articles/data.html">MERRA-2 subset</a>
     </li>
     <li>
-      <a href="../articles/solarpower.html">Solar geometry, irradiance, and PV output</a>
+      <a href="../articles/models.html">Estimation Models</a>
+    </li>
+    <li>
+      <a href="../articles/solarpower.html">Solar Power</a>
     </li>
     <li>
       <a href="../articles/subset.html">subset</a>
     </li>
     <li>
-      <a href="../articles/windpower.html">windpower</a>
+      <a href="../articles/windpower.html">Wind Power</a>
     </li>
   </ul>
 </li>
@@ -137,7 +140,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Get MERRA-2 subset</h1>
-    <small class="dont-index">Source: <a href='https://github.com/olugovoy/merra2ools/blob/master/R/gis_subset.R'><code>R/gis_subset.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/olugovoy/merra2ools/blob/master/R/read_merra_subset.R'><code>R/read_merra_subset.R</code></a></small>
     <div class="hidden name"><code>get_merra2_subset.Rd</code></div>
     </div>
 
@@ -173,7 +176,7 @@
     </tr>
     <tr>
       <th>tz</th>
-      <td><p>time zone of the requested date-time interval (see &lt;https://en.wikipedia.org/wiki/List_of_tz_database_time_zones&gt;)</p></td>
+      <td><p>time zone of the requested date-time interval (see <code><a href='https://rdrr.io/r/base/timezones.html'>OlsonNames()</a></code>)</p></td>
     </tr>
     <tr>
       <th>cols</th>
@@ -196,6 +199,9 @@
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>data.table with the subset of</p>
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+
+    <p>&lt;https://en.wikipedia.org/wiki/List_of_tz_database_time_zones&gt;</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='cn'>NA</span>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Title — closest_locid • merra2ools</title>
+<title>Get MERRA-2 grid IDs closest to the given coordinates — closest_locid • merra2ools</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Title — closest_locid" />
-<meta property="og:description" content="Title" />
+<meta property="og:title" content="Get MERRA-2 grid IDs closest to the given coordinates — closest_locid" />
+<meta property="og:description" content="Get MERRA-2 grid IDs closest to the given coordinates" />
 
 
 
@@ -102,16 +102,19 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/data.html">An overview of MERRA-2 subset</a>
+      <a href="../articles/data.html">MERRA-2 subset</a>
     </li>
     <li>
-      <a href="../articles/solarpower.html">Solar geometry, irradiance, and PV output</a>
+      <a href="../articles/models.html">Estimation Models</a>
+    </li>
+    <li>
+      <a href="../articles/solarpower.html">Solar Power</a>
     </li>
     <li>
       <a href="../articles/subset.html">subset</a>
     </li>
     <li>
-      <a href="../articles/windpower.html">windpower</a>
+      <a href="../articles/windpower.html">Wind Power</a>
     </li>
   </ul>
 </li>
@@ -136,13 +139,13 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Title</h1>
-    <small class="dont-index">Source: <a href='https://github.com/olugovoy/merra2ools/blob/master/R/nrel_pvwatts_api.R'><code>R/nrel_pvwatts_api.R</code></a></small>
+    <h1>Get MERRA-2 grid IDs closest to the given coordinates</h1>
+    <small class="dont-index">Source: <a href='https://github.com/olugovoy/merra2ools/blob/master/R/locid.R'><code>R/locid.R</code></a></small>
     <div class="hidden name"><code>closest_locid.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Title</p>
+    <p>Get MERRA-2 grid IDs closest to the given coordinates</p>
     </div>
 
     <pre class="usage"><span class='fu'>closest_locid</span><span class='op'>(</span><span class='va'>lon</span>, <span class='va'>lat</span>, asList <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
@@ -152,11 +155,11 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>lon</th>
-      <td></td>
+      <td><p>longitude in degrees (-180 &lt;= lon &lt;= 180)</p></td>
     </tr>
     <tr>
       <th>lat</th>
-      <td></td>
+      <td><p>latitude in degrees (-90 &lt;= lat &lt;= 90)</p></td>
     </tr>
     <tr>
       <th>asList</th>
@@ -166,10 +169,16 @@
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    
+    <p>integer vector with locations IDs (locid) when `asList` is FALSE (default). In the case of several values, only the first `locid` will be returned. If `asList` is TRUE, a list is returned with possible multiple values for each coordinate.</p>
 
-
-
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'>closest_locid</span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>0</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 103969</div><div class='input'><span class='fu'>closest_locid</span><span class='op'>(</span><span class='fl'>100.14</span>, <span class='op'>-</span><span class='fl'>85.145</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 6209</div><div class='input'><span class='fu'>closest_locid</span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>89.5</span>, asList <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [[1]]
+#&gt; [1] 207073
+#&gt; </div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

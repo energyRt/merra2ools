@@ -5,13 +5,13 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Solar geometry, irradiance, and PV output • merra2ools</title>
+<title>Solar Power • merra2ools</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Solar geometry, irradiance, and PV output">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Solar Power">
 <meta property="og:description" content="merra2ools">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -57,16 +57,19 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/data.html">An overview of MERRA-2 subset</a>
+      <a href="../articles/data.html">MERRA-2 subset</a>
     </li>
     <li>
-      <a href="../articles/solarpower.html">Solar geometry, irradiance, and PV output</a>
+      <a href="../articles/models.html">Estimation Models</a>
+    </li>
+    <li>
+      <a href="../articles/solarpower.html">Solar Power</a>
     </li>
     <li>
       <a href="../articles/subset.html">subset</a>
     </li>
     <li>
-      <a href="../articles/windpower.html">windpower</a>
+      <a href="../articles/windpower.html">Wind Power</a>
     </li>
   </ul>
 </li>
@@ -91,7 +94,7 @@
       </header><script src="solarpower_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Solar geometry, irradiance, and PV output</h1>
+      <h1 data-toc-skip>Solar Power</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/olugovoy/merra2ools/blob/master/vignettes/solarpower.Rmd"><code>vignettes/solarpower.Rmd</code></a></small>
@@ -102,52 +105,169 @@
     
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># library(merra2ools)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://olugovoy.github.io/merra2ools/">merra2ools</a></span><span class="op">)</span>
+<span class="co">#&gt; Loading required package: data.table</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span>
 <span class="co">#&gt; -- Attaching packages --------------------------------------- tidyverse 1.3.0 --</span>
-<span class="co">#&gt; v ggplot2 3.3.2     v purrr   0.3.4</span>
+<span class="co">#&gt; v ggplot2 3.3.3     v purrr   0.3.4</span>
 <span class="co">#&gt; v tibble  3.0.4     v dplyr   1.0.2</span>
 <span class="co">#&gt; v tidyr   1.1.2     v stringr 1.4.0</span>
 <span class="co">#&gt; v readr   1.4.0     v forcats 0.5.0</span>
 <span class="co">#&gt; -- Conflicts ------------------------------------------ tidyverse_conflicts() --</span>
-<span class="co">#&gt; x dplyr::filter() masks stats::filter()</span>
-<span class="co">#&gt; x dplyr::lag()    masks stats::lag()</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://Rdatatable.gitlab.io/data.table">data.table</a></span><span class="op">)</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Attaching package: 'data.table'</span>
-<span class="co">#&gt; The following objects are masked from 'package:dplyr':</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;     between, first, last</span>
-<span class="co">#&gt; The following object is masked from 'package:purrr':</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;     transpose</span></code></pre></div>
+<span class="co">#&gt; x dplyr::between()   masks data.table::between()</span>
+<span class="co">#&gt; x dplyr::filter()    masks stats::filter()</span>
+<span class="co">#&gt; x dplyr::first()     masks data.table::first()</span>
+<span class="co">#&gt; x dplyr::lag()       masks stats::lag()</span>
+<span class="co">#&gt; x dplyr::last()      masks data.table::last()</span>
+<span class="co">#&gt; x purrr::transpose() masks data.table::transpose()</span>
+<span class="co"># library(data.table)</span></code></pre></div>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu">merra2ools</span><span class="fu">::</span><span class="va">merra2_oct</span> <span class="op">%&gt;%</span>
-  <span class="fu">left_join</span><span class="op">(</span><span class="va">locid</span><span class="op">[</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/solar_position.html">solar_position</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/solar_irradiance.html">solar_irradiance</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/pv_array_position.html">pv_array_position</a></span><span class="op">(</span><span class="st">"all"</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/angle_of_incidence.html">angle_of_incidence</a></span><span class="op">(</span><span class="st">"all"</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/poa_irradiance.html">poa_irradiance</a></span><span class="op">(</span><span class="st">"all"</span><span class="op">)</span>
-
-<span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu">select</span><span class="op">(</span><span class="va">x</span>, <span class="va">datetime</span>, <span class="va">locid</span>, <span class="va">lon</span>, <span class="va">lat</span>, <span class="va">yday</span>, <span class="va">hour</span>, <span class="fu">starts_with</span><span class="op">(</span><span class="st">"POA"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu">mutate</span><span class="op">(</span>month <span class="op">=</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/IDateTime.html">month</a></span><span class="op">(</span><span class="va">datetime</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu">pivot_longer</span><span class="op">(</span>cols <span class="op">=</span> <span class="fu">starts_with</span><span class="op">(</span><span class="st">"POA"</span><span class="op">)</span>, names_to <span class="op">=</span> <span class="st">"array_type"</span>, values_to <span class="op">=</span> <span class="st">"Wh_m2"</span><span class="op">)</span>
-
-<span class="va">lid</span> <span class="op">&lt;-</span> <span class="va">locid_sample</span><span class="op">[</span><span class="va">locid_sample</span><span class="op">$</span><span class="va">lon</span> <span class="op">==</span> <span class="fl">0</span>,<span class="op">]</span><span class="op">$</span><span class="va">locid</span>
-<span class="op">{</span>
-  <span class="co"># ii &lt;- dat$locid %in% sample(unique(dat$locid), 6)</span>
-  <span class="va">ii</span> <span class="op">&lt;-</span> <span class="va">dat</span><span class="op">$</span><span class="va">locid</span> <span class="op">%in%</span> <span class="va">lid</span>
-  <span class="fu">ggplot</span><span class="op">(</span><span class="va">dat</span><span class="op">[</span><span class="va">ii</span>,<span class="op">]</span><span class="op">)</span> <span class="op">+</span>
-    <span class="fu">geom_line</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span><span class="va">hour</span>, <span class="va">Wh_m2</span>, colour <span class="op">=</span> <span class="va">array_type</span>, linetype <span class="op">=</span> <span class="va">array_type</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span>
-    <span class="co"># scale_color_viridis_d(direction = -1) +</span>
-    <span class="fu">scale_color_brewer</span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"Spectral"</span><span class="op">)</span> <span class="op">+</span>
-    <span class="fu">facet_wrap</span><span class="op">(</span><span class="op">~</span><span class="va">locid</span><span class="op">)</span> <span class="op">+</span>
-    <span class="fu">theme_bw</span><span class="op">(</span><span class="op">)</span>
-<span class="op">}</span></code></pre></div>
+  <span class="fu"><a href="../reference/poa_irradiance.html">fPOA</a></span><span class="op">(</span><span class="op">)</span>
+  
+  
+<span class="co">#   left_join(locid[,1:3]) %&gt;%</span>
+<span class="co">#   solar_position() %&gt;%</span>
+<span class="co">#   solar_irradiance() %&gt;%</span>
+<span class="co">#   pv_array_position("all") %&gt;%</span>
+<span class="co">#   angle_of_incidence("all") %&gt;%</span>
+<span class="co">#   poa_irradiance("all")</span>
+<span class="co"># </span>
+<span class="co"># dat &lt;- select(x, datetime, locid, lon, lat, yday, hour, starts_with("POA")) %&gt;%</span>
+<span class="co">#   mutate(month = month(datetime)) %&gt;%</span>
+<span class="co">#   pivot_longer(cols = starts_with("POA"), names_to = "array_type", values_to = "Wh_m2")</span>
+<span class="co"># </span>
+<span class="co"># lid &lt;- locid_sample[locid_sample$lon == 0,]$locid</span>
+<span class="co"># {</span>
+<span class="co">#   # ii &lt;- dat$locid %in% sample(unique(dat$locid), 6)</span>
+<span class="co">#   ii &lt;- dat$locid %in% lid</span>
+<span class="co">#   ggplot(dat[ii,]) +</span>
+<span class="co">#     geom_line(aes(hour, Wh_m2, colour = array_type, linetype = array_type), size = 1) +</span>
+<span class="co">#     # scale_color_viridis_d(direction = -1) +</span>
+<span class="co">#     scale_color_brewer(palette = "Spectral") +</span>
+<span class="co">#     facet_wrap(~locid) +</span>
+<span class="co">#     theme_bw()</span>
+<span class="co"># }</span>
+<span class="co"># </span></code></pre></div>
 <div id="validation-compare-with-nrels-pvwatts" class="section level1">
 <h1 class="hasAnchor">
 <a href="#validation-compare-with-nrels-pvwatts" class="anchor"></a>Validation: compare with NREL’s PVWAtts</h1>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R">
+  <span class="co"># if (F) {</span>
+    <span class="va">ll</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="op">)</span>
+    <span class="kw">for</span> <span class="op">(</span><span class="va">tp</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"fh"</span>, <span class="st">"fl"</span>, <span class="st">"th"</span>, <span class="st">"tl"</span>, <span class="st">"td"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
+      <span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">st_id</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
+        <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fetch_pvwatts.html">fetch_pvwatts</a></span><span class="op">(</span>
+          array.type <span class="op">=</span> <span class="va">tp</span>,
+          lon <span class="op">=</span> <span class="va">st_id</span><span class="op">$</span><span class="va">lon</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>,
+          lat <span class="op">=</span> <span class="va">st_id</span><span class="op">$</span><span class="va">lat</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>,
+          <span class="co"># tilt = abs(st_id$lat[i]),</span>
+          <span class="co"># tilt = 0,</span>
+          azimuth <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">st_id</span><span class="op">$</span><span class="va">lat</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;</span> <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">180</span><span class="op">)</span>,
+          radius <span class="op">=</span> <span class="fl">100</span>
+        <span class="op">)</span>
+        <span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="st">"type = "</span>, <span class="va">tp</span>, <span class="st">", i = "</span>, <span class="va">i</span>, <span class="st">", lon = "</span>, 
+            <span class="va">st_id</span><span class="op">$</span><span class="va">lon</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>, <span class="st">", lat = "</span>, <span class="va">st_id</span><span class="op">$</span><span class="va">lat</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>, 
+            <span class="st">", poa: "</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">outputs</span><span class="op">$</span><span class="va">poa</span><span class="op">)</span>, <span class="st">"\n"</span>, sep <span class="op">=</span> <span class="st">""</span><span class="op">)</span>
+        <span class="va">nm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="va">tp</span>, <span class="va">i</span>, sep <span class="op">=</span> <span class="st">"_"</span><span class="op">)</span>
+        <span class="va">ll</span><span class="op">[[</span><span class="va">nm</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">x</span>
+        <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">error</span><span class="op">$</span><span class="va">code</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
+          <span class="kw">if</span> <span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">error</span><span class="op">$</span><span class="va">code</span> <span class="op">==</span> <span class="st">"OVER_RATE_LIMIT"</span><span class="op">)</span> <span class="kw">break</span>
+        <span class="op">}</span>
+      <span class="op">}</span>
+      <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">error</span><span class="op">$</span><span class="va">code</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
+        <span class="kw">if</span> <span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">error</span><span class="op">$</span><span class="va">code</span> <span class="op">==</span> <span class="st">"OVER_RATE_LIMIT"</span><span class="op">)</span> <span class="kw">break</span>
+      <span class="op">}</span>
+    <span class="op">}</span>
+    <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">ll</span><span class="op">)</span>
+    <span class="co"># save(ll, st_id, file = "tmp/pvwatts_poa_h_list.RData")</span>
+    <span class="co"># save(ll0, file = "tmp/pvwatts_list_tilt0.RData")</span>
+    <span class="co"># save(ll1, file = "tmp/pvwatts_list_ll1.RData")</span>
+    
+    <span class="va">yday_hour</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html">expand.grid</a></span><span class="op">(</span>hour <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">24</span>, yday <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">365</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">as_tibble</span><span class="op">(</span><span class="op">)</span>
+    <span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">ll</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
+      <span class="va">n</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">ll</span><span class="op">)</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>
+      <span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span>; <span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="st">" "</span><span class="op">)</span>
+      <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="va">ll</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">outputs</span>, <span class="va">unlist</span><span class="op">)</span>
+      <span class="va">x</span> <span class="op">&lt;-</span> <span class="kw"><a href="https://rdrr.io/r/base/try.html">try</a></span><span class="op">(</span>
+        <span class="fu">as_tibble</span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">5</span><span class="op">:</span><span class="fl">15</span><span class="op">]</span><span class="op">)</span> <span class="op">%&gt;%</span>
+          <span class="fu">mutate</span><span class="op">(</span>
+            <span class="co"># request = i,</span>
+            lon_stn <span class="op">=</span> <span class="va">ll</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">station_info</span><span class="op">$</span><span class="va">lon</span>,
+            lat_stn <span class="op">=</span> <span class="va">ll</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">station_info</span><span class="op">$</span><span class="va">lat</span>,
+            lonlat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"("</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">lon_stn</span>, <span class="fl">2</span><span class="op">)</span>, <span class="st">", "</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">lat_stn</span>, <span class="fl">2</span><span class="op">)</span>, <span class="st">")"</span><span class="op">)</span>,
+            locid <span class="op">=</span> <span class="va">st_id</span><span class="op">$</span><span class="va">locid</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>,
+            <span class="co"># locid = st_id$locid[i],</span>
+            elev <span class="op">=</span> <span class="va">ll</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">station_info</span><span class="op">$</span><span class="va">elev</span>,
+            tz <span class="op">=</span> <span class="va">ll</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">station_info</span><span class="op">$</span><span class="va">tz</span>, 
+            month <span class="op">=</span> <span class="fu">yday2month</span><span class="op">(</span><span class="va">yday_hour</span><span class="op">$</span><span class="va">yday</span><span class="op">)</span>,
+            yday <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html">as.integer</a></span><span class="op">(</span><span class="va">yday_hour</span><span class="op">$</span><span class="va">yday</span><span class="op">)</span>,
+            hour <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html">as.integer</a></span><span class="op">(</span><span class="va">yday_hour</span><span class="op">$</span><span class="va">hour</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span>,
+            <span class="co"># lon_inp = as.numeric(ll[[i]]$inputs$lat),</span>
+            <span class="co"># lat_inp = as.numeric(ll[[i]]$inputs$lon),</span>
+            <span class="co"># module_type = as.integer(ll[[i]]$inputs$module_type),</span>
+            <span class="co"># losses = as.numeric(ll[[i]]$inputs$losses),</span>
+            <span class="co"># id = as.integer(gsub("[a-z_]", "", i)),</span>
+            array.type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/substr.html">substr</a></span><span class="op">(</span><span class="va">n</span>, <span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>,
+            <span class="co"># array_type_pvwatts = ll[[i]]$inputs$array_type,</span>
+            tilt <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="va">ll</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">inputs</span><span class="op">$</span><span class="va">tilt</span><span class="op">)</span>,
+            azimuth <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="va">ll</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">inputs</span><span class="op">$</span><span class="va">azimuth</span><span class="op">)</span>,
+            .before <span class="op">=</span> <span class="va">ac_annual</span><span class="op">)</span>, silent <span class="op">=</span> <span class="cn">T</span>
+      <span class="op">)</span>
+      <span class="kw">if</span> <span class="op">(</span><span class="va">i</span> <span class="op">==</span>  <span class="fl">1</span> <span class="op">||</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/exists.html">exists</a></span><span class="op">(</span><span class="st">"db"</span><span class="op">)</span> <span class="op">||</span> <span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="va">db</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
+        <span class="va">db</span> <span class="op">&lt;-</span> <span class="cn">NULL</span>
+        <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/all.html">all</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">!=</span> <span class="st">"try-error"</span><span class="op">)</span><span class="op">)</span> <span class="va">db</span> <span class="op">&lt;-</span> <span class="va">x</span>
+      <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span>
+        <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/all.html">all</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">!=</span> <span class="st">"try-error"</span><span class="op">)</span><span class="op">)</span> <span class="va">db</span> <span class="op">&lt;-</span> <span class="fu">bind_rows</span><span class="op">(</span><span class="va">db</span>, <span class="va">x</span><span class="op">)</span>
+      <span class="op">}</span>
+    <span class="op">}</span>
+    <span class="va">db</span>
+    <span class="va">db</span> <span class="op">%&gt;%</span> <span class="fu">as.data.table</span><span class="op">(</span><span class="op">)</span>
+    <span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">db</span><span class="op">)</span>   
+    <span class="co"># db$poa.array &lt;- paste0("POA.", substr(db$request, 1, 2))</span>
+    
+    <span class="va">db_m</span> <span class="op">&lt;-</span> <span class="va">db</span> <span class="op">%&gt;%</span> 
+      <span class="fu">group_by</span><span class="op">(</span><span class="va">lonlat</span>, <span class="va">locid</span>, <span class="va">month</span>, <span class="va">hour</span>, <span class="va">array.type</span><span class="op">)</span> <span class="op">%&gt;%</span>
+      <span class="fu">summarise</span><span class="op">(</span>poa <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">poa</span>, na.rm <span class="op">=</span> <span class="cn">T</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+      <span class="fu">mutate</span><span class="op">(</span>month <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">month.abb</span><span class="op">[</span><span class="va">month</span><span class="op">]</span>, levels <span class="op">=</span> <span class="va">month.abb</span>, ordered <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>,
+             data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="st">"PVWatts"</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"merra2ools"</span>, <span class="st">"PVWatts"</span><span class="op">)</span>, ordered <span class="op">=</span> <span class="cn">T</span><span class="op">)</span><span class="op">)</span>
+    
+    <span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>
+    <span class="va">ii</span> <span class="op">&lt;-</span> <span class="va">db_m</span><span class="op">$</span><span class="va">lonlat</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">db_m</span><span class="op">$</span><span class="va">lonlat</span><span class="op">)</span>, <span class="fl">4</span><span class="op">)</span> <span class="op">&amp;</span>
+      <span class="va">db_m</span><span class="op">$</span><span class="va">month</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Mar"</span>, <span class="st">"Jul"</span>, <span class="st">"Oct"</span>, <span class="st">"Dec"</span><span class="op">)</span>; <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">ii</span><span class="op">)</span>
+    
+    <span class="va">ii</span> <span class="op">&lt;-</span> <span class="va">db_m</span><span class="op">$</span><span class="va">lonlat</span> <span class="op">%in%</span> 
+      <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"(-94.98, 74.72)"</span>, <span class="st">"(34.75, -0.1)"</span>, <span class="st">"(-70.85, -53)"</span>, <span class="st">"(117.8, -34.93)"</span>, <span class="st">"(31.4, 30.13)"</span><span class="op">)</span> <span class="op">&amp;</span>
+      <span class="va">db_m</span><span class="op">$</span><span class="va">month</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Mar"</span>, <span class="st">"Jul"</span>, <span class="st">"Oct"</span>, <span class="st">"Dec"</span><span class="op">)</span>; <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">ii</span><span class="op">)</span>
+    <span class="fu">ggplot</span><span class="op">(</span><span class="va">db_m</span><span class="op">[</span><span class="va">ii</span>,<span class="op">]</span><span class="op">)</span> <span class="op">+</span>
+      <span class="fu">geom_line</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span><span class="va">hour</span>, <span class="va">poa</span>, colour <span class="op">=</span> <span class="va">array.type</span>, linetype <span class="op">=</span> <span class="va">array.type</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span>
+      <span class="fu">scale_color_brewer</span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"Set1"</span>, name <span class="op">=</span> <span class="st">"Array type"</span><span class="op">)</span> <span class="op">+</span>
+      <span class="fu">guides</span><span class="op">(</span>colour <span class="op">=</span> <span class="fu">guide_legend</span><span class="op">(</span>override.aes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>linetype <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+      <span class="fu">scale_linetype</span><span class="op">(</span>guide <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span>
+      <span class="fu">facet_grid</span><span class="op">(</span><span class="va">lonlat</span> <span class="op">~</span> <span class="va">month</span><span class="op">)</span> <span class="op">+</span> 
+      <span class="fu">labs</span><span class="op">(</span>y <span class="op">=</span> <span class="st">"POA irradiance, Watt/m2"</span>, x <span class="op">=</span> <span class="st">"Hour, local time"</span><span class="op">)</span> <span class="op">+</span>
+      <span class="fu">theme_bw</span><span class="op">(</span><span class="op">)</span>
+    
+    <span class="fu">ggplot</span><span class="op">(</span><span class="va">db_m</span><span class="op">[</span><span class="va">ii</span>,<span class="op">]</span><span class="op">)</span> <span class="op">+</span>
+      <span class="fu">geom_line</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span><span class="va">hour</span>, <span class="va">poa</span>, colour <span class="op">=</span> <span class="va">month</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span>
+      <span class="fu">scale_color_brewer</span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"Set1"</span>, name <span class="op">=</span> <span class="st">"Month"</span><span class="op">)</span> <span class="op">+</span>
+      <span class="fu">facet_grid</span><span class="op">(</span><span class="va">lonlat</span> <span class="op">~</span> <span class="va">array.type</span><span class="op">)</span> <span class="op">+</span> 
+      <span class="fu">labs</span><span class="op">(</span>y <span class="op">=</span> <span class="st">"POA irradiance, Watt/m2"</span>, x <span class="op">=</span> <span class="st">"Hour, local time"</span><span class="op">)</span> <span class="op">+</span>
+      <span class="fu">theme_bw</span><span class="op">(</span><span class="op">)</span>
+    
+    
+    
+    <span class="co"># db %&gt;%</span>
+    <span class="co">#   mutate(poa.array = paste0("POA.", substr(request, 1, 2)),</span>
+    <span class="co">#          hour = hour - 1) %&gt;%</span>
+    <span class="co">#   select(lon, lat, yday, hour)</span>
+    <span class="co">#   pivot_wider(names_from = "poa.array")</span>
+    
+    
+    
+  <span class="co"># }</span>
+  </code></pre></div>
 </div>
   </div>
 

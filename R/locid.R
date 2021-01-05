@@ -59,7 +59,7 @@ if (F) {
 }
 
 
-#' Get location IDs of MERRA-2 data that overlay or intersect with given spatial object
+#' Get MERRA-2 grid IDs that overlay or intersect with given spatial object
 #'
 #' @param sp a map-object of class SpatialPolygons or SpatialPolygonsDataFrame
 #' @param method character, "points" or "intersect", matching spatial points with polygons or intersection of polygons respectively
@@ -132,4 +132,38 @@ if (F) {
   points(lid2_df$lon, lid2_df$lat, col = "red")
   points(lid1_df$lon, lid1_df$lat, col = "red", pch = 16)
   
+}
+
+
+#' Get MERRA-2 grid IDs closest to the given coordinates
+#'
+#' @param lon longitude in degrees (-180 <= lon <= 180)
+#' @param lat latitude in degrees (-90 <= lat <= 90)
+#' @param asList 
+#'
+#' @return 
+#' integer vector with locations IDs (locid) when `asList` is FALSE (default). In the case of several values, only the first `locid` will be returned. If `asList` is TRUE, a list is returned with possible multiple values for each coordinate.
+#' 
+#' @export
+#'
+#' @examples
+#' closest_locid(0, 0)
+#' closest_locid(100.14, -85.145)
+#' closest_locid(0, 89.5, asList = TRUE)
+#' 
+closest_locid <- function(lon, lat, asList = FALSE) {
+  # browser()
+  stopifnot(length(lon) == length(lat))
+  x <- data.frame(lon = lon, lat = lat)
+  # l_id <- locid[,1:2]
+  if (asList) id <- list() else id <- integer()
+  for (i in 1:length(lon)) {
+    d <- geosphere::distm(x[i,], locid[,1:2])
+    if (asList) {
+      id[[i]] <- which(d[1,] == min(d[1,]))
+    } else {
+      id[i] <- which(d[1,] == min(d[1,]))[1]
+    }
+  }
+  return(id)
 }

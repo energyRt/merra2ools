@@ -2,7 +2,7 @@
 % Please edit documentation in R/locid.R
 \name{get_locid}
 \alias{get_locid}
-\title{Get location IDs of MERRA-2 data that overlay or intersect with given spatial object}
+\title{Get MERRA-2 grid IDs that overlay or intersect with given spatial object}
 \usage{
 get_locid(sp, method = "intersect", return_sp = FALSE, projString = NULL)
 }
@@ -19,7 +19,7 @@ get_locid(sp, method = "intersect", return_sp = FALSE, projString = NULL)
 when return_sp = FALSE, an integer vector with location IDs (locid) is returned
 }
 \description{
-Get location IDs of MERRA-2 data that overlay or intersect with given spatial object
+Get MERRA-2 grid IDs that overlay or intersect with given spatial object
 }
 \examples{
 iceland_sp <- rnaturalearth::ne_states(country = "iceland")

@@ -122,30 +122,3 @@ if (F) {
   
 }
 
-#' Title
-#'
-#' @param lon 
-#' @param lat 
-#' @param asList 
-#'
-#' @return
-#' @export
-#'
-#' @examples
-closest_locid <- function(lon, lat, asList = FALSE) {
-  # browser()
-  stopifnot(length(lon) == length(lat))
-  x <- data.frame(lon = lon, lat = lat)
-  # l_id <- locid[,1:2]
-  if (asList) id <- list() else id <- numeric()
-  for (i in 1:length(lon)) {
-    d <- geosphere::distm(x[i,], locid[,1:2])
-    if (asList) {
-      id[[i]] <- which(d[1,] == min(d[1,]))
-    } else {
-      id[i] <- which(d[1,] == min(d[1,]))[1]
-    }
-  }
-  return(id)
-}
-

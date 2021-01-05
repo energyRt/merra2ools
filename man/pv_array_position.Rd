@@ -11,7 +11,7 @@ pv_array_position(
   lat = "lat",
   azimuth = "azimuth",
   zenith = "zenith",
-  verbose = TRUE,
+  verbose = getOption("merra2.verbose"),
   array.tilt.range.fh = c(0, 0),
   array.tilt.range.fl = c(0, 60),
   array.tilt.range.th = c(0, 45),

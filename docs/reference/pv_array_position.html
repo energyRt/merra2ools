@@ -102,16 +102,19 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/data.html">An overview of MERRA-2 subset</a>
+      <a href="../articles/data.html">MERRA-2 subset</a>
     </li>
     <li>
-      <a href="../articles/solarpower.html">Solar geometry, irradiance, and PV output</a>
+      <a href="../articles/models.html">Estimation Models</a>
+    </li>
+    <li>
+      <a href="../articles/solarpower.html">Solar Power</a>
     </li>
     <li>
       <a href="../articles/subset.html">subset</a>
     </li>
     <li>
-      <a href="../articles/windpower.html">windpower</a>
+      <a href="../articles/windpower.html">Wind Power</a>
     </li>
   </ul>
 </li>
@@ -152,7 +155,7 @@
   lat <span class='op'>=</span> <span class='st'>"lat"</span>,
   azimuth <span class='op'>=</span> <span class='st'>"azimuth"</span>,
   zenith <span class='op'>=</span> <span class='st'>"zenith"</span>,
-  verbose <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  verbose <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"merra2.verbose"</span><span class='op'>)</span>,
   array.tilt.range.fh <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>0</span><span class='op'>)</span>,
   array.tilt.range.fl <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>60</span><span class='op'>)</span>,
   array.tilt.range.th <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>45</span><span class='op'>)</span>,

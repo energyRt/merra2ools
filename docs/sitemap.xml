@@ -4,6 +4,9 @@
     <loc>https://olugovoy.github.io/merra2ools//index.html</loc>
   </url>
   <url>
+    <loc>https://olugovoy.github.io/merra2ools//reference/add_lonlat.html</loc>
+  </url>
+  <url>
     <loc>https://olugovoy.github.io/merra2ools//reference/angle_of_incidence.html</loc>
   </url>
   <url>
@@ -22,9 +25,6 @@
     <loc>https://olugovoy.github.io/merra2ools//reference/fHellmann.html</loc>
   </url>
   <url>
-    <loc>https://olugovoy.github.io/merra2ools//reference/fPOA_dl.html</loc>
-  </url>
-  <url>
     <loc>https://olugovoy.github.io/merra2ools//reference/fWindPowerCurve.html</loc>
   </url>
   <url>
@@ -40,7 +40,16 @@
     <loc>https://olugovoy.github.io/merra2ools//reference/get_merra2_subset.html</loc>
   </url>
   <url>
+    <loc>https://olugovoy.github.io/merra2ools//reference/gif_merra.html</loc>
+  </url>
+  <url>
     <loc>https://olugovoy.github.io/merra2ools//reference/merra2.html</loc>
+  </url>
+  <url>
+    <loc>https://olugovoy.github.io/merra2ools//reference/merra2_sample.html</loc>
+  </url>
+  <url>
+    <loc>https://olugovoy.github.io/merra2ools//reference/plot_merra.html</loc>
   </url>
   <url>
     <loc>https://olugovoy.github.io/merra2ools//reference/poa_irradiance.html</loc>
@@ -49,22 +58,22 @@
     <loc>https://olugovoy.github.io/merra2ools//reference/pv_array_position.html</loc>
   </url>
   <url>
+    <loc>https://olugovoy.github.io/merra2ools//reference/read_merra_file.html</loc>
+  </url>
+  <url>
     <loc>https://olugovoy.github.io/merra2ools//reference/solar_irradiance.html</loc>
   </url>
   <url>
     <loc>https://olugovoy.github.io/merra2ools//reference/solar_position.html</loc>
   </url>
   <url>
-    <loc>https://olugovoy.github.io/merra2ools//reference/wind_GIF.html</loc>
-  </url>
-  <url>
-    <loc>https://olugovoy.github.io/merra2ools//reference/wind_plot.html</loc>
-  </url>
-  <url>
     <loc>https://olugovoy.github.io/merra2ools//articles/data.html</loc>
   </url>
   <url>
     <loc>https://olugovoy.github.io/merra2ools//articles/merra2ools.html</loc>
+  </url>
+  <url>
+    <loc>https://olugovoy.github.io/merra2ools//articles/models.html</loc>
   </url>
   <url>
     <loc>https://olugovoy.github.io/merra2ools//articles/solarpower.html</loc>

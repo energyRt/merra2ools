@@ -111,7 +111,7 @@ pv_array_position <- function(x,
                               # lon = "lon", 
                               lat = "lat", 
                               azimuth = "azimuth", zenith = "zenith",
-                              verbose = TRUE,
+                              verbose = getOption("merra2.verbose"),
                               # array.azimuth = NULL,
                               array.tilt.range.fh = c(0., 0.),
                               array.tilt.range.fl = c(0., 60),
@@ -261,7 +261,7 @@ angle_of_incidence <- function(x, array.type = "fh", suffix = TRUE,
                                # array.azimuth = "array.azimuth", 
                                na.val = NA,
                                zenith.max = 90, AOI.max = 90,
-                               rad = TRUE, verbose = TRUE) {
+                               rad = TRUE, verbose = getOption("merra2.verbose")) {
   # browser()
   array.type <- .pv_array_type(array.type)
   if (verbose) cat("   Angle of incidence (AOI), array.type: ")
@@ -345,7 +345,7 @@ poa_irradiance <- function(x, array.type = "fl", suffix = TRUE,
                            AOI = "AOI", GHI = "SWGDN", DNI = "DNI", 
                            DHI = "DHI", ALBEDO = "ALBEDO", 
                            array.tilt = "array.tilt", 
-                           keep.all = FALSE, verbose = TRUE) {
+                           keep.all = FALSE, verbose = getOption("merra2.verbose")) {
   # browser()
   array.type <- .pv_array_type(array.type)
   if (verbose) cat("   Plane of Array Irradiance (POA), array.type: ")
@@ -393,13 +393,32 @@ fPOA <- function(x, array.type = "all",
                  datetime = "datetime",
                  yday = "yday", hour = "hour", 
                  lon = "lon", lat = "lat",
-                 keep.all = FALSE, verbose = TRUE) {
+                 keep.all = FALSE, verbose = getOption("merra2.verbose")) {
   if (verbose) {
     cat("nrow(x) = ", nrow(x),"\n")
-    cat("Calculating:\n")
   }
+  if (is.null(x[["locid"]])) {
+    if (is.null(x[[lon]] || is.null(x[[lat]]))) {
+      stop("'x' should have either coordinates ('", 
+           lon ,"' and '", lat, "') or 'locid' columns")
+    }
+  } else {
+    if (!is.null(x[[lon]]) & !is.null(x[[lat]])) {
+      y <- x
+    } else {
+      if (verbose) cat("Adding 'locid' coordinates\n")
+      y <- x
+      y[[lon]] <- NULL; y[[lat]] <- NULL
+      lid <- merra2ools::locid[,3]
+      lid[[lon]] <- merra2ools::locid[["lon"]]
+      lid[[lat]] <- merra2ools::locid[["lat"]]
+      y$locid <- as.integer(y$locid)
+      y <- right_join(lid, y, by = "locid")
+    }
+  }
+  if (verbose) cat("Calculating:\n")
   y <- solar_position(
-    x = x, datetime = datetime, yday = yday, hour = hour,
+    x = y, datetime = datetime, yday = yday, hour = hour,
     lon = lon, lat = lat, keep.all = FALSE, verbose = verbose) 
   y <- solar_irradiance(x = y, yday = yday, keep.all = keep.all)
   y <- pv_array_position(x = y, array.type = array.type, 
@@ -415,10 +434,6 @@ fPOA <- function(x, array.type = "all",
   }
   return(x)
 }
-
-# fPOA_fx 
-
-
 
 
 #' Convert degrees to radians

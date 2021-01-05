@@ -5,15 +5,20 @@
 \alias{get_merra2_dir}
 \alias{set_merra2_options}
 \alias{check_merra2}
+\alias{merra2_info}
 \title{Get, Set, or Check content of the Directory with the MERRA2 database Subset}
 \usage{
 get_merra2_dir()
 
 set_merra2_options(merra2.dir = NULL, pwatts.api.key = NULL)
 
-check_merra2(path = get_merra2_dir(), detailed = FALSE)
+check_merra2(
+  path = get_merra2_dir(),
+  detailed = FALSE,
+  verbose = getOption("merra2.verbose")
+)
 
-merra2()
+merra2_info()
 }
 \arguments{
 \item{path}{A character string of the path (default "~/data/merra2_subset")}

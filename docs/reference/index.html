@@ -101,16 +101,19 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/data.html">An overview of MERRA-2 subset</a>
+      <a href="../articles/data.html">MERRA-2 subset</a>
     </li>
     <li>
-      <a href="../articles/solarpower.html">Solar geometry, irradiance, and PV output</a>
+      <a href="../articles/models.html">Estimation Models</a>
+    </li>
+    <li>
+      <a href="../articles/solarpower.html">Solar Power</a>
     </li>
     <li>
       <a href="../articles/subset.html">subset</a>
     </li>
     <li>
-      <a href="../articles/windpower.html">windpower</a>
+      <a href="../articles/windpower.html">Wind Power</a>
     </li>
   </ul>
 </li>
@@ -161,6 +164,12 @@
       <tr>
         
         <td>
+          <p><code><a href="add_lonlat.html">add_lonlat()</a></code> </p>
+        </td>
+        <td><p>Add longitude and latitude of 'locid'</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="angle_of_incidence.html">angle_of_incidence()</a></code> <code><a href="angle_of_incidence.html">fAOI()</a></code> </p>
         </td>
         <td><p>Angle of Incidence (AOI)</p></td>
@@ -169,7 +178,7 @@
         <td>
           <p><code><a href="closest_locid.html">closest_locid()</a></code> </p>
         </td>
-        <td><p>Title</p></td>
+        <td><p>Get MERRA-2 grid IDs closest to the given coordinates</p></td>
       </tr><tr>
         
         <td>
@@ -197,12 +206,6 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="fPOA_dl.html">fPOA_dl()</a></code> </p>
-        </td>
-        <td><p>Title</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="fWindPowerCurve.html">fWindPowerCurve()</a></code> <code><a href="fWindPowerCurve.html">fWPC()</a></code> </p>
         </td>
         <td><p>Wind power curve function. Estimates power output based on the speed of wind.</p></td>
@@ -223,7 +226,7 @@
         <td>
           <p><code><a href="get_locid.html">get_locid()</a></code> </p>
         </td>
-        <td><p>Get location IDs of MERRA-2 data that overlay or intersect with given spatial object</p></td>
+        <td><p>Get MERRA-2 grid IDs that overlay or intersect with given spatial object</p></td>
       </tr><tr>
         
         <td>
@@ -233,9 +236,27 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="merra2.html">get_merra2_dir()</a></code> <code><a href="merra2.html">set_merra2_options()</a></code> <code><a href="merra2.html">check_merra2()</a></code> <code><a href="merra2.html">merra2()</a></code> </p>
+          <p><code><a href="gif_merra.html">gif_merra()</a></code> </p>
+        </td>
+        <td><p>Quick GIF plots</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="merra2.html">get_merra2_dir()</a></code> <code><a href="merra2.html">set_merra2_options()</a></code> <code><a href="merra2.html">check_merra2()</a></code> <code><a href="merra2.html">merra2_info()</a></code> </p>
         </td>
         <td><p>Get, Set, or Check content of the Directory with the MERRA2 database Subset</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="merra2_sample.html">merra2_sample()</a></code> </p>
+        </td>
+        <td><p>Get a example of MERRA2 data for a particular month(s)</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="plot_merra.html">plot_merra()</a></code> </p>
+        </td>
+        <td><p>Quick plots of wind speed and its dynamics</p></td>
       </tr><tr>
         
         <td>
@@ -251,6 +272,12 @@
       </tr><tr>
         
         <td>
+          <p><code><a href="read_merra_file.html">read_merra_file()</a></code> </p>
+        </td>
+        <td><p>Reads one file from MERRA-2 subset for a given year and month</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="solar_irradiance.html">solar_irradiance()</a></code> </p>
         </td>
         <td><p>Irradiance decomposition</p></td>
@@ -260,18 +287,6 @@
           <p><code><a href="solar_position.html">solar_position()</a></code> </p>
         </td>
         <td><p>Solar position</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="wind_GIF.html">wind_GIF()</a></code> </p>
-        </td>
-        <td><p>Quick GIF plots</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="wind_plot.html">wind_plot()</a></code> </p>
-        </td>
-        <td><p>Quick plots of wind speed and its dynamics</p></td>
       </tr>
     </tbody>
     </table>

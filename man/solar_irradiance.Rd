@@ -11,7 +11,7 @@ solar_irradiance(
   zenith = "zenith",
   zenith_max = 85,
   keep.all = FALSE,
-  verbose = TRUE
+  verbose = getOption("merra2.verbose")
 )
 }
 \arguments{

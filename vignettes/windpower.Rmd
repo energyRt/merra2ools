@@ -1,9 +1,9 @@
 ---
-title: "windpower"
+title: "Wind Power"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{windpower}
+  %\VignetteIndexEntry{Wind Power}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -28,7 +28,7 @@ library(data.table)
 
 ### Hellmann constant
 ```{r}
-dat <- merra2ools::merra2_sample %>%
+dat <- merra2ools::merra2_mar %>%
   select(-SWGDN,	-ALBEDO) %>% # drop solar radiation
   mutate(h = fH(W10M = W10M, W50M = W50M)) # Hellmann constant
 
@@ -140,13 +140,13 @@ dat2 <- select(dat, datetime, locid, w10, w50, w100, w200) %>%
 <details>
   <summary>Figure code</summary>
 ```{r, eval=FALSE}
-wind_GIF(dat2, "w50", 1, fps = 12, filename = "merra_wind_50m_12fps.gif")
+gif_merra(dat2, "w50", 1, fps = 12, filename = "merra_wind_50m_12fps.gif")
 
 ```
 </details>
 
 ```{r, fig.cap="Wind speed at 50 meters height, m/s", echo=FALSE}
-gif1 <- "../man/figures/merra_wind_50m_12fps.gif"
+gif1 <- "../images/merra_wind_50m_12fps.gif"
 if (file.exists(gif1)) include_graphics(gif1)
 
 ```
@@ -189,17 +189,17 @@ dat2 <- mutate(
 summary(dat2$w50); summary(dat2$af50)
 summary(dat2$af50[dat2$w50 > 25])
 
-wind_plot(dat2, "w50", 1)
-wind_plot(dat2, "af50", 1, limits = c(0, 1), 
+plot_merra(dat2, "w50", 1)
+plot_merra(dat2, "af50", 1, limits = c(0, 1), 
           palette = "Blues", direction = 1, legend.name = "AF")
-wind_plot(dat2, "af10", 1, limits = c(0, 1),
+plot_merra(dat2, "af10", 1, limits = c(0, 1),
           palette = "Blues", direction = 1, legend.name = "AF")
-wind_plot(dat2, "af100", 1, limits = c(0, 1),
+plot_merra(dat2, "af100", 1, limits = c(0, 1),
           palette = "Blues", direction = 1, legend.name = "AF")
-wind_plot(dat2, "af200", 1, limits = c(0, 1), 
+plot_merra(dat2, "af200", 1, limits = c(0, 1), 
           palette = "Blues", direction = 1, legend.name = "AF")
 
-wind_GIF(dat2, "af50", 1, limits = c(0, 1), fps = 12, 
+gif_merra(dat2, "af50", 1, limits = c(0, 1), fps = 12, 
          palette = "PuBu", direction = 1,
          legend.name = "AF",
          filename = "merra_wind_af50_12fps.gif")
@@ -209,7 +209,7 @@ wind_GIF(dat2, "af50", 1, limits = c(0, 1), fps = 12,
 
 
 ```{r, fig.cap="Hourly capacity factor for a generic wind turbine with 50 meters hub height.", echo=FALSE}
-gif2 <- "../man/figures/merra_wind_af50_12fps.gif"
+gif2 <- "../images/merra_wind_af50_12fps.gif"
 if (file.exists(gif2)) include_graphics(gif2)
 
 ```

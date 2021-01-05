@@ -16,7 +16,7 @@ poa_irradiance(
   ALBEDO = "ALBEDO",
   array.tilt = "array.tilt",
   keep.all = FALSE,
-  verbose = TRUE
+  verbose = getOption("merra2.verbose")
 )
 
 fPOA(
@@ -29,7 +29,7 @@ fPOA(
   lon = "lon",
   lat = "lat",
   keep.all = FALSE,
-  verbose = TRUE
+  verbose = getOption("merra2.verbose")
 )
 }
 \arguments{

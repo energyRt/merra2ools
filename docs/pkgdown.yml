@@ -4,10 +4,11 @@ pkgdown_sha: 6094ac3dd80a1f3f1d4e2f47d0ed4716d51362b0
 articles:
   data: data.html
   merra2ools: merra2ools.html
+  models: models.html
   solarpower: solarpower.html
   subset: subset.html
   windpower: windpower.html
-last_built: 2021-01-04T03:40Z
+last_built: 2021-01-05T02:50Z
 urls:
   reference: https://olugovoy.github.io/merra2ools//reference
   article: https://olugovoy.github.io/merra2ools//articles
