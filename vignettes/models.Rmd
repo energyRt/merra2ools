@@ -2,7 +2,7 @@
 title: "Models"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Estimation Models}
+  %\VignetteIndexEntry{Models}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
