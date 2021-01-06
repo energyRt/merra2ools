@@ -1,6 +1,5 @@
 ---
 title: "MERRA-2 subset"
-subtitle: "an overview"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{MERRA-2 subset}
@@ -10,11 +9,352 @@ vignette: >
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
-  collapse = TRUE,
+  collapse = TRUE, 
+  out.height = "75%", out.width = "75%", fig.align = "center",
   comment = "#>"
 )
+library(knitr)
 ```
 
-```{r setup}
-library(merra2ools)
+```{r fig_all, fig.cap="MERRA-2 variables in merra2ools database", echo=FALSE}
+gif_file <- "../images/merra_576x540_10fps.gif"
+if (file.exists(gif_file)) include_graphics(gif_file)
+
 ```
+
+
+```{r setup, eval=FALSE}
+library(merra2ools)
+library(tidyverse)
+# data_month <- 1
+data_month <- 1:12
+# get example of the data for all locations
+x <- merra2_sample(data_month, add.coord = T)
+x
+
+```
+
+
+### Temperature at 10 meters hight (T10M), Kelvin degrees
+<details>
+  <summary>Figure code</summary>
+```{r T10M, eval=FALSE}
+summary(x$T10M)
+summary(x$T10M - 272) # Kelvin -> Celsius
+
+plot_merra(x, name = "T10M", 
+           scale = 1, intercept = -272, # Kelvin -> Celsius
+           limits = c(-50, 50), 
+           legend.name = "\u00B0C",
+           datetime.position = c(144, 87))
+
+gif_merra(x, name = "T10M", dirname = "images", fps = 10,
+          limits = c(-50, 50), intercept = -272, 
+          legend.position = c(0.9, 0.05), 
+          legend.name = expression("\u00B0C"),
+          datetime.position = c(144, 87))
+
+```
+</details>
+
+
+```{r fig_T10M, fig.cap="Temperature at 10 meters hight, Celsius", echo=FALSE}
+gif_file <- "../images/merra_T10M_576x360_10fps.gif"
+if (file.exists(gif_file)) include_graphics(gif_file)
+
+```
+
+### Wind speed at 10 and 50 meters hights (W10M and W50M), m/s
+<details>
+  <summary>Figure code</summary>
+```{r wind, eval=FALSE}
+summary(x$W50M)
+# fig.W50M <- 
+plot_merra(x, name = "W50M", limits = c(0, 30), 
+           legend.name = expression("m/s"),
+           datetime.position = c(144, 87))
+
+# fig.W10M <- 
+plot_merra(x, name = "W10M", limits = c(0, 30),
+           legend.name = expression("m/s"),
+           datetime.position = c(144, 87))
+
+gif_merra(x, name = "W50M", dirname = "images", fps = 12,
+          limits = c(0, 30), 
+          legend.position = c(0.9, 0.05), 
+          legend.name = expression("m/s"),
+          datetime.position = c(144, 87))
+
+
+gif_merra(x, name = "W10M", dirname = "images", fps = 12,
+          limits = c(0, 30), 
+          legend.position = c(0.9, 0.05), 
+          legend.name = expression("m/s"),
+          datetime.position = c(144, 87))
+
+
+```
+</details>
+
+```{r fig_W10M, fig.cap="Wind speed at 10 meters hight", echo=FALSE, include=FALSE}
+gif_file <- "../images/merra_W10M_576x360_12fps.gif"
+if (file.exists(gif_file)) include_graphics(gif_file)
+
+```
+
+```{r fig_W50M, fig.cap="Wind speed at 50 meters hight", echo=FALSE}
+gif_file <- "../images/merra_W50M_576x360_12fps.gif"
+if (file.exists(gif_file)) include_graphics(gif_file)
+
+```
+
+### Global Horizontal Irradiance (SWGDN), Watt/m2
+<details>
+  <summary>Figure code</summary>
+```{r GHI, eval=FALSE}
+summary(x$SWGDN)
+
+plot_merra(x, name = "SWGDN", limits = c(0, 1200), 
+           legend.position = c(0.88, 0.05), 
+           legend.name = ("W/\u33A1"),
+           datetime.position = c(144, 87))
+
+plot_merra(x, name = "SWGDN", dirname = "images", fps = 5,
+          limits = c(0, 1), scale = 1/1000,
+          legend.position = c(0.88, 0.05), 
+          legend.name = ("kW/\u33A1"),
+          datetime.position = c(144, 87))
+
+gif_merra(x, name = "SWGDN", dirname = "images", fps = 5,
+          limits = c(0, 1200), scale = 1,
+          legend.position = c(0.88, 0.05), 
+          legend.name = ("W/\u33A1"),
+          datetime.position = c(144, 87))
+
+```
+</details>
+
+```{r fig_SWGDN, fig.cap="Global Horizontal Irradiance", echo=FALSE}
+gif_file <- "../images/merra_SWGDN_576x360_5fps.gif"
+if (file.exists(gif_file)) include_graphics(gif_file)
+
+```
+
+### Albedo (ALBEDO), index [0..1]
+<details>
+  <summary>Figure code</summary>
+```{r albedo, eval=FALSE}
+summary(x$ALBEDO)
+
+plot_merra(x, name = "ALBEDO", dirname = "images", fps = 5,
+          limits = c(0, 1), scale = 1,
+          legend.position = c(0.9, 0.05), 
+          legend.name = (""),
+          datetime.position = c(144, 87))
+
+gif_merra(x, name = "ALBEDO", dirname = "images", fps = 5,
+          limits = c(0, 1), scale = 1,
+          legend.position = c(0.9, 0.05), 
+          legend.name = (""),
+          datetime.position = c(144, 87))
+
+```
+</details>
+
+```{r fig_ALBEDO, fig.cap="Surface albedo", echo=FALSE}
+gif_file <- "../images/merra_ALBEDO_576x360_5fps.gif"
+if (file.exists(gif_file)) include_graphics(gif_file)
+
+```
+
+### Surface atmospheric preassure (PS), hPa
+<details>
+  <summary>Figure code</summary>
+```{r PS, eval=FALSE}
+summary(x$PS_hPa)
+
+plot_merra(x, name = "PS_hPa", dirname = "images", fps = 5,
+          limits = c(500, 1000), scale = 1, direction = 1,
+          legend.position = c(0.89, 0.05), palette = "YlGnBu",
+          legend.name = ("hPa"),
+          datetime.position = c(144, 87))
+
+gif_merra(x, name = "PS_hPa", dirname = "images", fps = 24,
+          limits = c(500, 1000), scale = 1, direction = 1,
+          legend.position = c(0.89, 0.05), 
+          legend.name = ("hPa"),
+          datetime.position = c(144, 87))
+
+```
+</details>
+
+```{r fig_PS, fig.cap="Surface pressure", echo=FALSE}
+gif_file <- "../images/merra_PS_hPa_576x360_24fps.gif"
+if (file.exists(gif_file)) include_graphics(gif_file)
+
+```
+
+<details>
+  <summary>Figure code</summary>
+```{r dPS, eval=FALSE}
+PS_mean <- x %>% 
+  group_by(locid) %>%
+  summarise(PS_mean = mean(PS_hPa, na.rm = TRUE), .groups = "drop")
+
+x <- full_join(x, PS_mean) %>%
+  mutate(dPS = PS_hPa - PS_mean)
+summary(x$dPS)
+
+plot_merra(x, name = "dPS", dirname = "images", fps = 5,
+          limits = c(-30, 30), scale = 1, direction = -1,
+          legend.position = c(0.9, 0.05), 
+          legend.name = ("hPa"),
+          datetime.position = c(144, 87))
+
+gif_merra(x, name = "dPS", dirname = "images", fps = 5,
+          limits = c(-30, 30), scale = 1, direction = -1,
+          legend.position = c(0.89, 0.05), 
+          legend.name = ("hPa"),
+          datetime.position = c(144, 87))
+
+```
+</details>
+
+```{r fig_dPS, fig.cap="Surface pressure difference from mean value", echo=FALSE}
+gif_file <- "../images/merra_dPS_576x360_10fps.gif"
+if (file.exists(gif_file)) include_graphics(gif_file)
+
+```
+
+
+### Combined figures
+<details>
+  <summary>Figure code</summary>
+```{r fig_functions, eval=FALSE}
+
+fig.T10M <- function(x) {
+  plot_merra(x, name = "T10M", intercept = -272, 
+             limits = c(-50, 50), legend.name = "\u00B0C",
+           # datetime.position = c(144, 87), 
+           # legend.position = c(0.89, 0.05), 
+           legend.position = NULL,
+           datetime.position = NA,
+           expand.x = c(0.002, 0.005), expand.y = c(0.002, 0.005))
+}
+# fig.T10M(x)
+
+fig.W50M <- function(x) {
+    plot_merra(x, name = "W50M", limits = c(0, 30), 
+           legend.name = expression("m/s"),
+           datetime.position = c(110, 87),
+           # legend.position = c(0.89, 0.05), 
+           legend.position = NULL,
+           # datetime.position = NA,
+           expand.x = c(0.002, 0.005), expand.y = c(0.002, 0.005)
+           )
+}
+# fig.W50M(x)
+
+fig.W10M <- function(x) {
+    plot_merra(x, name = "W10M", limits = c(0, 30), 
+           legend.name = expression("m/s"),
+           # datetime.position = c(144, 87)
+           # legend.position = c(0.89, 0.05), 
+           legend.position = NULL,
+           datetime.position = NA,
+           expand.x = c(0.002, 0.005), expand.y = c(0.002, 0.005)
+           )
+}
+# fig.W10M(x)
+
+fig.ALBEDO <- function(x) {
+  plot_merra(x, name = "ALBEDO", dirname = "images", fps = 5,
+          limits = c(0, 1), scale = 1,
+          # legend.position = c(0.9, 0.05), 
+          legend.position = NULL,
+          legend.name = (""), 
+           datetime.position = NA,
+           expand.x = c(0.002, 0.005), expand.y = c(0.002, 0.005)
+           )
+}
+# fig.ALBEDO(x)
+
+fig.SWGDN <- function(x) {
+  plot_merra(x, name = "SWGDN", limits = c(0, 1200), 
+           # legend.position = c(0.88, 0.05), 
+           legend.position = NULL,
+           legend.name = ("W/\u33A1"), 
+           datetime.position = NULL,
+           expand.x = c(0.002, 0.005), expand.y = c(0.002, 0.005)
+           )
+}
+# fig.SWGDN(x)
+
+fig.PS_hPa <- function(x) {
+  plot_merra(x, name = "PS_hPa", dirname = "images", fps = 5,
+          limits = c(500, 1000), scale = 1, direction = 1,
+          # palette = "YlGnBu",
+          # legend.position = c(0.89, 0.05), 
+          legend.position = NULL,
+          legend.name = ("hPa"),
+           datetime.position = NA,
+           expand.x = c(0.002, 0.005), expand.y = c(0.002, 0.005)
+           )
+}
+# fig.PS_hPa(x)
+
+fig.dPS <- function(x) {
+  plot_merra(x, name = "dPS", dirname = "images", fps = 5,
+          limits = c(-50, 50), scale = 1, direction = -1,
+          # legend.position = c(0.9, 0.05), 
+          legend.position = NULL,
+          legend.name = ("hPa"),
+           datetime.position = NA,
+           expand.x = c(0.002, 0.005), expand.y = c(0.002, 0.005)
+           )
+}
+# fig.dPS(x)
+```
+
+```{r grid, eval=FALSE}
+library("cowplot")
+fig.grid <- function(x) {
+  plot_grid(fig.W10M(x), fig.W50M(x),
+            fig.SWGDN(x), fig.ALBEDO(x),
+            fig.T10M(x), fig.PS_hPa(x),
+            # fig.dPS(x),
+            labels = c("W10M", "W50M", "SWGDN", "ALBEDO", "T10M", "PS"),
+            ncol = 2, nrow = 3, hjust = -0.1, vjust = 1.1, label_size = 10)
+}
+# ii <- lubridate::month(x$datetime) == 2; summary(ii)
+fig.grid(x)
+
+gif_merra(x, FUN = "fig.grid", dirname = "images", fps = 10,
+          gif.width = 576, gif.height = 360 * 1.5)
+
+
+# gif_merra(x, FUN = "fig.grid", dirname = "images", fps = 10,
+#           gif.width = 576 * 2, gif.height = 360 * 3)
+
+
+# gif_merra(x, FUN = "fig.grid", dirname = "images", fps = 10,
+#           gif.width = 576/1.5, gif.height = 360)
+
+
+fig.grid2 <- function(x) {
+  plot_grid(fig.W10M(x), fig.W50M(x),
+            fig.SWGDN(x), fig.ALBEDO(x),
+            fig.T10M(x), fig.dPS(x),
+            # fig.dPS(x),
+            labels = c("W10M", "W50M", "SWGDN", "ALBEDO", "T10M", "dPS"),
+            ncol = 2, nrow = 3, hjust = -0.1, vjust = 1.1, label_size = 10)
+}
+
+gif_merra(x, FUN = "fig.grid2", dirname = "images", fps = 5,
+          gif.width = 576, gif.height = 360 * 1.5)
+
+
+```
+</details>
+
+

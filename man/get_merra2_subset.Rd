@@ -16,13 +16,13 @@ get_merra2_subset(
 )
 }
 \arguments{
-\item{locid}{integer vector with location locid (values from 1 to 207936)}
+\item{locid}{integer vector with location \code{locid} (values from 1 to 207936)}
 
 \item{from}{starting date and time of the subset in "YYYY-MM-DD HH" format}
 
-\item{to}{ending date and time of the subset in "YYYY-MM-DD HH" format}
+\item{to}{ending date and time of the subset in "YYYY-MM-DD HH" format (see \code{fDate})}
 
-\item{tz}{time zone of the requested date-time interval (see \code{OlsonNames()})}
+\item{tz}{time zone of the requested date-time interval (see \code{OlsonNames})}
 
 \item{cols}{names or indexes of columns from the database (NULL default, returning all available columns)}
 

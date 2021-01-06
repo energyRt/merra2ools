@@ -105,13 +105,10 @@
       <a href="../articles/data.html">MERRA-2 subset</a>
     </li>
     <li>
-      <a href="../articles/models.html">Estimation Models</a>
+      <a href="../articles/models.html">Models</a>
     </li>
     <li>
       <a href="../articles/solarpower.html">Solar Power</a>
-    </li>
-    <li>
-      <a href="../articles/subset.html">subset</a>
     </li>
     <li>
       <a href="../articles/windpower.html">Wind Power</a>
@@ -149,39 +146,27 @@
     </div>
 
     <pre class="usage"><span class='fu'>gif_merra</span><span class='op'>(</span>
-  <span class='va'>merra</span>,
-  name <span class='op'>=</span> <span class='st'>"W50M"</span>,
-  mult <span class='op'>=</span> <span class='fl'>1</span>,
+  <span class='va'>x</span>,
+  FUN <span class='op'>=</span> <span class='st'>"plot_merra"</span>,
   nmax <span class='op'>=</span> <span class='fl'>24</span> <span class='op'>*</span> <span class='fl'>12</span>,
   fps <span class='op'>=</span> <span class='fl'>12</span>,
   gif.width <span class='op'>=</span> <span class='fl'>576</span>,
   gif.height <span class='op'>=</span> <span class='fl'>360</span>,
-  filename <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>"merra_"</span>, <span class='va'>name</span>, <span class='st'>"_"</span>, <span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span><span class='op'>(</span><span class='va'>gif.width</span><span class='op'>)</span>, <span class='st'>"x"</span>, <span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span><span class='op'>(</span><span class='va'>gif.height</span><span class='op'>)</span>, <span class='st'>"_"</span>,
-    <span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span><span class='op'>(</span><span class='va'>fps</span><span class='op'>)</span>, <span class='st'>"fps.gif"</span><span class='op'>)</span>,
-  dirname <span class='op'>=</span> <span class='st'>""</span>,
-  limits <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>35</span><span class='op'>)</span>,
-  palette <span class='op'>=</span> <span class='st'>"RdYlBu"</span>,
-  direction <span class='op'>=</span> <span class='op'>-</span><span class='fl'>1</span>,
-  legend.position <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.9</span>, <span class='fl'>0.05</span><span class='op'>)</span>,
-  legend.name <span class='op'>=</span> <span class='st'>"m/s"</span>,
-  datetime.position <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>145</span>, <span class='fl'>87</span><span class='op'>)</span>,
-  datetime.format <span class='op'>=</span> <span class='st'>"%Y-%b-%d, %Hh %Z"</span>,
-  verbose <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"merra2.verbose"</span><span class='op'>)</span>
+  filename <span class='op'>=</span> <span class='cn'>NULL</span>,
+  dirname <span class='op'>=</span> <span class='st'>"."</span>,
+  verbose <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"merra2.verbose"</span><span class='op'>)</span>,
+  <span class='va'>...</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>merra</th>
+      <th>x</th>
       <td></td>
     </tr>
     <tr>
-      <th>name</th>
-      <td></td>
-    </tr>
-    <tr>
-      <th>mult</th>
+      <th>FUN</th>
       <td></td>
     </tr>
     <tr>
@@ -205,23 +190,15 @@
       <td></td>
     </tr>
     <tr>
-      <th>limits</th>
-      <td></td>
-    </tr>
-    <tr>
-      <th>legend.position</th>
-      <td></td>
-    </tr>
-    <tr>
-      <th>datetime.position</th>
-      <td></td>
-    </tr>
-    <tr>
-      <th>datetime.format</th>
+      <th>dirname</th>
       <td></td>
     </tr>
     <tr>
       <th>verbose</th>
+      <td></td>
+    </tr>
+    <tr>
+      <th>...</th>
       <td></td>
     </tr>
     </table>

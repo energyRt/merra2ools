@@ -5,32 +5,50 @@
 \title{Quick plots of wind speed and its dynamics}
 \usage{
 plot_merra(
-  merra,
+  x,
   name = "W50M",
-  mult = 1,
+  scale = 1,
+  intercept = 0,
   limits = c(0, 35),
   palette = "RdYlBu",
   direction = -1,
   legend.position = c(0.91, 0.05),
   legend.name = "m/s",
   datetime.position = c(150, 87),
-  datetime.format = "\%Y-\%b-\%d, \%Hh \%Z"
+  datetime.format = "\%Y-\%b-\%d, \%Hh \%Z",
+  expand.x = c(0, 0),
+  expand.y = c(0, 0),
+  ...
 )
 }
 \arguments{
-\item{merra}{}
+\item{x}{}
 
 \item{name}{}
 
-\item{mult}{}
+\item{scale}{}
+
+\item{intercept}{}
 
 \item{limits}{}
 
+\item{palette}{}
+
+\item{direction}{}
+
 \item{legend.position}{}
+
+\item{legend.name}{}
 
 \item{datetime.position}{}
 
 \item{datetime.format}{}
+
+\item{expand.x}{}
+
+\item{expand.y}{}
+
+\item{...}{}
 }
 \value{
 

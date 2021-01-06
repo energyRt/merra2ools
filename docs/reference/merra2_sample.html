@@ -105,13 +105,10 @@
       <a href="../articles/data.html">MERRA-2 subset</a>
     </li>
     <li>
-      <a href="../articles/models.html">Estimation Models</a>
+      <a href="../articles/models.html">Models</a>
     </li>
     <li>
       <a href="../articles/solarpower.html">Solar Power</a>
-    </li>
-    <li>
-      <a href="../articles/subset.html">subset</a>
     </li>
     <li>
       <a href="../articles/windpower.html">Wind Power</a>
@@ -148,7 +145,7 @@
     <p>Get a example of MERRA2 data for a particular month(s)</p>
     </div>
 
-    <pre class="usage"><span class='fu'>merra2_sample</span><span class='op'>(</span>month <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>12</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>merra2_sample</span><span class='op'>(</span>month <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>12</span>, add.coord <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -167,29 +164,29 @@ The returned data.table has the same format as returned by <code><a href='get_me
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'> <span class='fu'>merra2_sample</span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;                      datetime  locid T10M W10M W50M PS_hPa SWGDN ALBEDO
-#&gt;        1: 2010-01-21 00:30:00      1 24.7  2.4  3.1    695   339    0.8
-#&gt;        2: 2010-01-21 00:30:00      2 24.7  2.4  3.1    695   339    0.8
-#&gt;        3: 2010-01-21 00:30:00      3 24.7  2.4  3.1    695   339    0.8
-#&gt;        4: 2010-01-21 00:30:00      4 24.7  2.4  3.1    695   339    0.8
-#&gt;        5: 2010-01-21 00:30:00      5 24.7  2.4  3.1    695   339    0.8
+#&gt;        1: 2010-01-21 00:30:00      1  247  2.4  3.1    695   339    0.8
+#&gt;        2: 2010-01-21 00:30:00      2  247  2.4  3.1    695   339    0.8
+#&gt;        3: 2010-01-21 00:30:00      3  247  2.4  3.1    695   339    0.8
+#&gt;        4: 2010-01-21 00:30:00      4  247  2.4  3.1    695   339    0.8
+#&gt;        5: 2010-01-21 00:30:00      5  247  2.4  3.1    695   339    0.8
 #&gt;       ---                                                              
-#&gt; 59885564: 2010-12-21 23:30:00 207932 26.3  6.2  7.8   1017     0    0.0
-#&gt; 59885565: 2010-12-21 23:30:00 207933 26.3  6.2  7.8   1017     0    0.0
-#&gt; 59885566: 2010-12-21 23:30:00 207934 26.3  6.3  7.8   1017     0    0.0
-#&gt; 59885567: 2010-12-21 23:30:00 207935 26.3  6.3  7.8   1017     0    0.0
-#&gt; 59885568: 2010-12-21 23:30:00 207936 26.3  6.3  7.8   1017     0    0.0</div><div class='input'> <span class='fu'>merra2_sample</span><span class='op'>(</span><span class='fl'>2</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>)</span>
+#&gt; 59885564: 2010-12-21 23:30:00 207932  263  6.2  7.8   1017     0    0.0
+#&gt; 59885565: 2010-12-21 23:30:00 207933  263  6.2  7.8   1017     0    0.0
+#&gt; 59885566: 2010-12-21 23:30:00 207934  263  6.3  7.8   1017     0    0.0
+#&gt; 59885567: 2010-12-21 23:30:00 207935  263  6.3  7.8   1017     0    0.0
+#&gt; 59885568: 2010-12-21 23:30:00 207936  263  6.3  7.8   1017     0    0.0</div><div class='input'> <span class='fu'>merra2_sample</span><span class='op'>(</span><span class='fl'>2</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;                     datetime  locid T10M W10M W50M PS_hPa SWGDN ALBEDO
-#&gt;       1: 2010-02-21 00:30:00      1 23.2  4.7  6.2    690   135   0.80
-#&gt;       2: 2010-02-21 00:30:00      2 23.2  4.7  6.2    690   135   0.80
-#&gt;       3: 2010-02-21 00:30:00      3 23.2  4.7  6.2    690   135   0.80
-#&gt;       4: 2010-02-21 00:30:00      4 23.2  4.7  6.2    690   135   0.80
-#&gt;       5: 2010-02-21 00:30:00      5 23.2  4.7  6.3    690   135   0.80
+#&gt;       1: 2010-02-21 00:30:00      1  232  4.7  6.2    690   135   0.80
+#&gt;       2: 2010-02-21 00:30:00      2  232  4.7  6.2    690   135   0.80
+#&gt;       3: 2010-02-21 00:30:00      3  232  4.7  6.2    690   135   0.80
+#&gt;       4: 2010-02-21 00:30:00      4  232  4.7  6.2    690   135   0.80
+#&gt;       5: 2010-02-21 00:30:00      5  232  4.7  6.3    690   135   0.80
 #&gt;      ---                                                              
-#&gt; 9980924: 2010-03-21 23:30:00 207932 25.3  5.5  6.3   1032     0   0.82
-#&gt; 9980925: 2010-03-21 23:30:00 207933 25.3  5.5  6.4   1032     0   0.82
-#&gt; 9980926: 2010-03-21 23:30:00 207934 25.3  5.5  6.4   1032     0   0.82
-#&gt; 9980927: 2010-03-21 23:30:00 207935 25.3  5.5  6.4   1032     0   0.82
-#&gt; 9980928: 2010-03-21 23:30:00 207936 25.3  5.6  6.4   1032     0   0.82</div></pre>
+#&gt; 9980924: 2010-03-21 23:30:00 207932  253  5.5  6.3   1032     0   0.82
+#&gt; 9980925: 2010-03-21 23:30:00 207933  253  5.5  6.4   1032     0   0.82
+#&gt; 9980926: 2010-03-21 23:30:00 207934  253  5.5  6.4   1032     0   0.82
+#&gt; 9980927: 2010-03-21 23:30:00 207935  253  5.5  6.4   1032     0   0.82
+#&gt; 9980928: 2010-03-21 23:30:00 207936  253  5.6  6.4   1032     0   0.82</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

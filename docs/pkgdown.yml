@@ -6,9 +6,8 @@ articles:
   merra2ools: merra2ools.html
   models: models.html
   solarpower: solarpower.html
-  subset: subset.html
   windpower: windpower.html
-last_built: 2021-01-05T02:50Z
+last_built: 2021-01-06T04:35Z
 urls:
   reference: https://olugovoy.github.io/merra2ools//reference
   article: https://olugovoy.github.io/merra2ools//articles

@@ -4,7 +4,7 @@
 \alias{merra2_sample}
 \title{Get a example of MERRA2 data for a particular month(s)}
 \usage{
-merra2_sample(month = 1:12)
+merra2_sample(month = 1:12, add.coord = FALSE)
 }
 \arguments{
 \item{month}{integer vector with month numbers (1 to 12)}

@@ -5,32 +5,22 @@
 \title{Quick GIF plots}
 \usage{
 gif_merra(
-  merra,
-  name = "W50M",
-  mult = 1,
+  x,
+  FUN = "plot_merra",
   nmax = 24 * 12,
   fps = 12,
   gif.width = 576,
   gif.height = 360,
-  filename = paste0("merra_", name, "_", round(gif.width), "x", round(gif.height), "_",
-    round(fps), "fps.gif"),
-  dirname = "",
-  limits = c(0, 35),
-  palette = "RdYlBu",
-  direction = -1,
-  legend.position = c(0.9, 0.05),
-  legend.name = "m/s",
-  datetime.position = c(145, 87),
-  datetime.format = "\%Y-\%b-\%d, \%Hh \%Z",
-  verbose = getOption("merra2.verbose")
+  filename = NULL,
+  dirname = ".",
+  verbose = getOption("merra2.verbose"),
+  ...
 )
 }
 \arguments{
-\item{merra}{}
+\item{x}{}
 
-\item{name}{}
-
-\item{mult}{}
+\item{FUN}{}
 
 \item{nmax}{}
 
@@ -42,15 +32,11 @@ gif_merra(
 
 \item{filename}{}
 
-\item{limits}{}
-
-\item{legend.position}{}
-
-\item{datetime.position}{}
-
-\item{datetime.format}{}
+\item{dirname}{}
 
 \item{verbose}{}
+
+\item{...}{}
 }
 \value{
 

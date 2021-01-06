@@ -46,9 +46,9 @@ if (F) {
 #' Get MERRA-2 subset 
 #'
 #' @param from starting date and time of the subset in "YYYY-MM-DD HH" format
-#' @param to ending date and time of the subset in "YYYY-MM-DD HH" format
-#' @param tz time zone of the requested date-time interval (see \code{OlsonNames()})
-#' @param locid integer vector with location locid (values from 1 to 207936)
+#' @param to ending date and time of the subset in "YYYY-MM-DD HH" format (see \code{fDate})
+#' @param tz time zone of the requested date-time interval (see \code{OlsonNames})
+#' @param locid integer vector with location \code{locid} (values from 1 to 207936)
 #' @param cols names or indexes of columns from the database (NULL default, returning all available columns)
 #' @param quiet if process should be reported
 #' @param rows_lim 
@@ -121,7 +121,6 @@ get_merra2_subset <- function(locid = 1:207936L,
   options(dplyr.summarise.inform = op)
   # browser()
   if (original.units) {
-    if (!is.null(sam[["T10M"]])) sam[["T10M"]] <- sam[["T10M"]]/10
     if (!is.null(sam[["W10M"]])) sam[["W10M"]] <- sam[["W10M"]]/10
     if (!is.null(sam[["W50M"]])) sam[["W50M"]] <- sam[["W50M"]]/10
     if (!is.null(sam[["ALBEDO"]])) sam[["ALBEDO"]] <- sam[["ALBEDO"]]/100
@@ -152,7 +151,7 @@ if (F) {
   fst::write_fst(merra2_mar, path = "tmp/merra2_mar_3d.fst", 100)
 
   merra2_jan <- get_merra2_subset(from = "2010-01-21 00", to = "2010-01-21 23")
-  merra2_feb <- get_merra2_subset(from = "2010-02-21 00", to = "2010-02-21 23")
+  merra2_feb2 <- get_merra2_subset(from = "2010-02-21 00", to = "2010-02-21 23")
   merra2_mar <- get_merra2_subset(from = "2010-03-21 00", to = "2010-03-21 23")
   merra2_apr <- get_merra2_subset(from = "2010-04-21 00", to = "2010-04-21 23")
   merra2_may <- get_merra2_subset(from = "2010-05-21 00", to = "2010-05-21 23")
@@ -217,7 +216,6 @@ read_merra_file <- function(YYYYMM,
   if (!is.null(merra[["locid"]])) merra <- rename(merra, loc_id = locid)
   
   if (original.units) {
-    if (!is.null(merra[["T10M"]])) merra[["T10M"]] <- merra[["T10M"]]/10
     if (!is.null(merra[["W10M"]])) merra[["W10M"]] <- merra[["W10M"]]/10
     if (!is.null(merra[["W50M"]])) merra[["W50M"]] <- merra[["W50M"]]/10
     if (!is.null(merra[["ALBEDO"]])) merra[["ALBEDO"]] <- merra[["ALBEDO"]]/100
@@ -248,7 +246,9 @@ add_lonlat <- function(x, force = FALSE) {
       stop("'x' already has 'lon' and/or 'lat' coordinates, use 'force = TRUE' to overwrite")
     }
   }
-  x <- dplyr::left_join(x, locid[,1:3], by = "locid")
+  # x <- dplyr::left_join(x, locid[,1:3], by = "locid")
+  x <- data.table::merge.data.table(x, locid[,1:3], by = "locid", 
+                                    all.x = TRUE, all.y = FALSE, )
   return(x)
 }
 
@@ -273,16 +273,18 @@ add_locid <- function(x) {
 #' @examples
 #'  merra2_sample()
 #'  merra2_sample(2:3)
-merra2_sample <- function(month = 1:12) {
+merra2_sample <- function(month = 1:12, add.coord = FALSE) {
   nms <- unique(tolower(month.abb[month]))
   nms <- paste0("merra2_", nms)
   x <- lapply(nms, get)
   x <- data.table::rbindlist(x)
+  if (add.coord) x <- add_lonlat(x)
   return(x)
 }
 
 if (F) {
   merra2_sample()
   merra2_sample(2:3)
+  merra2_sample(1:2, T)
 }
 

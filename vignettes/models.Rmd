@@ -1,5 +1,5 @@
 ---
-title: "Estimation Models"
+title: "Models"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Estimation Models}
