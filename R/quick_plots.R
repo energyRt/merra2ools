@@ -20,12 +20,14 @@
 #' @export
 #'
 #' @examples
+#' NA
 plot_merra <- function(x, 
                        name = "W50M", scale = 1, intercept = 0,
                       limits = c(0, 35), 
                       palette = "RdYlBu", direction = -1,
                       legend.position = c(0.91, 0.05),
                       legend.name = "m/s",
+                      datetime = "UTC",
                       datetime.position = c(150, 87),
                       datetime.format = "%Y-%b-%d, %Hh %Z",
                       expand.x = c(0., 0.),
@@ -44,27 +46,41 @@ plot_merra <- function(x,
       lid <- select(merra2ools::locid, 1:3)
       x <- right_join(lid, x)
     } else {
-      stop("Data doesn't have lat, lon or lod_id")
+      stop("Data doesn't have lat, lon or locid")
     }
   }
   gif = FALSE 
   # browser()
-  x$mps <- x[[name]]*scale + intercept
+  x$mps <- x[[name]] * scale + intercept
   x$mps[x$mps < limits[1]] <- limits[1]
   x$mps[x$mps > limits[2]] <- limits[2]
-  dat_time <- unique(x$datetime) %>% sort()
+  if (!is.null(x[[datetime]])) {
+    dat_time <- unique(x[[datetime]]) %>% sort()
+  } else {
+    warning("`datetime` variable is not found")
+    dat_time <- NULL
+    datetime.position <- NULL
+  }
+  
   if (length(dat_time) > 1) {
     if (!gif) {
       warning("Multiple datetime values found, using the earliest one: ", dat_time[1])
-      ii <- x$datetime == dat_time[1]
+      ii <- x[[datetime]] == dat_time[1]
+    } else if (!is.null(dat_time)) {
+      ii <- x[[datetime]] %in% dat_time[1:gif_nmax]
     } else {
-      ii <- x$datetime %in% dat_time[1:gif_nmax]
+      ii <- rep(TRUE, nrow(x))
+      x[[datetime]] <- NA
     }
     x <- x[ii,]
   }
   
-  x <- select(x, lon, lat, datetime, mps)
-  x$label <- format(x$datetime, datetime.format)
+  if (!is.null(dat_time)) {
+    x <- select(x, lon, lat, datetime, mps)
+    x$label <- format(x[[datetime]], datetime.format)
+  } else {
+    x <- select(x, lon, lat, mps)
+  }
   
   pp <-
     ggplot(x, aes(lon, lat)) + 
@@ -144,10 +160,12 @@ if (F) {
 #' @export
 #'
 #' @examples
+#' NA
 gif_merra <- function(x, 
                       # name = "W10M",
                       FUN = "plot_merra",
                      #  name = "W50M", scale = 1, 
+                     datetime = "UTC",
                      nmax = 24*12,
                      fps = 12,
                      gif.width = 576, gif.height = 360,
@@ -165,6 +183,7 @@ gif_merra <- function(x,
   # browser()
   # dirname <- dirname(filename)
   args <- list(...)
+  args$datetime <- datetime
   if (is.null(filename)) {
     name <- args$name
     filename <- paste0(
@@ -181,14 +200,14 @@ gif_merra <- function(x,
   on.exit(setwd(homedir))
   setwd(dirname)
   filename <- basename(filename)
-  frames <- unique(x$datetime) %>% sort()
+  frames <- unique(x[[datetime]]) %>% sort()
   nframes <- min(length(frames), nmax)
   # browser()
   animation::saveGIF({
     if (verbose) cat("frame:")
     for (i in 1:nframes) {
       if (verbose) cat(format(i, width = nchar(nframes) + 1))
-      ii <- x$datetime == frames[i]
+      ii <- x[[datetime]] == frames[i]
       args$x <- x[ii,]
       a <- do.call(FUN, args)
       # a <- plot_merra(x[ii,], name = name, scale = scale,
@@ -261,7 +280,7 @@ ffmpeg_merra <- function(x, name = "W50M", scale = 1,
 
 
 if (F) {
-  x <- add_lonlat(merra2_mar)
+  x <- add_coord(merra2_mar)
   # gif_merra(x, "W10M", 1, fps = 12, filename = "images/merra_wind_10m_12fps.gif")
   gif_merra(x, "W10M", 1, fps = 10, dirname = "gif")
   ffmpeg_merra(x, "W10M", 1, fps = 4, filename = "merra_ffmpeg.gif")
@@ -274,98 +293,98 @@ if (F) {
 }
 
 
-plot_SWGND <- function(x, name = "SWGDN", scale = 1, 
-                      limits = c(0, 1300), 
-                      palette = "RdYlBu", direction = -1,
-                      na.value = "grey50",
-                      legend.position = c(0.91, 0.05),
-                      legend.name = "m/s",
-                      datetime.position = c(150, 87),
-                      datetime.format = "%Y-%b-%d, %Hh %Z"
-                      # gif = FALSE 
-                      # gif.file = "merra_wind.gif",
-                      # gif.nmax = 24, fps = 12,
-                      # gif.width = 1920/3, gif.height = 1080/3
-) {
-  if (!is.data.frame(x)) stop("'x' must be a data.frame with MERRA-2 subset")
-  if (is.null(x[[name]])) stop("Column '", name, "' is not found")
-  if (is.null(x[["lon"]]) | is.null(x[["lat"]])) {
-    if (!is.null(x[["locid"]])) {
-      warning("Adding 'lon' and  'lat' from 'locid'")
-      lid <- select(merra2ools::locid, 1:3)
-      x <- right_join(lid, x)
-    } else {
-      stop("Data doesn't have lat, lon or lod_id")
-    }
-  }
-  gif = FALSE 
-  # browser()
-  x$mps <- x[[name]]*scale
-  x$mps[x$mps < limits[1]] <- limits[1]
-  x$mps[x$mps > limits[2]] <- limits[2]
-  dat_time <- unique(x$datetime) %>% sort()
-  if (length(dat_time) > 1) {
-    if (!gif) {
-      warning("Multiple datetime values found, using the earliest one: ", dat_time[1])
-      ii <- x$datetime == dat_time[1]
-    } else {
-      ii <- x$datetime %in% dat_time[1:gif_nmax]
-    }
-    x <- x[ii,]
-  }
-  
-  x <- select(x, lon, lat, datetime, mps)
-  x$label <- format(x$datetime, datetime.format)
-  
-  pp <-
-    ggplot(x, aes(lon, lat)) + 
-    geom_tile(aes(fill = mps), alpha = 1, interpolate = F, 
-                show.legend = !is.null(legend.position)) +
-    scale_fill_distiller(palette = palette, direction = direction, 
-                         limits = limits, name = legend.name, na.value = na.value) +
-    theme_void() +
-    # theme(panel.grid = element_blank(), panel.border = element_blank()) +
-    scale_x_continuous(expand = c(0.00, 0.00)) +
-    scale_y_continuous(expand = c(0.00, 0.00)) +
-    theme(legend.position = legend.position,
-          legend.direction = "horizontal", legend.box = "horizontal",
-          # plot.title = element_text(hjust = 0.5), 
-          # plot.subtitle = element_text(hjust = 0.5),
-          # legend.background = element_rect(fill = alpha('white', 0.5)),
-          legend.box.background = element_rect(size = 0.0, 
-                                               colour = NA, 
-                                               fill = alpha('white', .2)),
-          legend.margin = margin(3, 3, 3, 3),
-          legend.title = element_text(vjust = .8))
-  
-  # if (gif) {
-  # # library(gganimate)
-  # pp <- pp + 
-  #   gganimate::transition_states(states = label, transition_length = 0) +
-  #   geom_label(
-  #     # data = data.frame( x = 153, y = 87, label = x$label[1]), 
-  #     aes(x = 153, y = 87, label = '{closest_state}'), label.size = 0, color = "black",
-  #     fill = "white", alpha = 0.2)
-  # pp <- animate(p, renderer = gifski_renderer(), fps = fps, 
-  #               nframes = length(unique(x$datetime)), 
-  #               width = 1024, height = 1024*1080/1920)
-  
-  # } else {
-  # browser()
-  if (!is.null(datetime.position) & all(!is.na(datetime.position))) {
-    pp <- pp + 
-      geom_label(
-        data = data.frame(x = datetime.position[1], 
-                          y = datetime.position[2],
-                          label = x$label[1]),
-        aes(x = x, y = y, label = label), label.size = 0, color = "black",
-        fill = "white", alpha = 0.2)
-  }
-  return(pp)
-  # }
-}
 
 if (F) {
+  plot_SWGND <- function(x, name = "SWGDN", scale = 1, 
+                         limits = c(0, 1300), 
+                         palette = "RdYlBu", direction = -1,
+                         na.value = "grey50",
+                         legend.position = c(0.91, 0.05),
+                         legend.name = "m/s",
+                         datetime.position = c(150, 87),
+                         datetime.format = "%Y-%b-%d, %Hh %Z"
+                         # gif = FALSE 
+                         # gif.file = "merra_wind.gif",
+                         # gif.nmax = 24, fps = 12,
+                         # gif.width = 1920/3, gif.height = 1080/3
+  ) {
+    if (!is.data.frame(x)) stop("'x' must be a data.frame with MERRA-2 subset")
+    if (is.null(x[[name]])) stop("Column '", name, "' is not found")
+    if (is.null(x[["lon"]]) | is.null(x[["lat"]])) {
+      if (!is.null(x[["locid"]])) {
+        warning("Adding 'lon' and  'lat' from 'locid'")
+        lid <- select(merra2ools::locid, 1:3)
+        x <- right_join(lid, x)
+      } else {
+        stop("Data doesn't have lat, lon or lod_id")
+      }
+    }
+    gif = FALSE 
+    # browser()
+    x$mps <- x[[name]]*scale
+    x$mps[x$mps < limits[1]] <- limits[1]
+    x$mps[x$mps > limits[2]] <- limits[2]
+    dat_time <- unique(x$datetime) %>% sort()
+    if (length(dat_time) > 1) {
+      if (!gif) {
+        warning("Multiple datetime values found, using the earliest one: ", dat_time[1])
+        ii <- x$datetime == dat_time[1]
+      } else {
+        ii <- x$datetime %in% dat_time[1:gif_nmax]
+      }
+      x <- x[ii,]
+    }
+    
+    x <- select(x, lon, lat, datetime, mps)
+    x$label <- format(x$datetime, datetime.format)
+    
+    pp <-
+      ggplot(x, aes(lon, lat)) + 
+      geom_tile(aes(fill = mps), alpha = 1, interpolate = F, 
+                show.legend = !is.null(legend.position)) +
+      scale_fill_distiller(palette = palette, direction = direction, 
+                           limits = limits, name = legend.name, na.value = na.value) +
+      theme_void() +
+      # theme(panel.grid = element_blank(), panel.border = element_blank()) +
+      scale_x_continuous(expand = c(0.00, 0.00)) +
+      scale_y_continuous(expand = c(0.00, 0.00)) +
+      theme(legend.position = legend.position,
+            legend.direction = "horizontal", legend.box = "horizontal",
+            # plot.title = element_text(hjust = 0.5), 
+            # plot.subtitle = element_text(hjust = 0.5),
+            # legend.background = element_rect(fill = alpha('white', 0.5)),
+            legend.box.background = element_rect(size = 0.0, 
+                                                 colour = NA, 
+                                                 fill = alpha('white', .2)),
+            legend.margin = margin(3, 3, 3, 3),
+            legend.title = element_text(vjust = .8))
+    
+    # if (gif) {
+    # # library(gganimate)
+    # pp <- pp + 
+    #   gganimate::transition_states(states = label, transition_length = 0) +
+    #   geom_label(
+    #     # data = data.frame( x = 153, y = 87, label = x$label[1]), 
+    #     aes(x = 153, y = 87, label = '{closest_state}'), label.size = 0, color = "black",
+    #     fill = "white", alpha = 0.2)
+    # pp <- animate(p, renderer = gifski_renderer(), fps = fps, 
+    #               nframes = length(unique(x$datetime)), 
+    #               width = 1024, height = 1024*1080/1920)
+    
+    # } else {
+    # browser()
+    if (!is.null(datetime.position) & all(!is.na(datetime.position))) {
+      pp <- pp + 
+        geom_label(
+          data = data.frame(x = datetime.position[1], 
+                            y = datetime.position[2],
+                            label = x$label[1]),
+          aes(x = x, y = y, label = label), label.size = 0, color = "black",
+          fill = "white", alpha = 0.2)
+    }
+    return(pp)
+    # }
+  }
   # plot_SWGND(x)
   plot_SWGND(x, scale = 1/1e3, limits = c(0, 1.2),
              palette = "Oranges", legend.name = "kW/m2")
@@ -394,7 +413,7 @@ if (F) {
            legend.name = "", fps = 4)
 
   gif_merra(y, name = "azimuth", scale = 1, limits = c(0, 360),
-           filename = "merra_azimuth_daytime.gif", 
+           filename = "merra_azimuth_beam.gif", 
            direction = -1, palette = "Spectral",
            legend.name = "", fps = 4)
 
@@ -540,7 +559,7 @@ if (F) {
   #   yday = y$yday, zenith = y$zenith, SWGDN = y$SWGDN)
   # summary(y$diffuse_fraction)
   # z$POA.fx <-
-  #   (z$daytime) * (z$AOI.fx < pi / 2) * z$SWGDN * (1 - z$diffuse_fraction) /
+  #   (z$beam) * (z$AOI.fx < pi / 2) * z$SWGDN * (1 - z$diffuse_fraction) /
   #   cospi(z$zenith / 180) * cos(z$AOI.fx) +
   #   z$SWGDN * z$diffuse_fraction * (1 + cospi(z$lat / 180)) / 2 +
   #   z$SWGDN * z$ALBEDO * (1 - cospi(z$lat / 180)) / 2

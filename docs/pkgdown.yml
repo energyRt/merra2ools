@@ -1,13 +1,12 @@
-pandoc: 2.7.3
+pandoc: 2.11.2
 pkgdown: 1.6.1.9000
 pkgdown_sha: 6094ac3dd80a1f3f1d4e2f47d0ed4716d51362b0
 articles:
-  data: data.html
+  merra2: merra2.html
   merra2ools: merra2ools.html
-  models: models.html
   solarpower: solarpower.html
   windpower: windpower.html
-last_built: 2021-01-06T04:35Z
+last_built: 2021-01-28T02:16Z
 urls:
   reference: https://olugovoy.github.io/merra2ools//reference
   article: https://olugovoy.github.io/merra2ools//articles

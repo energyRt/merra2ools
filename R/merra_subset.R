@@ -10,6 +10,7 @@
 #' @export
 #'
 #' @examples
+#' NA
 fDate <- function(year, month, day, hour, tz = "UTC") {
   # browser()
   if (is.numeric(year)) year <- as.integer(year)
@@ -40,7 +41,6 @@ if (F) {
   fDate(2010, 1, 1, 0, tz = "Asia/Kolkata")
   lubridate::with_tz(lubridate::ymd_h("2010-01-01 00", tz = "Asia/Kolkata"), 
                      tzone = "UTC")
-  
 }
 
 #' Get MERRA-2 subset 
@@ -99,13 +99,15 @@ get_merra2_subset <- function(locid = 1:207936L,
   for (f in 1:length(fls)) {
     if (!quiet) cat("file:", fls[f])
     merra <- fst::read_fst(file.path(mr$path, fls[f]), as.data.table = T)
-    ii <- merra$loc_id %in% locid 
+    if (!is.null(sam_i[["loc_id"]])) sam_i <- dplyr::rename(sam_i, locid = loc_id)
+    if (!is.null(sam_i[["datetime"]])) sam_i <- dplyr::rename(sam_i, UTC = datetime)
+    if (!is.null(cols)) sam_i <- sam_i[, ..cols]    
+    ii <- merra$locid %in% locid 
     sam_i <- merra[ii,]
-    ii <- sam_i$datetime %in% from_to_h
+    ii <- sam_i$UTC %in% from_to_h
     sam_i <- sam_i[ii,]
     # browser()
-    if (!is.null(sam_i[["loc_id"]])) sam_i <- dplyr::rename(sam_i, locid = loc_id)
-    if (!is.null(cols)) sam_i <- sam_i[, ..cols]
+
     if (is.null(sam)) {
       sam <- sam_i
     } else {
@@ -140,7 +142,7 @@ if (F) {
     from = "1990-01-01 00", to = "1990-03-31 23", tz = "America/New_York")
 
   merra_fl3 <- get_merra2_subset(
-    locid = lids, cols = c("datetime", "locid", "T10M", "W10M", "W50M"),
+    locid = lids, cols = c("UTC", "locid", "T10M", "W10M", "W50M"),
     from = "1990-01-01 00", to = "1990-03-31 23", tz = "America/New_York")
   
   # write.fst(sam, path = file.path("tmp/merra2_subset.fst"), 100)  
@@ -213,7 +215,9 @@ read_merra_file <- function(YYYYMM,
     return(NULL)
   }
   merra <- fst::read_fst(fl, as.data.table = T)
-  if (!is.null(merra[["locid"]])) merra <- rename(merra, loc_id = locid)
+  # browser()
+  if (!is.null(merra[["loc_id"]])) merra <- dplyr::rename(merra, locid = loc_id)
+  if (!is.null(merra[["datetime"]])) merra <- dplyr::rename(merra, UTC = datetime)
   
   if (original.units) {
     if (!is.null(merra[["W10M"]])) merra[["W10M"]] <- merra[["W10M"]]/10
@@ -236,8 +240,9 @@ if (F) {
 #' @export
 #'
 #' @examples
-add_lonlat <- function(x, force = FALSE) {
-  if (is.null(x$locid)) stop("'x' doesn't have 'locid' info")
+#' NA
+add_coord <- function(x, force = FALSE) {
+  if (is.null(x$locid)) stop("'x' should have 'locid' column")
   if (!is.null(x$lon) || !is.null(x$lat)) {
     if (force) {
       x$lon <- NULL
@@ -247,13 +252,15 @@ add_lonlat <- function(x, force = FALSE) {
     }
   }
   # x <- dplyr::left_join(x, locid[,1:3], by = "locid")
-  x <- data.table::merge.data.table(x, locid[,1:3], by = "locid", 
-                                    all.x = TRUE, all.y = FALSE, )
+  # y <- data.table::as.data.table(locid[,1:3])
+  
+  x <- merge(x, locid[,1:3], by = "locid", 
+                         all.x = TRUE, all.y = FALSE, sort = FALSE)
   return(x)
 }
 
 if (F) {
-  add_lonlat(merra2_apr)
+  add_coord(merra2_apr)
 }
 
 add_locid <- function(x) {
@@ -278,7 +285,7 @@ merra2_sample <- function(month = 1:12, add.coord = FALSE) {
   nms <- paste0("merra2_", nms)
   x <- lapply(nms, get)
   x <- data.table::rbindlist(x)
-  if (add.coord) x <- add_lonlat(x)
+  if (add.coord) x <- add_coord(x)
   return(x)
 }
 

@@ -1,7 +1,7 @@
 #' Irradiance decomposition
 #'
 #' @param yday day of a year, integer vector
-#' @param SWGDN Global Horizontal Irradiance from MERRA-2 subset (\mjseqn{GHI, W/m^2})
+#' @param GHI Global Horizontal Irradiance from MERRA-2 subset (\mjseqn{GHI, W/m^2})
 #' @param zenith Zenith angle, degrees
 #'
 #' @details 
@@ -44,8 +44,10 @@
 #' @examples
 #' NA
 solar_irradiance <- function(x, yday = "yday", GHI = "SWGDN", 
-                             zenith = "zenith", zenith_max = 85,
-                             keep.all = FALSE, verbose = getOption("merra2.verbose")) {
+                             zenith = "zenith", beam = "beam",
+                             method = 0,
+                             zenith_max = 90, keep.all = FALSE, 
+                             verbose = getOption("merra2.verbose")) {
   # browser()
   # if (is.null(x)) {
   #   stopifnot(!is.null(yday))
@@ -63,30 +65,63 @@ solar_irradiance <- function(x, yday = "yday", GHI = "SWGDN",
   stopifnot(!is.null(x[[zenith]]))
   if (verbose) cat("   DNI and DHI\n")
   zz <- x[[zenith]] <= zenith_max # avoiding excessive values at horizon
+  if (!is.null(x[[beam]])) zz <- zz & x[[beam]]
   # the solar constant
   Gsc <- 1360.8
   # Extraterrestrial irradiance
   Ge <- (1 + 0.033 * cos(360 * x[[yday]] / 365)) * Gsc
   # Clearness index
-  k.t <- x[[GHI]] / Ge / cospi(x[[zenith]] / 180)
-  # k.t[!zz] <- 0
+  cos.zenith <- cosd(x[[zenith]])
+  k.t <- x[[GHI]] / Ge / cos.zenith
+  k.t[!zz] <- 0
   k.t[k.t < 0] <- 0
   k.t[k.t > 1] <- 1
-  # Diffuse fraction
+  # Diffuse fraction 
   k.d <- rep(0, nrow(x))
-  ii <- k.t >= 0 & k.t < 0.22
-  k.d[ii] <- 1 - 0.09 * k.t[ii]
-  ii <- k.t <= 0.8 & k.t >= 0.22
-  k.d[ii] <- 0.9511 - 0.1604 * k.t[ii] + 4.388 * k.t[ii]^2 - 
-    16.638 * k.t[ii]^3 + 12.336 * k.t[ii]^4
-  ii <- k.t > 0.8
-  k.d[ii] <-  0.165
-  # Direct Normal Irradiance
-  # DNI <- x[[GHI]] * (1 - k.d) / cospi(x$zenith_avr / 180)
-  DNI <- rep(0, nrow(x)); DHI <- DNI
-  DNI[zz] <- x[[GHI]][zz] * (1 - k.d[zz]) / cospi(x[[zenith]][zz] / 180)
+  if (method == 1 || grepl("Erbs", method, ignore.case = TRUE)) {
+    ## Erbs model
+    ii <- k.t >= 0 & k.t < 0.22
+    k.d[ii] <- 1 - 0.09 * k.t[ii]
+    ii <- k.t <= 0.8 & k.t >= 0.22
+    k.d[ii] <- 0.9511 - 0.1604 * k.t[ii] + 4.388 * k.t[ii]^2 -
+      16.638 * k.t[ii]^3 + 12.336 * k.t[ii]^4
+    ii <- k.t > 0.8
+    k.d[ii] <-  0.165
+  } else if (method == 2 || grepl("Orgill", method, ignore.case = TRUE)) {
+    # ...
+  } else if (method == 3 || grepl("Reindl[|.]1", method, ignore.case = TRUE)) {
+    # ...
+  } else if (method == 4 || grepl("Reindl[|.]2", method, ignore.case = TRUE)) {
+    ## Reindl et al. Decomposition Model 2
+    ii <- k.t >= 0 & k.t <= 0.3
+    k.d[ii] <- 1.02 - 0.254 * k.t[ii] + 0.0123 * cos.zenith[ii]
+    ii <- k.t < 0.78 & k.t > 0.3
+    k.d[ii] <- 1.4 - 1.749 * k.t[ii] + 0.177 * cos.zenith[ii]
+    ii <- k.t >= 0.78
+    k.d[ii] <-  0.486 * k.t[ii] - 0.182 * cos.zenith[ii]
+  } else if (method == 0 || grepl("Combined", method, ignore.case = TRUE)) {
+    ## Reindl et al. Decomposition Model 2 with adjusted limits from other models
+    ii <- k.t >= 0 & k.t <= 0.22
+    # k.d[ii] <- 1.02 - 0.254 * k.t[ii] + 0.0123 * cos.zenith[ii]
+    k.d[ii] <- 1
+    ii <- k.t > 0.22
+    k.d[ii] <- 1.4 - 1.749 * k.t[ii] + 0.177 * cos.zenith[ii]
+    k.d[k.d < 0.17] <- 0.17 # 0.147...0.177
+  } else {
+    stop("Unknown method")
+  }
+  k.d[k.d > 1] <- 1
+  k.d[!zz] <- 1
+  #
   # Diffuse Horizontal Irradiance
   DHI <- x[[GHI]] * k.d 
+  # Direct Normal Irradiance
+  DNI <- rep(0, nrow(x))
+  DNI[zz] <- (x[[GHI]][zz] - DHI[zz]) / cosd(x[[zenith]][zz])
+  # DNI <- x[[GHI]] * (1 - k.d) / cospi(x$zenith_avr / 180)
+  # DNI <- rep(0, nrow(x)); DHI <- DNI
+  # DNI[zz] <- x[[GHI]][zz] * (1 - k.d[zz]) / cospi(x[[zenith]][zz] / 180)
+  # browser()
   if (keep.all) {
     x$ext_irrad <- Ge
     x$clearness_index <- k.t
@@ -104,7 +139,7 @@ diffuse_fraction <- function(yday, zenith, GHI) {
   # Extraterrestrial irradiance
   Ge <- (1 + 0.033 * cos(360 * yday / 365)) * Gsc
   # Clearness index
-  k.t <- GHI / Ge / cospi(zenith / 180)
+  k.t <- GHI / Ge / cosd(zenith)
   # Diffuse fraction
   k.d <- rep(0, nrow(x))
   ii <- k.t > 0 & k.t < 0.22

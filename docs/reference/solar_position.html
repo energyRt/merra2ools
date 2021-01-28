@@ -102,10 +102,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/data.html">MERRA-2 subset</a>
-    </li>
-    <li>
-      <a href="../articles/models.html">Models</a>
+      <a href="../articles/merra2.html">MERRA-2 subset</a>
     </li>
     <li>
       <a href="../articles/solarpower.html">Solar Power</a>
@@ -147,13 +144,15 @@
 
     <pre class="usage"><span class='fu'>solar_position</span><span class='op'>(</span>
   <span class='va'>x</span>,
-  datetime <span class='op'>=</span> <span class='st'>"datetime"</span>,
+  UTC <span class='op'>=</span> <span class='st'>"UTC"</span>,
   yday <span class='op'>=</span> <span class='st'>"yday"</span>,
   hour <span class='op'>=</span> <span class='st'>"hour"</span>,
   lon <span class='op'>=</span> <span class='st'>"lon"</span>,
   lat <span class='op'>=</span> <span class='st'>"lat"</span>,
+  integral_steps <span class='op'>=</span> <span class='fl'>2</span>,
   keep.all <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  verbose <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"merra2.verbose"</span><span class='op'>)</span>
+  verbose <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"merra2.verbose"</span><span class='op'>)</span>,
+  <span class='va'>...</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -161,27 +160,35 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td></td>
+      <td><p>data.frame with MERRA-2 subset</p></td>
     </tr>
     <tr>
-      <th>datetime</th>
-      <td><p>date and time</p></td>
+      <th>UTC</th>
+      <td><p>name (string) of the column in x with date and time in UTC format</p></td>
     </tr>
     <tr>
       <th>yday</th>
-      <td><p>day of a year</p></td>
+      <td><p>optional name of column in x with the day of the year (consistent with UTC time), will be used if "UTC" is not provided</p></td>
     </tr>
     <tr>
       <th>hour</th>
-      <td></td>
+      <td><p>optional, the name of column with hour of the day (0 to 23, UTC time assumed)</p></td>
     </tr>
     <tr>
       <th>lon</th>
-      <td></td>
+      <td><p>longitude of the location</p></td>
     </tr>
     <tr>
       <th>lat</th>
-      <td></td>
+      <td><p>latitude of the location</p></td>
+    </tr>
+    <tr>
+      <th>integral_steps</th>
+      <td><p>integer number of steps for calculation of solar_time, hour_angle, and zenith within an hour, and  logical variable; default is 2 (start and the end of every hour)</p></td>
+    </tr>
+    <tr>
+      <th>keep.all</th>
+      <td><p>if TRUE, the interim variables declination, eq_time, solar_time, and hour_angle will be added to x and returned</p></td>
     </tr>
     <tr>
       <th>verbose</th>

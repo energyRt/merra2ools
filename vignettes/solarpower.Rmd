@@ -1,6 +1,8 @@
 ---
 title: "Solar Power"
 output: rmarkdown::html_vignette
+header-includes:
+   - \usepackage{amsmath}
 vignette: >
   %\VignetteIndexEntry{Solar Power}
   %\VignetteEngine{knitr::rmarkdown}
@@ -17,164 +19,51 @@ knitr::opts_chunk$set(
 ```{r setup}
 library(merra2ools)
 library(tidyverse)
-# library(data.table)
+library("cowplot")
+
+# Example dataset
+merra <- merra2_sample(1, add.coord = T)
+merra
+
+```
+
+# Plane of Array (POA) irradiance model
+## All steps at once
+```{r}
+poa <- fPOA(merra)
 
 ```
 
 
-```{r, eval=FALSE}
-x <- merra2ools::merra2_oct %>%
-  fPOA()
-  
-  
-#   left_join(locid[,1:3]) %>%
-#   solar_position() %>%
-#   solar_irradiance() %>%
-#   pv_array_position("all") %>%
-#   angle_of_incidence("all") %>%
-#   poa_irradiance("all")
-# 
-# dat <- select(x, datetime, locid, lon, lat, yday, hour, starts_with("POA")) %>%
-#   mutate(month = month(datetime)) %>%
-#   pivot_longer(cols = starts_with("POA"), names_to = "array_type", values_to = "Wh_m2")
-# 
-# lid <- locid_sample[locid_sample$lon == 0,]$locid
-# {
-#   # ii <- dat$locid %in% sample(unique(dat$locid), 6)
-#   ii <- dat$locid %in% lid
-#   ggplot(dat[ii,]) +
-#     geom_line(aes(hour, Wh_m2, colour = array_type, linetype = array_type), size = 1) +
-#     # scale_color_viridis_d(direction = -1) +
-#     scale_color_brewer(palette = "Spectral") +
-#     facet_wrap(~locid) +
-#     theme_bw()
-# }
-# 
+## Step-by-step
+### Solar postion
+```{r}
+x <- solar_position(merra, keep.all = T)
 
+```
+
+### Global Horizontal Irradiance decomposition
+```{r}
+x <- solar_irradiance(x, keep.all = T)
+
+```
+
+### PV-array position
+```{r}
+x <- pv_array_position(x, array.type = "all")
+
+```
+
+### Angle of Incidence (AOI)
+```{r}
+x <- angle_of_incidence(x, array.type = "all")
+```
+
+### Plane of Array (POA) irradiance 
+```{r}
+x <- poa_irradiance(x, array.type = "all", keep.all = T)
 
 ```
 
 
-
-# Validation: compare with NREL's PVWAtts  
-
-```{r, eval=FALSE}
-
-  # if (F) {
-    ll <- list()
-    for (tp in c("fh", "fl", "th", "tl", "td")) {
-      for (i in 1:nrow(st_id)) {
-        x <- fetch_pvwatts(
-          array.type = tp,
-          lon = st_id$lon[i],
-          lat = st_id$lat[i],
-          # tilt = abs(st_id$lat[i]),
-          # tilt = 0,
-          azimuth = ifelse(st_id$lat[i] < 0, 0, 180),
-          radius = 100
-        )
-        cat("type = ", tp, ", i = ", i, ", lon = ", 
-            st_id$lon[i], ", lat = ", st_id$lat[i], 
-            ", poa: ", length(x$outputs$poa), "\n", sep = "")
-        nm <- paste(tp, i, sep = "_")
-        ll[[nm]] <- x
-        if (!is.null(x$error$code)) {
-          if (x$error$code == "OVER_RATE_LIMIT") break
-        }
-      }
-      if (!is.null(x$error$code)) {
-        if (x$error$code == "OVER_RATE_LIMIT") break
-      }
-    }
-    names(ll)
-    # save(ll, st_id, file = "tmp/pvwatts_poa_h_list.RData")
-    # save(ll0, file = "tmp/pvwatts_list_tilt0.RData")
-    # save(ll1, file = "tmp/pvwatts_list_ll1.RData")
-    
-    yday_hour <- expand.grid(hour = 1:24, yday = 1:365) %>% as_tibble()
-    for (i in 1:length(ll)) {
-      n <- names(ll)[i]
-      cat(n); cat(" ")
-      x <- sapply(ll[[i]]$outputs, unlist)
-      x <- try(
-        as_tibble(x[5:15]) %>%
-          mutate(
-            # request = i,
-            lon_stn = ll[[i]]$station_info$lon,
-            lat_stn = ll[[i]]$station_info$lat,
-            lonlat = paste0("(", round(lon_stn, 2), ", ", round(lat_stn, 2), ")"),
-            locid = st_id$locid[i],
-            # locid = st_id$locid[i],
-            elev = ll[[i]]$station_info$elev,
-            tz = ll[[i]]$station_info$tz, 
-            month = yday2month(yday_hour$yday),
-            yday = as.integer(yday_hour$yday),
-            hour = as.integer(yday_hour$hour) - 1,
-            # lon_inp = as.numeric(ll[[i]]$inputs$lat),
-            # lat_inp = as.numeric(ll[[i]]$inputs$lon),
-            # module_type = as.integer(ll[[i]]$inputs$module_type),
-            # losses = as.numeric(ll[[i]]$inputs$losses),
-            # id = as.integer(gsub("[a-z_]", "", i)),
-            array.type = substr(n, 1, 2),
-            # array_type_pvwatts = ll[[i]]$inputs$array_type,
-            tilt = as.numeric(ll[[i]]$inputs$tilt),
-            azimuth = as.numeric(ll[[i]]$inputs$azimuth),
-            .before = ac_annual), silent = T
-      )
-      if (i ==  1 || !exists("db") || is.null(db)) {
-        db <- NULL
-        if (all(class(x) != "try-error")) db <- x
-      } else {
-        if (all(class(x) != "try-error")) db <- bind_rows(db, x)
-      }
-    }
-    db
-    db %>% as.data.table()
-    dim(db)   
-    # db$poa.array <- paste0("POA.", substr(db$request, 1, 2))
-    
-    db_m <- db %>% 
-      group_by(lonlat, locid, month, hour, array.type) %>%
-      summarise(poa = max(poa, na.rm = T)) %>%
-      mutate(month = factor(month.abb[month], levels = month.abb, ordered = T),
-             data = factor("PVWatts", levels = c("merra2ools", "PVWatts"), ordered = T))
-    
-    set.seed(0)
-    ii <- db_m$lonlat %in% sample(unique(db_m$lonlat), 4) &
-      db_m$month %in% c("Mar", "Jul", "Oct", "Dec"); summary(ii)
-    
-    ii <- db_m$lonlat %in% 
-      c("(-94.98, 74.72)", "(34.75, -0.1)", "(-70.85, -53)", "(117.8, -34.93)", "(31.4, 30.13)") &
-      db_m$month %in% c("Mar", "Jul", "Oct", "Dec"); summary(ii)
-    ggplot(db_m[ii,]) +
-      geom_line(aes(hour, poa, colour = array.type, linetype = array.type), size = 1) +
-      scale_color_brewer(palette = "Set1", name = "Array type") +
-      guides(colour = guide_legend(override.aes = list(linetype = 1:5))) +
-      scale_linetype(guide = FALSE) +
-      facet_grid(lonlat ~ month) + 
-      labs(y = "POA irradiance, Watt/m2", x = "Hour, local time") +
-      theme_bw()
-    
-    ggplot(db_m[ii,]) +
-      geom_line(aes(hour, poa, colour = month), size = 1) +
-      scale_color_brewer(palette = "Set1", name = "Month") +
-      facet_grid(lonlat ~ array.type) + 
-      labs(y = "POA irradiance, Watt/m2", x = "Hour, local time") +
-      theme_bw()
-    
-    
-    
-    # db %>%
-    #   mutate(poa.array = paste0("POA.", substr(request, 1, 2)),
-    #          hour = hour - 1) %>%
-    #   select(lon, lat, yday, hour)
-    #   pivot_wider(names_from = "poa.array")
-    
-    
-    
-  # }
-  
-
-
-```
 

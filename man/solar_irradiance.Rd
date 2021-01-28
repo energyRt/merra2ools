@@ -9,7 +9,9 @@ solar_irradiance(
   yday = "yday",
   GHI = "SWGDN",
   zenith = "zenith",
-  zenith_max = 85,
+  beam = "beam",
+  method = 0,
+  zenith_max = 90,
   keep.all = FALSE,
   verbose = getOption("merra2.verbose")
 )
@@ -17,9 +19,9 @@ solar_irradiance(
 \arguments{
 \item{yday}{day of a year, integer vector}
 
-\item{zenith}{Zenith angle, degrees}
+\item{GHI}{Global Horizontal Irradiance from MERRA-2 subset (\mjseqn{GHI, W/m^2})}
 
-\item{SWGDN}{Global Horizontal Irradiance from MERRA-2 subset (\mjseqn{GHI, W/m^2})}
+\item{zenith}{Zenith angle, degrees}
 }
 \value{
 

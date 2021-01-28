@@ -57,10 +57,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/data.html">MERRA-2 subset</a>
-    </li>
-    <li>
-      <a href="../articles/models.html">Models</a>
+      <a href="../articles/merra2.html">MERRA-2 subset</a>
     </li>
     <li>
       <a href="../articles/solarpower.html">Solar Power</a>
@@ -88,7 +85,7 @@
 
       
 
-      </header><script src="solarpower_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><script src="solarpower_files/header-attrs-2.6/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Solar Power</h1>
@@ -107,9 +104,9 @@
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span>
 <span class="co">#&gt; -- Attaching packages --------------------------------------- tidyverse 1.3.0 --</span>
 <span class="co">#&gt; v ggplot2 3.3.3     v purrr   0.3.4</span>
-<span class="co">#&gt; v tibble  3.0.4     v dplyr   1.0.2</span>
+<span class="co">#&gt; v tibble  3.0.5     v dplyr   1.0.3</span>
 <span class="co">#&gt; v tidyr   1.1.2     v stringr 1.4.0</span>
-<span class="co">#&gt; v readr   1.4.0     v forcats 0.5.0</span>
+<span class="co">#&gt; v readr   1.4.0     v forcats 0.5.1</span>
 <span class="co">#&gt; -- Conflicts ------------------------------------------ tidyverse_conflicts() --</span>
 <span class="co">#&gt; x dplyr::between()   masks data.table::between()</span>
 <span class="co">#&gt; x dplyr::filter()    masks stats::filter()</span>
@@ -117,154 +114,106 @@
 <span class="co">#&gt; x dplyr::lag()       masks stats::lag()</span>
 <span class="co">#&gt; x dplyr::last()      masks data.table::last()</span>
 <span class="co">#&gt; x purrr::transpose() masks data.table::transpose()</span>
-<span class="co"># library(data.table)</span></code></pre></div>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu">merra2ools</span><span class="fu">::</span><span class="va">merra2_oct</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/poa_irradiance.html">fPOA</a></span><span class="op">(</span><span class="op">)</span>
-  
-  
-<span class="co">#   left_join(locid[,1:3]) %&gt;%</span>
-<span class="co">#   solar_position() %&gt;%</span>
-<span class="co">#   solar_irradiance() %&gt;%</span>
-<span class="co">#   pv_array_position("all") %&gt;%</span>
-<span class="co">#   angle_of_incidence("all") %&gt;%</span>
-<span class="co">#   poa_irradiance("all")</span>
-<span class="co"># </span>
-<span class="co"># dat &lt;- select(x, datetime, locid, lon, lat, yday, hour, starts_with("POA")) %&gt;%</span>
-<span class="co">#   mutate(month = month(datetime)) %&gt;%</span>
-<span class="co">#   pivot_longer(cols = starts_with("POA"), names_to = "array_type", values_to = "Wh_m2")</span>
-<span class="co"># </span>
-<span class="co"># lid &lt;- locid_sample[locid_sample$lon == 0,]$locid</span>
-<span class="co"># {</span>
-<span class="co">#   # ii &lt;- dat$locid %in% sample(unique(dat$locid), 6)</span>
-<span class="co">#   ii &lt;- dat$locid %in% lid</span>
-<span class="co">#   ggplot(dat[ii,]) +</span>
-<span class="co">#     geom_line(aes(hour, Wh_m2, colour = array_type, linetype = array_type), size = 1) +</span>
-<span class="co">#     # scale_color_viridis_d(direction = -1) +</span>
-<span class="co">#     scale_color_brewer(palette = "Spectral") +</span>
-<span class="co">#     facet_wrap(~locid) +</span>
-<span class="co">#     theme_bw()</span>
-<span class="co"># }</span>
-<span class="co"># </span></code></pre></div>
-<div id="validation-compare-with-nrels-pvwatts" class="section level1">
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://wilkelab.org/cowplot/">"cowplot"</a></span><span class="op">)</span>
+
+<span class="co"># Example dataset</span>
+<span class="va">merra</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/merra2_sample.html">merra2_sample</a></span><span class="op">(</span><span class="fl">1</span>, add.coord <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>
+<span class="va">merra</span>
+<span class="co">#&gt;           locid                 UTC T10M W10M W50M PS_hPa SWGDN ALBEDO      lon</span>
+<span class="co">#&gt;       1:      1 2010-01-21 00:30:00  247  2.4  3.1    695   339    0.8 -180.000</span>
+<span class="co">#&gt;       2:      2 2010-01-21 00:30:00  247  2.4  3.1    695   339    0.8 -179.375</span>
+<span class="co">#&gt;       3:      3 2010-01-21 00:30:00  247  2.4  3.1    695   339    0.8 -178.750</span>
+<span class="co">#&gt;       4:      4 2010-01-21 00:30:00  247  2.4  3.1    695   339    0.8 -178.125</span>
+<span class="co">#&gt;       5:      5 2010-01-21 00:30:00  247  2.4  3.1    695   339    0.8 -177.500</span>
+<span class="co">#&gt;      ---                                                                       </span>
+<span class="co">#&gt; 4990460: 207932 2010-01-21 23:30:00  235  3.8  4.8   1021     0    0.0  176.875</span>
+<span class="co">#&gt; 4990461: 207933 2010-01-21 23:30:00  235  3.8  4.8   1021     0    0.0  177.500</span>
+<span class="co">#&gt; 4990462: 207934 2010-01-21 23:30:00  235  3.8  4.8   1021     0    0.0  178.125</span>
+<span class="co">#&gt; 4990463: 207935 2010-01-21 23:30:00  235  3.8  4.8   1021     0    0.0  178.750</span>
+<span class="co">#&gt; 4990464: 207936 2010-01-21 23:30:00  235  3.8  4.9   1021     0    0.0  179.375</span>
+<span class="co">#&gt;          lat</span>
+<span class="co">#&gt;       1: -90</span>
+<span class="co">#&gt;       2: -90</span>
+<span class="co">#&gt;       3: -90</span>
+<span class="co">#&gt;       4: -90</span>
+<span class="co">#&gt;       5: -90</span>
+<span class="co">#&gt;      ---    </span>
+<span class="co">#&gt; 4990460:  90</span>
+<span class="co">#&gt; 4990461:  90</span>
+<span class="co">#&gt; 4990462:  90</span>
+<span class="co">#&gt; 4990463:  90</span>
+<span class="co">#&gt; 4990464:  90</span></code></pre></div>
+<div id="plane-of-array-poa-irradiance-model" class="section level1">
 <h1 class="hasAnchor">
-<a href="#validation-compare-with-nrels-pvwatts" class="anchor"></a>Validation: compare with NREL’s PVWAtts</h1>
+<a href="#plane-of-array-poa-irradiance-model" class="anchor"></a>Plane of Array (POA) irradiance model</h1>
+<div id="all-steps-at-once" class="section level2">
+<h2 class="hasAnchor">
+<a href="#all-steps-at-once" class="anchor"></a>All steps at once</h2>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">poa</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/poa_irradiance.html">fPOA</a></span><span class="op">(</span><span class="va">merra</span><span class="op">)</span>
+<span class="co">#&gt; nrow(x) =  4990464 </span>
+<span class="co">#&gt; Calculating:</span>
+<span class="co">#&gt;    The day of the year (yday) and the hour (hour) at UTC timezone</span>
+<span class="co">#&gt;    Solar declination (declination)</span>
+<span class="co">#&gt;    Equation of time (eq_time)</span>
+<span class="co">#&gt;    Apparent solar time (solar_time) 1 2 3 </span>
+<span class="co">#&gt;    Hour angle (hour_angle) 1 2 3 </span>
+<span class="co">#&gt;    Zenith angle (zenith) 1 2 3 </span>
+<span class="co">#&gt;    Direct beam hour (beam)</span>
+<span class="co">#&gt;    Integrating...ok</span>
+<span class="co">#&gt;    Azimuth angle (azimuth) </span>
+<span class="co">#&gt;    DNI and DHI</span>
+<span class="co">#&gt;    PV-array position, array.type: fh fl th tv td </span>
+<span class="co">#&gt;    Angle of incidence (AOI), array.type: fh fl th tv td </span>
+<span class="co">#&gt;    Plane of Array Irradiance (POA), array.type: fh fl th tv td</span></code></pre></div>
+</div>
+<div id="step-by-step" class="section level2">
+<h2 class="hasAnchor">
+<a href="#step-by-step" class="anchor"></a>Step-by-step</h2>
+<div id="solar-postion" class="section level3">
+<h3 class="hasAnchor">
+<a href="#solar-postion" class="anchor"></a>Solar postion</h3>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-  <span class="co"># if (F) {</span>
-    <span class="va">ll</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="op">)</span>
-    <span class="kw">for</span> <span class="op">(</span><span class="va">tp</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"fh"</span>, <span class="st">"fl"</span>, <span class="st">"th"</span>, <span class="st">"tl"</span>, <span class="st">"td"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-      <span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">st_id</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-        <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fetch_pvwatts.html">fetch_pvwatts</a></span><span class="op">(</span>
-          array.type <span class="op">=</span> <span class="va">tp</span>,
-          lon <span class="op">=</span> <span class="va">st_id</span><span class="op">$</span><span class="va">lon</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>,
-          lat <span class="op">=</span> <span class="va">st_id</span><span class="op">$</span><span class="va">lat</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>,
-          <span class="co"># tilt = abs(st_id$lat[i]),</span>
-          <span class="co"># tilt = 0,</span>
-          azimuth <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">st_id</span><span class="op">$</span><span class="va">lat</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;</span> <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">180</span><span class="op">)</span>,
-          radius <span class="op">=</span> <span class="fl">100</span>
-        <span class="op">)</span>
-        <span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="st">"type = "</span>, <span class="va">tp</span>, <span class="st">", i = "</span>, <span class="va">i</span>, <span class="st">", lon = "</span>, 
-            <span class="va">st_id</span><span class="op">$</span><span class="va">lon</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>, <span class="st">", lat = "</span>, <span class="va">st_id</span><span class="op">$</span><span class="va">lat</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>, 
-            <span class="st">", poa: "</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">outputs</span><span class="op">$</span><span class="va">poa</span><span class="op">)</span>, <span class="st">"\n"</span>, sep <span class="op">=</span> <span class="st">""</span><span class="op">)</span>
-        <span class="va">nm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="va">tp</span>, <span class="va">i</span>, sep <span class="op">=</span> <span class="st">"_"</span><span class="op">)</span>
-        <span class="va">ll</span><span class="op">[[</span><span class="va">nm</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">x</span>
-        <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">error</span><span class="op">$</span><span class="va">code</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-          <span class="kw">if</span> <span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">error</span><span class="op">$</span><span class="va">code</span> <span class="op">==</span> <span class="st">"OVER_RATE_LIMIT"</span><span class="op">)</span> <span class="kw">break</span>
-        <span class="op">}</span>
-      <span class="op">}</span>
-      <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">error</span><span class="op">$</span><span class="va">code</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-        <span class="kw">if</span> <span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">error</span><span class="op">$</span><span class="va">code</span> <span class="op">==</span> <span class="st">"OVER_RATE_LIMIT"</span><span class="op">)</span> <span class="kw">break</span>
-      <span class="op">}</span>
-    <span class="op">}</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">ll</span><span class="op">)</span>
-    <span class="co"># save(ll, st_id, file = "tmp/pvwatts_poa_h_list.RData")</span>
-    <span class="co"># save(ll0, file = "tmp/pvwatts_list_tilt0.RData")</span>
-    <span class="co"># save(ll1, file = "tmp/pvwatts_list_ll1.RData")</span>
-    
-    <span class="va">yday_hour</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html">expand.grid</a></span><span class="op">(</span>hour <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">24</span>, yday <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">365</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">as_tibble</span><span class="op">(</span><span class="op">)</span>
-    <span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">ll</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-      <span class="va">n</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">ll</span><span class="op">)</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>
-      <span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span>; <span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="st">" "</span><span class="op">)</span>
-      <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="va">ll</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">outputs</span>, <span class="va">unlist</span><span class="op">)</span>
-      <span class="va">x</span> <span class="op">&lt;-</span> <span class="kw"><a href="https://rdrr.io/r/base/try.html">try</a></span><span class="op">(</span>
-        <span class="fu">as_tibble</span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">5</span><span class="op">:</span><span class="fl">15</span><span class="op">]</span><span class="op">)</span> <span class="op">%&gt;%</span>
-          <span class="fu">mutate</span><span class="op">(</span>
-            <span class="co"># request = i,</span>
-            lon_stn <span class="op">=</span> <span class="va">ll</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">station_info</span><span class="op">$</span><span class="va">lon</span>,
-            lat_stn <span class="op">=</span> <span class="va">ll</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">station_info</span><span class="op">$</span><span class="va">lat</span>,
-            lonlat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"("</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">lon_stn</span>, <span class="fl">2</span><span class="op">)</span>, <span class="st">", "</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">lat_stn</span>, <span class="fl">2</span><span class="op">)</span>, <span class="st">")"</span><span class="op">)</span>,
-            locid <span class="op">=</span> <span class="va">st_id</span><span class="op">$</span><span class="va">locid</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>,
-            <span class="co"># locid = st_id$locid[i],</span>
-            elev <span class="op">=</span> <span class="va">ll</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">station_info</span><span class="op">$</span><span class="va">elev</span>,
-            tz <span class="op">=</span> <span class="va">ll</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">station_info</span><span class="op">$</span><span class="va">tz</span>, 
-            month <span class="op">=</span> <span class="fu">yday2month</span><span class="op">(</span><span class="va">yday_hour</span><span class="op">$</span><span class="va">yday</span><span class="op">)</span>,
-            yday <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html">as.integer</a></span><span class="op">(</span><span class="va">yday_hour</span><span class="op">$</span><span class="va">yday</span><span class="op">)</span>,
-            hour <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html">as.integer</a></span><span class="op">(</span><span class="va">yday_hour</span><span class="op">$</span><span class="va">hour</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span>,
-            <span class="co"># lon_inp = as.numeric(ll[[i]]$inputs$lat),</span>
-            <span class="co"># lat_inp = as.numeric(ll[[i]]$inputs$lon),</span>
-            <span class="co"># module_type = as.integer(ll[[i]]$inputs$module_type),</span>
-            <span class="co"># losses = as.numeric(ll[[i]]$inputs$losses),</span>
-            <span class="co"># id = as.integer(gsub("[a-z_]", "", i)),</span>
-            array.type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/substr.html">substr</a></span><span class="op">(</span><span class="va">n</span>, <span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>,
-            <span class="co"># array_type_pvwatts = ll[[i]]$inputs$array_type,</span>
-            tilt <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="va">ll</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">inputs</span><span class="op">$</span><span class="va">tilt</span><span class="op">)</span>,
-            azimuth <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="va">ll</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">inputs</span><span class="op">$</span><span class="va">azimuth</span><span class="op">)</span>,
-            .before <span class="op">=</span> <span class="va">ac_annual</span><span class="op">)</span>, silent <span class="op">=</span> <span class="cn">T</span>
-      <span class="op">)</span>
-      <span class="kw">if</span> <span class="op">(</span><span class="va">i</span> <span class="op">==</span>  <span class="fl">1</span> <span class="op">||</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/exists.html">exists</a></span><span class="op">(</span><span class="st">"db"</span><span class="op">)</span> <span class="op">||</span> <span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="va">db</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-        <span class="va">db</span> <span class="op">&lt;-</span> <span class="cn">NULL</span>
-        <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/all.html">all</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">!=</span> <span class="st">"try-error"</span><span class="op">)</span><span class="op">)</span> <span class="va">db</span> <span class="op">&lt;-</span> <span class="va">x</span>
-      <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span>
-        <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/all.html">all</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">!=</span> <span class="st">"try-error"</span><span class="op">)</span><span class="op">)</span> <span class="va">db</span> <span class="op">&lt;-</span> <span class="fu">bind_rows</span><span class="op">(</span><span class="va">db</span>, <span class="va">x</span><span class="op">)</span>
-      <span class="op">}</span>
-    <span class="op">}</span>
-    <span class="va">db</span>
-    <span class="va">db</span> <span class="op">%&gt;%</span> <span class="fu">as.data.table</span><span class="op">(</span><span class="op">)</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">db</span><span class="op">)</span>   
-    <span class="co"># db$poa.array &lt;- paste0("POA.", substr(db$request, 1, 2))</span>
-    
-    <span class="va">db_m</span> <span class="op">&lt;-</span> <span class="va">db</span> <span class="op">%&gt;%</span> 
-      <span class="fu">group_by</span><span class="op">(</span><span class="va">lonlat</span>, <span class="va">locid</span>, <span class="va">month</span>, <span class="va">hour</span>, <span class="va">array.type</span><span class="op">)</span> <span class="op">%&gt;%</span>
-      <span class="fu">summarise</span><span class="op">(</span>poa <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">poa</span>, na.rm <span class="op">=</span> <span class="cn">T</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
-      <span class="fu">mutate</span><span class="op">(</span>month <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">month.abb</span><span class="op">[</span><span class="va">month</span><span class="op">]</span>, levels <span class="op">=</span> <span class="va">month.abb</span>, ordered <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>,
-             data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="st">"PVWatts"</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"merra2ools"</span>, <span class="st">"PVWatts"</span><span class="op">)</span>, ordered <span class="op">=</span> <span class="cn">T</span><span class="op">)</span><span class="op">)</span>
-    
-    <span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>
-    <span class="va">ii</span> <span class="op">&lt;-</span> <span class="va">db_m</span><span class="op">$</span><span class="va">lonlat</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">db_m</span><span class="op">$</span><span class="va">lonlat</span><span class="op">)</span>, <span class="fl">4</span><span class="op">)</span> <span class="op">&amp;</span>
-      <span class="va">db_m</span><span class="op">$</span><span class="va">month</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Mar"</span>, <span class="st">"Jul"</span>, <span class="st">"Oct"</span>, <span class="st">"Dec"</span><span class="op">)</span>; <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">ii</span><span class="op">)</span>
-    
-    <span class="va">ii</span> <span class="op">&lt;-</span> <span class="va">db_m</span><span class="op">$</span><span class="va">lonlat</span> <span class="op">%in%</span> 
-      <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"(-94.98, 74.72)"</span>, <span class="st">"(34.75, -0.1)"</span>, <span class="st">"(-70.85, -53)"</span>, <span class="st">"(117.8, -34.93)"</span>, <span class="st">"(31.4, 30.13)"</span><span class="op">)</span> <span class="op">&amp;</span>
-      <span class="va">db_m</span><span class="op">$</span><span class="va">month</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Mar"</span>, <span class="st">"Jul"</span>, <span class="st">"Oct"</span>, <span class="st">"Dec"</span><span class="op">)</span>; <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">ii</span><span class="op">)</span>
-    <span class="fu">ggplot</span><span class="op">(</span><span class="va">db_m</span><span class="op">[</span><span class="va">ii</span>,<span class="op">]</span><span class="op">)</span> <span class="op">+</span>
-      <span class="fu">geom_line</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span><span class="va">hour</span>, <span class="va">poa</span>, colour <span class="op">=</span> <span class="va">array.type</span>, linetype <span class="op">=</span> <span class="va">array.type</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span>
-      <span class="fu">scale_color_brewer</span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"Set1"</span>, name <span class="op">=</span> <span class="st">"Array type"</span><span class="op">)</span> <span class="op">+</span>
-      <span class="fu">guides</span><span class="op">(</span>colour <span class="op">=</span> <span class="fu">guide_legend</span><span class="op">(</span>override.aes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>linetype <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-      <span class="fu">scale_linetype</span><span class="op">(</span>guide <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span>
-      <span class="fu">facet_grid</span><span class="op">(</span><span class="va">lonlat</span> <span class="op">~</span> <span class="va">month</span><span class="op">)</span> <span class="op">+</span> 
-      <span class="fu">labs</span><span class="op">(</span>y <span class="op">=</span> <span class="st">"POA irradiance, Watt/m2"</span>, x <span class="op">=</span> <span class="st">"Hour, local time"</span><span class="op">)</span> <span class="op">+</span>
-      <span class="fu">theme_bw</span><span class="op">(</span><span class="op">)</span>
-    
-    <span class="fu">ggplot</span><span class="op">(</span><span class="va">db_m</span><span class="op">[</span><span class="va">ii</span>,<span class="op">]</span><span class="op">)</span> <span class="op">+</span>
-      <span class="fu">geom_line</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span><span class="va">hour</span>, <span class="va">poa</span>, colour <span class="op">=</span> <span class="va">month</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span>
-      <span class="fu">scale_color_brewer</span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"Set1"</span>, name <span class="op">=</span> <span class="st">"Month"</span><span class="op">)</span> <span class="op">+</span>
-      <span class="fu">facet_grid</span><span class="op">(</span><span class="va">lonlat</span> <span class="op">~</span> <span class="va">array.type</span><span class="op">)</span> <span class="op">+</span> 
-      <span class="fu">labs</span><span class="op">(</span>y <span class="op">=</span> <span class="st">"POA irradiance, Watt/m2"</span>, x <span class="op">=</span> <span class="st">"Hour, local time"</span><span class="op">)</span> <span class="op">+</span>
-      <span class="fu">theme_bw</span><span class="op">(</span><span class="op">)</span>
-    
-    
-    
-    <span class="co"># db %&gt;%</span>
-    <span class="co">#   mutate(poa.array = paste0("POA.", substr(request, 1, 2)),</span>
-    <span class="co">#          hour = hour - 1) %&gt;%</span>
-    <span class="co">#   select(lon, lat, yday, hour)</span>
-    <span class="co">#   pivot_wider(names_from = "poa.array")</span>
-    
-    
-    
-  <span class="co"># }</span>
-  </code></pre></div>
+<code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/solar_position.html">solar_position</a></span><span class="op">(</span><span class="va">merra</span>, keep.all <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>
+<span class="co">#&gt;    The day of the year (yday) and the hour (hour) at UTC timezone</span>
+<span class="co">#&gt;    Solar declination (declination)</span>
+<span class="co">#&gt;    Equation of time (eq_time)</span>
+<span class="co">#&gt;    Apparent solar time (solar_time) 1 2 </span>
+<span class="co">#&gt;    Hour angle (hour_angle) 1 2 </span>
+<span class="co">#&gt;    Zenith angle (zenith) 1 2 </span>
+<span class="co">#&gt;    Direct beam hour (beam)</span>
+<span class="co">#&gt;    Integrating...ok</span>
+<span class="co">#&gt;    Azimuth angle (azimuth)</span></code></pre></div>
+</div>
+<div id="global-horizontal-irradiance-decomposition" class="section level3">
+<h3 class="hasAnchor">
+<a href="#global-horizontal-irradiance-decomposition" class="anchor"></a>Global Horizontal Irradiance decomposition</h3>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/solar_irradiance.html">solar_irradiance</a></span><span class="op">(</span><span class="va">x</span>, keep.all <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>
+<span class="co">#&gt;    DNI and DHI</span></code></pre></div>
+</div>
+<div id="pv-array-position" class="section level3">
+<h3 class="hasAnchor">
+<a href="#pv-array-position" class="anchor"></a>PV-array position</h3>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pv_array_position.html">pv_array_position</a></span><span class="op">(</span><span class="va">x</span>, array.type <span class="op">=</span> <span class="st">"all"</span><span class="op">)</span>
+<span class="co">#&gt;    PV-array position, array.type: fh fl th tv td</span></code></pre></div>
+</div>
+<div id="angle-of-incidence-aoi" class="section level3">
+<h3 class="hasAnchor">
+<a href="#angle-of-incidence-aoi" class="anchor"></a>Angle of Incidence (AOI)</h3>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/angle_of_incidence.html">angle_of_incidence</a></span><span class="op">(</span><span class="va">x</span>, array.type <span class="op">=</span> <span class="st">"all"</span><span class="op">)</span>
+<span class="co">#&gt;    Angle of incidence (AOI), array.type: fh fl th tv td</span></code></pre></div>
+</div>
+<div id="plane-of-array-poa-irradiance" class="section level3">
+<h3 class="hasAnchor">
+<a href="#plane-of-array-poa-irradiance" class="anchor"></a>Plane of Array (POA) irradiance</h3>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/poa_irradiance.html">poa_irradiance</a></span><span class="op">(</span><span class="va">x</span>, array.type <span class="op">=</span> <span class="st">"all"</span>, keep.all <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>
+<span class="co">#&gt;    Plane of Array Irradiance (POA), array.type: fh fl th tv td</span></code></pre></div>
+</div>
+</div>
 </div>
   </div>
 

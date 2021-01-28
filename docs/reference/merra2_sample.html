@@ -102,10 +102,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/data.html">MERRA-2 subset</a>
-    </li>
-    <li>
-      <a href="../articles/models.html">Models</a>
+      <a href="../articles/merra2.html">MERRA-2 subset</a>
     </li>
     <li>
       <a href="../articles/solarpower.html">Solar Power</a>
@@ -137,7 +134,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Get a example of MERRA2 data for a particular month(s)</h1>
-    <small class="dont-index">Source: <a href='https://github.com/olugovoy/merra2ools/blob/master/R/read_merra_subset.R'><code>R/read_merra_subset.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/olugovoy/merra2ools/blob/master/R/merra_subset.R'><code>R/merra_subset.R</code></a></small>
     <div class="hidden name"><code>merra2_sample.Rd</code></div>
     </div>
 
@@ -163,7 +160,7 @@ The returned data.table has the same format as returned by <code><a href='get_me
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'> <span class='fu'>merra2_sample</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;                      datetime  locid T10M W10M W50M PS_hPa SWGDN ALBEDO
+</div><div class='output co'>#&gt;                           UTC  locid T10M W10M W50M PS_hPa SWGDN ALBEDO
 #&gt;        1: 2010-01-21 00:30:00      1  247  2.4  3.1    695   339    0.8
 #&gt;        2: 2010-01-21 00:30:00      2  247  2.4  3.1    695   339    0.8
 #&gt;        3: 2010-01-21 00:30:00      3  247  2.4  3.1    695   339    0.8
@@ -175,7 +172,7 @@ The returned data.table has the same format as returned by <code><a href='get_me
 #&gt; 59885566: 2010-12-21 23:30:00 207934  263  6.3  7.8   1017     0    0.0
 #&gt; 59885567: 2010-12-21 23:30:00 207935  263  6.3  7.8   1017     0    0.0
 #&gt; 59885568: 2010-12-21 23:30:00 207936  263  6.3  7.8   1017     0    0.0</div><div class='input'> <span class='fu'>merra2_sample</span><span class='op'>(</span><span class='fl'>2</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;                     datetime  locid T10M W10M W50M PS_hPa SWGDN ALBEDO
+</div><div class='output co'>#&gt;                          UTC  locid T10M W10M W50M PS_hPa SWGDN ALBEDO
 #&gt;       1: 2010-02-21 00:30:00      1  232  4.7  6.2    690   135   0.80
 #&gt;       2: 2010-02-21 00:30:00      2  232  4.7  6.2    690   135   0.80
 #&gt;       3: 2010-02-21 00:30:00      3  232  4.7  6.2    690   135   0.80

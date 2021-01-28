@@ -14,6 +14,7 @@ plot_merra(
   direction = -1,
   legend.position = c(0.91, 0.05),
   legend.name = "m/s",
+  datetime = "UTC",
   datetime.position = c(150, 87),
   datetime.format = "\%Y-\%b-\%d, \%Hh \%Z",
   expand.x = c(0, 0),
@@ -55,4 +56,7 @@ plot_merra(
 }
 \description{
 Quick plots of wind speed and its dynamics
+}
+\examples{
+NA
 }

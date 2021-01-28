@@ -95,12 +95,12 @@ Figure below shows a sample of extrapolated speed of wind from 10 and 50 to up t
   <summary>Figure code</summary>
 ```{r}
 dd <- dat %>% ungroup() %>%
-  select(datetime, locid, starts_with("w", ignore.case = F)) %>%
+  select(UTC, locid, starts_with("w", ignore.case = F)) %>%
   pivot_longer(cols = starts_with("w"), names_prefix = "w") %>%
   mutate(name = as.integer(name))
 
 set.seed(0)
-fig <- ggplot(filter(dd, locid %in% sample(locid, 100), datetime == dd$datetime[1])) +
+fig <- ggplot(filter(dd, locid %in% sample(locid, 100), UTC == dd$UTC[1])) +
   geom_line(aes(value, name, group = locid, colour = locid), 
             alpha = .75, show.legend = F, size = .75) +
   scale_colour_distiller(palette = "Spectral") +
@@ -132,7 +132,7 @@ fig
 ### Wind speed at 50m
 ```{r}
 locid <- merra2ools::locid %>% select(locid, lon, lat) 
-dat2 <- select(dat, datetime, locid, w10, w50, w100, w200) %>%
+dat2 <- select(dat, UTC, locid, w10, w50, w100, w200) %>%
   full_join(locid)
 
 ```

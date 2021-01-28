@@ -102,10 +102,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/data.html">MERRA-2 subset</a>
-    </li>
-    <li>
-      <a href="../articles/models.html">Models</a>
+      <a href="../articles/merra2.html">MERRA-2 subset</a>
     </li>
     <li>
       <a href="../articles/solarpower.html">Solar Power</a>
@@ -154,8 +151,8 @@
   na.val <span class='op'>=</span> <span class='cn'>NA</span>,
   zenith.max <span class='op'>=</span> <span class='fl'>90</span>,
   AOI.max <span class='op'>=</span> <span class='fl'>90</span>,
-  rad <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  verbose <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"merra2.verbose"</span><span class='op'>)</span>
+  verbose <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"merra2.verbose"</span><span class='op'>)</span>,
+  <span class='va'>...</span>
 <span class='op'>)</span>
 
 <span class='fu'>fAOI</span><span class='op'>(</span>
@@ -167,13 +164,25 @@
   na.val <span class='op'>=</span> <span class='cn'>NA</span>,
   zenith.max <span class='op'>=</span> <span class='fl'>90</span>,
   AOI.max <span class='op'>=</span> <span class='fl'>90</span>,
-  rad <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  verbose <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"merra2.verbose"</span><span class='op'>)</span>
+  verbose <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"merra2.verbose"</span><span class='op'>)</span>,
+  <span class='va'>...</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td></td>
+    </tr>
+    <tr>
+      <th>array.type</th>
+      <td></td>
+    </tr>
+    <tr>
+      <th>suffix</th>
+      <td></td>
+    </tr>
     <tr>
       <th>azimuth</th>
       <td><p>the solar zenith angle, degrees</p></td>
@@ -183,12 +192,20 @@
       <td><p>the solar azimuth angle, degrees</p></td>
     </tr>
     <tr>
-      <th>array.tilt</th>
-      <td><p>the PV tilt angle, degrees</p></td>
+      <th>na.val</th>
+      <td></td>
     </tr>
     <tr>
-      <th>array.azimuth</th>
-      <td><p>the PV azimuth angle, degrees</p></td>
+      <th>zenith.max</th>
+      <td></td>
+    </tr>
+    <tr>
+      <th>verbose</th>
+      <td></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td></td>
     </tr>
     </table>
 

@@ -10,7 +10,7 @@ deg2rad(x)
 rad2deg(x)
 }
 \arguments{
-\item{x}{numeric vector, degrees}
+\item{x}{}
 }
 \value{
 numeric vector, radians

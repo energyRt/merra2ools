@@ -65,8 +65,7 @@ if (file.exists(gif_file)) include_graphics(gif_file)
 ```
 
 ### Wind speed at 10 and 50 meters hights (W10M and W50M), m/s
-<details>
-  <summary>Figure code</summary>
+<details><summary>Figure code</summary>
 ```{r wind, eval=FALSE}
 summary(x$W50M)
 # fig.W50M <- 
@@ -109,8 +108,7 @@ if (file.exists(gif_file)) include_graphics(gif_file)
 ```
 
 ### Global Horizontal Irradiance (SWGDN), Watt/m2
-<details>
-  <summary>Figure code</summary>
+<details><summary>Figure code</summary>
 ```{r GHI, eval=FALSE}
 summary(x$SWGDN)
 
@@ -141,8 +139,7 @@ if (file.exists(gif_file)) include_graphics(gif_file)
 ```
 
 ### Albedo (ALBEDO), index [0..1]
-<details>
-  <summary>Figure code</summary>
+<details><summary>Figure code</summary>
 ```{r albedo, eval=FALSE}
 summary(x$ALBEDO)
 
@@ -168,8 +165,7 @@ if (file.exists(gif_file)) include_graphics(gif_file)
 ```
 
 ### Surface atmospheric preassure (PS), hPa
-<details>
-  <summary>Figure code</summary>
+<details><summary>Figure code</summary>
 ```{r PS, eval=FALSE}
 summary(x$PS_hPa)
 
@@ -195,7 +191,7 @@ if (file.exists(gif_file)) include_graphics(gif_file)
 ```
 
 <details>
-  <summary>Figure code</summary>
+<summary>Figure code</summary>
 ```{r dPS, eval=FALSE}
 PS_mean <- x %>% 
   group_by(locid) %>%
@@ -326,7 +322,7 @@ fig.grid <- function(x) {
             labels = c("W10M", "W50M", "SWGDN", "ALBEDO", "T10M", "PS"),
             ncol = 2, nrow = 3, hjust = -0.1, vjust = 1.1, label_size = 10)
 }
-# ii <- lubridate::month(x$datetime) == 2; summary(ii)
+# ii <- lubridate::month(x$UTC) == 2; summary(ii)
 fig.grid(x)
 
 gif_merra(x, FUN = "fig.grid", dirname = "images", fps = 10,

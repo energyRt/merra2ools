@@ -1,9 +1,32 @@
+#' Title
+#'
+#' @param hour_utc 
+#' @param lon 
+#' @param lat 
+#' @param tz_offset 
+#'
+#' @return
+#' @export
+#'
+#' @examples
+#' NA
 hour_utc2tz <- function(hour_utc, lon = NULL, lat = NULL, tz_offset = NULL) {
   if (is.null(tz_offset)) tz_offset <- coord2tz_offset(lon, lat)
   hour_tz <- (hour_utc + tz_offset + 48) %% 24
   return(as.integer(hour_tz))
 }
 
+#' Title
+#'
+#' @param lon 
+#' @param lat 
+#' @param utc 
+#'
+#' @return
+#' @export
+#'
+#' @examples
+#' NA
 coord2tz_offset <- function(lon, lat, utc = NULL) {
   .tz <- lutz::tz_lookup_coords(lat = lat, lon = lon, 
                                method = "fast", warn = FALSE)
@@ -26,7 +49,7 @@ if (F) {
                   lat = merra$lat[1:2])
   coord2tz_offset(lon = merra$lon[1:2], 
                   lat = merra$lat[1:2],
-                  merra$datetime[1:2])
+                  merra$UTC[1:2])
   hour_utc2tz(0,0,0)
   hour_utc2tz(0,180,0)
   hour_utc2tz(0,-180,0)
@@ -34,10 +57,39 @@ if (F) {
   
 }
 
+#' Title
+#'
+#' @param yday 
+#' @param leap_year 
+#'
+#' @return
+#' @export
+#'
+#' @examples
+#' NA
 yday2month <- function(yday, leap_year = FALSE) {
   if (leap_year) x <- "2012-01-01" else x <- "2010-01-01"
   x <- lubridate::ymd(x) + lubridate::days(yday - 1)
   return(lubridate::month(x))
+}
+
+#' Convert the day of the year to 
+#'
+#' @param yday integer vector with days of a year (1-366)
+#' @param year integer vector with years
+#' @param tz character time zone name
+#'
+#' @return
+#' @export
+#'
+#' @examples
+#' NA
+yday2date <- function(yday, year = 2010, tz = "UTC") {
+  # if (leap_year) x <- "2012-01-01" else x <- "2010-01-01"
+  x <- lubridate::ymd(paste0(year, "-01-01"), tz = tz) + lubridate::days(yday - 1)
+  # x <- lubridate::ymd(x) + lubridate::days(yday - 1)
+  # return(lubridate::month(x))
+  return(x)
 }
 
 
@@ -57,6 +109,7 @@ yday2month <- function(yday, leap_year = FALSE) {
 #' @export
 #'
 #' @examples
+#' NA
 fetch_pvwatts <- function(
   query = list(
     lat = 0, lon = 0, dataset = "intl", radius = 1000, 
@@ -83,10 +136,10 @@ fetch_pvwatts <- function(
     } else if (array.type == "th") {
       query$array_type <- 2
       query$tilt <- 0
-    } else if (array.type == "tl") {
+    } else if (array.type == "tv") {
       query$array_type <- 2
       query$tilt <- abs(query$lat)
-    } else if (array.type == "tv") {
+    } else if (array.type == "tl") {
       warning("The array type is not available")
       return(list())
     } else if (array.type == "td") {

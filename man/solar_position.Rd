@@ -6,27 +6,33 @@
 \usage{
 solar_position(
   x,
-  datetime = "datetime",
+  UTC = "UTC",
   yday = "yday",
   hour = "hour",
   lon = "lon",
   lat = "lat",
+  integral_steps = 2,
   keep.all = TRUE,
-  verbose = getOption("merra2.verbose")
+  verbose = getOption("merra2.verbose"),
+  ...
 )
 }
 \arguments{
-\item{x}{}
+\item{x}{data.frame with MERRA-2 subset}
 
-\item{datetime}{date and time}
+\item{UTC}{name (string) of the column in x with date and time in UTC format}
 
-\item{yday}{day of a year}
+\item{yday}{optional name of column in x with the day of the year (consistent with UTC time), will be used if "UTC" is not provided}
 
-\item{hour}{}
+\item{hour}{optional, the name of column with hour of the day (0 to 23, UTC time assumed)}
 
-\item{lon}{}
+\item{lon}{longitude of the location}
 
-\item{lat}{}
+\item{lat}{latitude of the location}
+
+\item{integral_steps}{integer number of steps for calculation of solar_time, hour_angle, and zenith within an hour, and  logical variable; default is 2 (start and the end of every hour)}
+
+\item{keep.all}{if TRUE, the interim variables declination, eq_time, solar_time, and hour_angle will be added to x and returned}
 
 \item{verbose}{}
 }

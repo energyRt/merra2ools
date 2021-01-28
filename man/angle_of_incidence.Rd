@@ -14,8 +14,8 @@ angle_of_incidence(
   na.val = NA,
   zenith.max = 90,
   AOI.max = 90,
-  rad = TRUE,
-  verbose = getOption("merra2.verbose")
+  verbose = getOption("merra2.verbose"),
+  ...
 )
 
 fAOI(
@@ -27,18 +27,28 @@ fAOI(
   na.val = NA,
   zenith.max = 90,
   AOI.max = 90,
-  rad = TRUE,
-  verbose = getOption("merra2.verbose")
+  verbose = getOption("merra2.verbose"),
+  ...
 )
 }
 \arguments{
+\item{x}{}
+
+\item{array.type}{}
+
+\item{suffix}{}
+
 \item{azimuth}{the solar zenith angle, degrees}
 
 \item{zenith}{the solar azimuth angle, degrees}
 
-\item{array.tilt}{the PV tilt angle, degrees}
+\item{na.val}{}
 
-\item{array.azimuth}{the PV azimuth angle, degrees}
+\item{zenith.max}{}
+
+\item{verbose}{}
+
+\item{...}{}
 }
 \value{
 

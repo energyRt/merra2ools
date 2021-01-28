@@ -153,7 +153,17 @@ if (F) {
 #' 
 closest_locid <- function(lon, lat, asList = FALSE) {
   # browser()
-  stopifnot(length(lon) == length(lat))
+  nlon <- length(lon); nlat <- length(lat)
+  stopifnot(nlon >= 1); stopifnot(nlat >= 1)
+  if (nlon != nlat) {
+    if (nlon == 1 & nlat > 1) {
+      lon <- rep(lon, nlat)
+    } else if (nlon > 1 & nlat == 1) {
+      lat <- rep(lat, nlon)
+    } else {
+      stop("Inconsistent lenghs of `lon` and `lat`")
+    }
+  }
   x <- data.frame(lon = lon, lat = lat)
   # l_id <- locid[,1:2]
   if (asList) id <- list() else id <- integer()

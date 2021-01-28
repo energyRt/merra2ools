@@ -15,19 +15,24 @@ poa_irradiance(
   DHI = "DHI",
   ALBEDO = "ALBEDO",
   array.tilt = "array.tilt",
+  zenith = "zenith",
+  tilt.param = tilt.param.default(),
   keep.all = FALSE,
-  verbose = getOption("merra2.verbose")
+  verbose = getOption("merra2.verbose"),
+  ...
 )
 
 fPOA(
   x,
   array.type = "all",
   suffix = TRUE,
-  datetime = "datetime",
+  UTC = "UTC",
   yday = "yday",
   hour = "hour",
   lon = "lon",
   lat = "lat",
+  integral_steps = 3,
+  tilt.param = tilt.param.default(),
   keep.all = FALSE,
   verbose = getOption("merra2.verbose")
 )
@@ -53,7 +58,7 @@ fPOA(
 
 \item{verbose}{}
 
-\item{datetime}{}
+\item{UTC}{}
 
 \item{yday}{}
 

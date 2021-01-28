@@ -102,10 +102,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/data.html">MERRA-2 subset</a>
-    </li>
-    <li>
-      <a href="../articles/models.html">Models</a>
+      <a href="../articles/merra2.html">MERRA-2 subset</a>
     </li>
     <li>
       <a href="../articles/solarpower.html">Solar Power</a>
@@ -153,12 +150,7 @@
   azimuth <span class='op'>=</span> <span class='st'>"azimuth"</span>,
   zenith <span class='op'>=</span> <span class='st'>"zenith"</span>,
   verbose <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"merra2.verbose"</span><span class='op'>)</span>,
-  array.tilt.range.fh <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>0</span><span class='op'>)</span>,
-  array.tilt.range.fl <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>60</span><span class='op'>)</span>,
-  array.tilt.range.th <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>45</span><span class='op'>)</span>,
-  array.tilt.range.tl <span class='op'>=</span> <span class='va'>array.tilt.range.th</span>,
-  array.tilt.range.tv <span class='op'>=</span> <span class='va'>array.tilt.range.fl</span>,
-  array.tilt.range.td <span class='op'>=</span> <span class='va'>array.tilt.range.fl</span>
+  tilt.param <span class='op'>=</span> <span class='fu'><a href='tilt.param.default.html'>tilt.param.default</a></span><span class='op'>(</span><span class='op'>)</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -166,11 +158,11 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td></td>
+      <td><p>data.frame object with MERRA-2 subset</p></td>
     </tr>
     <tr>
       <th>array.type</th>
-      <td></td>
+      <td><p>type of tracking ()</p></td>
     </tr>
     <tr>
       <th>suffix</th>
@@ -189,27 +181,11 @@
       <td><p>solar zenith angle for the PV location (\(0 \leq azimuth \leq 90\))</p></td>
     </tr>
     <tr>
-      <th>array.tilt.range.fh</th>
+      <th>verbose</th>
       <td></td>
     </tr>
     <tr>
-      <th>array.tilt.range.fl</th>
-      <td></td>
-    </tr>
-    <tr>
-      <th>array.tilt.range.th</th>
-      <td></td>
-    </tr>
-    <tr>
-      <th>array.tilt.range.tl</th>
-      <td></td>
-    </tr>
-    <tr>
-      <th>array.tilt.range.tv</th>
-      <td></td>
-    </tr>
-    <tr>
-      <th>array.tilt.range.td</th>
+      <th>tilt.param</th>
       <td></td>
     </tr>
     </table>

@@ -12,18 +12,13 @@ pv_array_position(
   azimuth = "azimuth",
   zenith = "zenith",
   verbose = getOption("merra2.verbose"),
-  array.tilt.range.fh = c(0, 0),
-  array.tilt.range.fl = c(0, 60),
-  array.tilt.range.th = c(0, 45),
-  array.tilt.range.tl = array.tilt.range.th,
-  array.tilt.range.tv = array.tilt.range.fl,
-  array.tilt.range.td = array.tilt.range.fl
+  tilt.param = tilt.param.default()
 )
 }
 \arguments{
-\item{x}{}
+\item{x}{data.frame object with MERRA-2 subset}
 
-\item{array.type}{}
+\item{array.type}{type of tracking ()}
 
 \item{suffix}{}
 
@@ -33,17 +28,9 @@ pv_array_position(
 
 \item{zenith}{solar zenith angle for the PV location (\mjseqn{0 \leq azimuth \leq 90})}
 
-\item{array.tilt.range.fh}{}
+\item{verbose}{}
 
-\item{array.tilt.range.fl}{}
-
-\item{array.tilt.range.th}{}
-
-\item{array.tilt.range.tl}{}
-
-\item{array.tilt.range.tv}{}
-
-\item{array.tilt.range.td}{}
+\item{tilt.param}{}
 }
 \value{
 

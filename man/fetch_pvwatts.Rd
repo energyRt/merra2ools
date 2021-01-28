@@ -40,3 +40,6 @@ Title
 \details{
 <https://developer.nrel.gov/docs/solar/pvwatts/v6/>
 }
+\examples{
+NA
+}

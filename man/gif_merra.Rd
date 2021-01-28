@@ -7,6 +7,7 @@
 gif_merra(
   x,
   FUN = "plot_merra",
+  datetime = "UTC",
   nmax = 24 * 12,
   fps = 12,
   gif.width = 576,
@@ -43,4 +44,7 @@ gif_merra(
 }
 \description{
 Quick GIF plots
+}
+\examples{
+NA
 }

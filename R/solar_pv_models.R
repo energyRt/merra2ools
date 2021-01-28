@@ -1,9 +1,10 @@
 .pv_array_type <- function(array.type) {
-  .tracking_types <- c("fh", "fl", "th", "tl", "tv", "td")
+  .tracking_types <- c("fh", "fl", "th", "tv", "td")
+  # .tracking_types <- c("fh", "fl", "th", "tl", "tv", "td")
   # "fh" # "Horizontal (h) fixed (f) arrays"
   # "fl" # "Tilted (l) fixed (f) arrays"
   # "th" # "Horizontal (h) single axis tracking (t) arrays"
-  # "tl" # "Tilted (l) single axis tracking (t) arrays"
+  # "tl" # "Tilted (l) single axis tracking (t) arrays" - not implemented yet
   # "tv" # "Vertical (v) single axis tracking (t) arrays"
   # "td" # "Dual (d) axis tracking (t) arrays"
   
@@ -15,20 +16,38 @@
   return(array.type)
 }
 
+#' List tracking system types
+#'
+#' @return
+#' @export
+#'
+#' @examples
+#' pv_array_types()
+#' pv_array_types("fl")
+pv_array_types <- function(array.type = "all") {
+  d <- data.frame(
+    array.type = .pv_array_type(array.type),
+    description = ""
+  )
+  d$description[d$array.type == "fh"] <- "Fixed (f) horizontal (h)"
+  d$description[d$array.type == "fl"] <- "Fixed (f) tilted (l)"
+  d$description[d$array.type == "th"] <- "Single axis horizontal (h) tracking (t)"
+  # d$description[d$array.type == "tl"] <- "Single axis tilted (l) tracking (t)" # - not implemented
+  d$description[d$array.type == "tv"] <- "Single axis vertical (v) tracking (t)"
+  d$description[d$array.type == "td"] <- "Dual (d) axis tracking (t)"
+  return(d)
+}
+
 #' Photovoltaic Solar Panel Orientation and Performance Models
 #'
+#' @param x data.frame object with MERRA-2 subset
 #' @param lat latitude of PV location (\mjseqn{-90 \leq lat \leq 90})
 #' @param azimuth solar azimuth angle for the PV location (\mjseqn{0 \leq azimuth < 360})
 #' @param zenith solar zenith angle for the PV location (\mjseqn{0 \leq azimuth \leq 90})
-#' @param x 
-#' @param array.type 
+#' @param array.type type of tracking ()
+#' @param verbose 
+#' @param tilt.param 
 #' @param suffix 
-#' @param array.tilt.range.fl 
-#' @param array.tilt.range.th 
-#' @param array.tilt.range.tl 
-#' @param array.tilt.range.tv 
-#' @param array.tilt.range.td 
-#' @param array.tilt.range.fh 
 #'
 #' @details 
 #' \loadmathjax
@@ -113,17 +132,28 @@ pv_array_position <- function(x,
                               azimuth = "azimuth", zenith = "zenith",
                               verbose = getOption("merra2.verbose"),
                               # array.azimuth = NULL,
-                              array.tilt.range.fh = c(0., 0.),
-                              array.tilt.range.fl = c(0., 60),
-                              array.tilt.range.th = c(0., 45),
-                              array.tilt.range.tl = array.tilt.range.th,
-                              array.tilt.range.tv = array.tilt.range.fl,
-                              array.tilt.range.td = array.tilt.range.fl) {
+                              # backtrack.angle = 80,
+                              # array.tilt.range.fh = c(0, 0),
+                              # array.tilt.range.fl = c(0, 90),
+                              # array.tilt.range.th = c(0, 45, 80),
+                              # # array.tilt.range.tl = c(-Inf, Inf),
+                              # array.tilt.range.tv = c(0, 80),
+                              # array.tilt.range.td = c(0, 60, 80)
+                              tilt.param = tilt.param.default()
+                              #   list(
+                              #   fh = list(min = 0, max = 0, shading = NA, backtracking = FALSE),
+                              #   fl = list(min = 0, max = 90, shading = 80, backtracking = FALSE),
+                              #   th = list(min = 0, max = 45, shading = 80, backtracking = TRUE),
+                              #   tv = list(min = 0, max = 80, shading = 80, backtracking = FALSE),
+                              #   td = list(min = 0, max = 75, shading = 80, backtracking = TRUE)
+                              # )
+                              ) {
   # browser()
   # c("fh", "fl", "th", "tl", "tv", "td")
   array.type <- .pv_array_type(array.type)
   if (verbose) cat("   PV-array position, array.type: ")
-  ii <- x[[zenith]] <= 90 & is.finite(x[[zenith]]) # over horizon
+  ii <- x[[zenith]] <= 90 & is.finite(x[[zenith]]) # sun over horizon
+  # south <- x[[lat]] < 0
   for (i in array.type) {
     if (verbose) cat(i, " ", sep = "")
     y <- data.table(
@@ -135,87 +165,132 @@ pv_array_position <- function(x,
       y$array.azimuth <- 0 # Southern hemisphere facing North
       y$array.azimuth[x[[lat]] > 0] <- 180 # Northern hemisphere facing South
       y$array.tilt <- 0
-      y$array.tilt[y$array.tilt < array.tilt.range.fh[1]] <- array.tilt.range.fh[1]
-      y$array.tilt[y$array.tilt > array.tilt.range.fh[2]] <- array.tilt.range.fh[2]
+      # y$array.tilt[y$array.tilt < array.tilt.range.fh[1]] <- array.tilt.range.fh[1]
+      # y$array.tilt[y$array.tilt > array.tilt.range.fh[2]] <- array.tilt.range.fh[2]
+      
     } else if (i == "fl") { 
       # fixed tilted ####
       y$array.azimuth <- 0 # Southern hemisphere facing North
       y$array.azimuth[x[[lat]] > 0] <- 180 # Northern hemisphere facing South
       y$array.tilt <- abs(x[[lat]])
-      y$array.tilt[y$array.tilt < array.tilt.range.fl[1]] <- array.tilt.range.fl[1]
-      y$array.tilt[y$array.tilt > array.tilt.range.fl[2]] <- array.tilt.range.fl[2]
+      # y$array.tilt[y$array.tilt < array.tilt.range.fl[1]] <- array.tilt.range.fl[1]
+      # y$array.tilt[y$array.tilt > array.tilt.range.fl[2]] <- array.tilt.range.fl[2]
     } else if (i == "th") { 
-      # horizontal tracking ####
+      # tracking horizontal ####
       y$array.azimuth <- 90 + as.numeric(x[[azimuth]] > 180) * 180
       # ii <- x[[zenith]] < 90
       y$array.tilt[ii] <- 
         atan(abs(
           tan(x[[zenith]][ii] / 180 * pi) * 
-            cospi((x[[azimuth]][ii] - y$array.azimuth[ii]) / 180)
+            cosd(x[[azimuth]][ii] - y$array.azimuth[ii])
           )) / pi * 180 
-      y$array.tilt[!ii] <- 90
-      y$array.tilt[y$array.tilt < array.tilt.range.th[1]] <- array.tilt.range.th[1]
-      y$array.tilt[y$array.tilt > array.tilt.range.th[2]] <- array.tilt.range.th[2]
+      y$array.tilt[!ii] <- 0
+      # y$array.tilt[y$zenith > array.tilt.range.th[3]] <- 0
+      # y$array.tilt[y$array.tilt < array.tilt.range.th[1]] <- array.tilt.range.th[1]
+      # y$array.tilt[y$array.tilt > array.tilt.range.th[2]] <- array.tilt.range.th[2]
+      # y$array.tilt[y$array.tilt > array.tilt.range.th[4]] <- 0
+    } else if (i == "tl-bug") { 
+      # browser()
+      Zenith <- x$zenith
+      Azimuth <- x$azimuth
+      array.tilt <- x$lat
+      array.azimuth <- 180
+      AOI.fx <- (Zenith<90)*
+        acos(round(cospi(Zenith/180)*cospi(array.tilt/180)+
+                     sinpi(Zenith/180)*sinpi(array.tilt/180)*
+                     cospi((Azimuth-array.azimuth)/180), digits = 15))
+      delta.gamma <- atan(sinpi(Zenith/180)*sinpi((Azimuth-180)/180)/
+                            cos(AOI.fx)/sinpi(x$lat/180))/pi*180
+      rm(array.azimuth,array.tilt,AOI.fx)
+      array.azimuth <- (180 + delta.gamma + ((delta.gamma*(Azimuth-180))<0)*
+                          (2*((Azimuth-180)>=0)-1)*180)*(Zenith<90)
+      rm(delta.gamma)
+      # gc()
+      array.tilt <- (atan(tan(Zenith/180*pi)/cospi((array.azimuth-180)/180))+
+                       (cospi(array.azimuth/180-1)<0)*pi)/
+        pi*180*(Zenith<=90)+(Zenith>90)*90
+
+      y$array.tilt <- array.tilt; rm(array.tilt)
+      y$array.azimuth <- array.azimuth; rm(array.azimuth)
+      rm(Azimuth, Zenith)
       
-    } else if (i == "tl") { 
-      # horizontal tilted tracking ####
+    } else if (i == "tl-debug") { 
+      # tracking tilted ####
       # browser()
       y$array.tilt <- abs(x[[lat]])
-      # y$array.azimuth <- 180
       y$array.azimuth <- 0 # Southern hemisphere facing North
       y$array.azimuth[x[[lat]] > 0] <- 180 # Northern hemisphere facing South
-      if (is.null(x[["AOI.fl"]])) {
-        y[[zenith]] <- as.numeric(NA); y[[azimuth]] <- as.numeric(NA)
-        y[[zenith]][ii] <- x[[zenith]][ii]
-        y[[azimuth]][ii] <- x[[azimuth]][ii]
-        y <- angle_of_incidence(y, array.type = "fl", suffix = TRUE,
-                                azimuth = azimuth, zenith = zenith, verbose = FALSE)
-        y[[zenith]] <- NULL; y[[azimuth]] <- NULL
-      } else {
-        y[["AOI.fl"]] <- x[["AOI.fl"]]
-      }
-      # y$AOI.fl <- (x$zenith < 90) *
-      #   acos(round(cospi(x$zenith / 180) * cospi(y$array.tilt / 180) +
-      #                sinpi(x$zenith / 180) * sinpi(y$array.tilt / 180) *
-      #                cospi((x$azimuth - y$array.azimuth) / 180), digits = 12))
+      y[[zenith]] <- as.numeric(NA)
+      y[[azimuth]] <- as.numeric(NA)
+      y[[zenith]][ii] <- x[[zenith]][ii]
+      y[[azimuth]][ii] <- x[[azimuth]][ii]
+      AOI.fl <- acos(
+        # round(
+        cosd(y[[zenith]][ii]) * cosd(y$array.tilt[ii]) + 
+          sind(y[[zenith]][ii]) * sind(y$array.tilt[ii]) * 
+          cosd(y[[azimuth]][ii] - y$array.azimuth[ii])
+        # , digits = 15)
+      )
       
-      y$delta.gamma <- as.numeric(NA)
-      y$delta.gamma[ii] <- atan(sinpi(x[[zenith]][ii] / 180) *
-                            sinpi((x[[azimuth]][ii] - 180) / 180) / 
-                              cos(y$AOI.fl[ii]) / sinpi(x[[lat]][ii] / 180)) / pi * 180
-      y$AOI.fl <- NULL
-      # ii <- zenith <= 90
-      # aaz <- y$array.azimuth[ii]
-      y$array.azimuth <- NA
-      y$array.azimuth[ii] <- 180 + y$delta.gamma[ii] +
-        ((y$delta.gamma[ii] * (x[[azimuth]][ii] - 180)) < 0) * 
-        (2 * ((x[[azimuth]][ii] - 180) >= 0) - 1) * 180
-      y$delta.gamma <- NULL
-      y$array.tilt <- array.tilt.range.tl[2]
-      y$array.tilt[ii] <- (atan(tan(x[[zenith]][ii] / 180 * pi) / 
-                                  cospi((y$array.azimuth[ii] - 180) / 180)) +
-                       (cospi(y$array.azimuth[ii] / 180 - 1) < 0) * pi) / pi * 180
-      y$array.tilt[y$array.tilt < array.tilt.range.tl[1]] <- array.tilt.range.tl[1]
-      y$array.tilt[y$array.tilt > array.tilt.range.tl[2]] <- array.tilt.range.tl[2]
+      delta.gamma <- atan(
+        sind(y[[zenith]][ii]) * sind((y[[azimuth]][ii] - 180)) /
+          (cos(AOI.fl) * sind(y$array.tilt[ii]))
+        ) / pi * 180
+      # rm(array.azimuth,array.tilt,AOI.fx)
+      
+      y$array.azimuth[ii] <- 
+        (180 + delta.gamma + ((delta.gamma * (y[[azimuth]][ii] - 180)) < 0) * 
+           (2*((y[[azimuth]][ii] - 180) >= 0) - 1) * 180) #* (zenith < 90)
+      rm(delta.gamma, AOI.fl)
+      # gc()
+      y$array.tilt[ii] <- (
+        atan(
+          tand(y[[zenith]][ii]) / cosd((y[[azimuth]][ii] - 180))) + 
+          (cosd(y[[azimuth]][ii] - 180) < 0) * pi) / pi * 180 
+      y$array.tilt[!ii] <- 0
+      
+      y$zenith <- NULL; y$azimuth <- NULL
+      # # browser()
+      # # y$array.tilt <- as.numeric(0)
+      # # `iii` - handle cases when zenith > 90 & GHI > 0
+      # cospi.array.az <- rep(0., length(ii))
+      # cospi.array.az[ii] <- round(cospi((y$array.azimuth[ii] - 180) / 180), 5)
+      # iii <- ii & (abs(cospi.array.az) > 0)
+      # y$array.tilt[iii] <- (atan(tanpi(x[[zenith]][iii] / 180) / 
+      #                              cospi.array.az[iii]) +
+      #                  (cospi.array.az[iii] < 0) * pi) / pi * 180
+      # # southern hemisphere adjustment
+      # tilt_180 <- y$array.tilt > 90 & !is.na(y$array.tilt)
+      # y$array.tilt[tilt_180] <- 180 - y$array.tilt[tilt_180]
+      # apply boundaries
+      # y$array.tilt[y$array.tilt < array.tilt.range.tl[1]] <- array.tilt.range.tl[1]
+      # y$array.tilt[y$array.tilt > array.tilt.range.tl[2]] <- array.tilt.range.tl[2]
 
     } else if (i == "tv") { 
-      # vertical (azimuth) tracking ####
+      # tracking vertical (azimuth) ####
+      # browser()
       y$array.tilt <- abs(x[[lat]])
       y$array.azimuth <- x[[azimuth]]
-      y$array.tilt[y$array.tilt < array.tilt.range.tv[1]] <- array.tilt.range.tv[1]
-      y$array.tilt[y$array.tilt > array.tilt.range.tv[2]] <- array.tilt.range.tv[2]
+      # y$array.tilt[y$array.tilt < array.tilt.range.tv[1]] <- array.tilt.range.tv[1]
+      # y$array.tilt[y$array.tilt > array.tilt.range.tv[2]] <- array.tilt.range.tv[2]
       
     } else if (i == "td") { 
-      # dual axes tracking ####
-      y$array.tilt <- array.tilt.range.td[2]
+      # tracking dual axes ####
+      y$array.tilt <- 0
       y$array.tilt[ii] <- x[[zenith]][ii]
-      y$array.tilt[y$array.tilt < array.tilt.range.td[1]] <- array.tilt.range.td[1]
-      y$array.tilt[y$array.tilt > array.tilt.range.td[2]] <- array.tilt.range.td[2]
+      # y$array.tilt[x[[zenith]] > array.tilt.range.td[3]] <- 0
+      # y$array.tilt[y$array.tilt < array.tilt.range.td[1]] <- array.tilt.range.td[1]
+      # y$array.tilt[y$array.tilt > array.tilt.range.td[2]] <- array.tilt.range.td[2]
       y$array.azimuth <- x[[azimuth]]
       
     } else {
       stop("Unknown array.type '", i, "'.")
     }
+    if (tilt.param[[i]]$backtracking) {
+      y$array.tilt[x[[zenith]] > tilt.param[[i]]$shading] <- 0
+    }
+    y$array.tilt[y$array.tilt < tilt.param[[i]]$min] <- tilt.param[[i]]$min
+    y$array.tilt[y$array.tilt > tilt.param[[i]]$max] <- tilt.param[[i]]$max
     # y -> x
     array.tilt <- "array.tilt"; array.azimuth <- "array.azimuth"
     if (suffix) {
@@ -232,12 +307,36 @@ pv_array_position <- function(x,
 }
 
 
+#' Default tilt-parameters of tracking systems
+#'
+#' @param x 
+#'
+#' @return
+#' @export
+#'
+#' @examples
+#' str(tilt.param.default())
+tilt.param.default <- function(x = NULL) {
+  list(
+    fh = list(min = 0, max = 0, shading = 90, backtracking = FALSE),
+    fl = list(min = 0, max = 75, shading = 90, backtracking = FALSE),
+    th = list(min = 0, max = 45, shading = 85, backtracking = TRUE),
+    tv = list(min = 0, max = 75, shading = 90, backtracking = FALSE),
+    td = list(min = 0, max = 60, shading = 85, backtracking = TRUE)
+  )
+}
+
 #' Angle of Incidence (AOI)
 #'
+#' @param x 
 #' @param azimuth the solar zenith angle, degrees
+#' @param array.type 
+#' @param suffix 
+#' @param na.val 
+#' @param zenith.max 
+#' @param verbose 
 #' @param zenith the solar azimuth angle, degrees
-#' @param array.tilt the PV tilt angle, degrees
-#' @param array.azimuth the PV azimuth angle, degrees
+#' @param ... 
 #'
 #' @details 
 #' \loadmathjax
@@ -257,17 +356,18 @@ pv_array_position <- function(x,
 #' NA
 angle_of_incidence <- function(x, array.type = "fh", suffix = TRUE, 
                                azimuth = "azimuth", zenith = "zenith", 
-                               # array.tilt = "array.tilt", 
-                               # array.azimuth = "array.azimuth", 
+                               # beam = "beam",
                                na.val = NA,
                                zenith.max = 90, AOI.max = 90,
-                               rad = TRUE, verbose = getOption("merra2.verbose")) {
+                               verbose = getOption("merra2.verbose"),
+                               ...) {
   # browser()
   array.type <- .pv_array_type(array.type)
   if (verbose) cat("   Angle of incidence (AOI), array.type: ")
   if (!suffix & length(array.type) > 1) {
     stop("Sufixes must be used for calculation of several types of array.")}
-  ii <- x[[zenith]] <= zenith.max & is.finite(x[[zenith]]) # sun above horizon
+  ii <- x[[zenith]] <= zenith.max & is.finite(x[[zenith]]) # additional filter
+  # if (!is.null(x[[beam]])) ii <- ii & x[[beam]]
   # if (is.null(array.tilt)) 
   array.tilt <- "array.tilt"
   # if (is.null(array.azimuth)) 
@@ -281,12 +381,17 @@ angle_of_incidence <- function(x, array.type = "fh", suffix = TRUE,
     array.azimuth.i <- ifelse(!is.null(x[[array.azimuth.i]]),
                             array.azimuth.i, array.azimuth)
     AOI <- rep(na.val, length(x[[azimuth]]))
-    AOI[ii] <- acos(round(
-      cospi(x[[zenith]][ii] / 180) * cospi(x[[array.tilt.i]][ii] / 180) +
-        sinpi(x[[zenith]][ii] / 180) * sinpi(x[[array.tilt.i]][ii] / 180) *
-        cospi((x[[azimuth]][ii] - x[[array.azimuth.i]][ii]) / 180),
-      digits = 12
-    ))
+    AOI[ii] <- 
+      # acos(
+      # round(
+      cosd(x[[zenith]][ii]) * cosd(x[[array.tilt.i]][ii]) +
+        sind(x[[zenith]][ii]) * sind(x[[array.tilt.i]][ii]) *
+        cosd((x[[azimuth]][ii] - x[[array.azimuth.i]][ii]))
+      # digits = 12)
+    # )
+    AOI[ii][AOI[ii] > 1] <- 1
+    AOI[ii][AOI[ii] < -1] <- -1
+    AOI[ii] <- acos(AOI[ii])
     stopifnot(all(!is.nan(AOI)))
     AOI[AOI > deg2rad(AOI.max)] <- na.val
     if (suffix) {
@@ -295,6 +400,9 @@ angle_of_incidence <- function(x, array.type = "fh", suffix = TRUE,
       AOI.i <- "AOI"
     }
     x[[AOI.i]] <- AOI
+    # AOI.i.d <- paste0(AOI.i, ".degree")
+    # browser()
+    # x[[AOI.i.d]] <- rad2deg(AOI)
   }
   if (verbose) cat("\n")
   return(x)
@@ -345,7 +453,10 @@ poa_irradiance <- function(x, array.type = "fl", suffix = TRUE,
                            AOI = "AOI", GHI = "SWGDN", DNI = "DNI", 
                            DHI = "DHI", ALBEDO = "ALBEDO", 
                            array.tilt = "array.tilt", 
-                           keep.all = FALSE, verbose = getOption("merra2.verbose")) {
+                           zenith = "zenith", 
+                           tilt.param = tilt.param.default(),
+                           keep.all = FALSE, verbose = getOption("merra2.verbose"),
+                           ...) {
   # browser()
   array.type <- .pv_array_type(array.type)
   if (verbose) cat("   Plane of Array Irradiance (POA), array.type: ")
@@ -360,13 +471,17 @@ poa_irradiance <- function(x, array.type = "fl", suffix = TRUE,
     AOI.i <- paste0(AOI, sfx)
     array.tilt.i <- paste0(array.tilt, sfx)
     y <- data.table(Eb = x[[DNI]] * cos(x[[AOI.i]]))
+    if (!tilt.param[[i]]$backtracking) {
+      # no direct beam when sun is lower than "shading angle"
+      y$Eb[x[[zenith]] > tilt.param[[i]]$shading] <- 0
+    }
     names(y) <- paste0("POAb", sfx)
     # ground reflected
     y[[paste0("POAg", sfx)]] <- x[[GHI]] * x[[ALBEDO]] * 
-      (1 - cospi(x[[array.tilt.i]] / 180)) / 2
+      (1 - cosd(x[[array.tilt.i]])) / 2
     # The isotropic sky diffuse model
     y[[paste0("POAd", sfx)]] <- x[[DHI]] * 
-      (1 + cospi(x[[array.tilt.i]] / 180)) / 2
+      (1 + cosd(x[[array.tilt.i]])) / 2
     
     if (keep.all) {for (j in names(y)) {x[[j]] <- y[[j]]}}
     x[[paste0("POA", sfx)]] <- rowSums(y, na.rm = T)
@@ -378,7 +493,7 @@ poa_irradiance <- function(x, array.type = "fl", suffix = TRUE,
 #' @param x 
 #' @param array.type 
 #' @param suffix 
-#' @param datetime 
+#' @param UTC 
 #' @param yday 
 #' @param hour 
 #' @param lon 
@@ -390,10 +505,13 @@ poa_irradiance <- function(x, array.type = "fl", suffix = TRUE,
 #' @export
 fPOA <- function(x, array.type = "all",
                  suffix = TRUE, 
-                 datetime = "datetime",
+                 UTC = "UTC",
                  yday = "yday", hour = "hour", 
                  lon = "lon", lat = "lat",
+                 integral_steps = 3,
+                 tilt.param = tilt.param.default(),
                  keep.all = FALSE, verbose = getOption("merra2.verbose")) {
+  # browser()
   if (verbose) {
     cat("nrow(x) = ", nrow(x),"\n")
   }
@@ -402,36 +520,47 @@ fPOA <- function(x, array.type = "all",
       stop("'x' should have either coordinates ('", 
            lon ,"' and '", lat, "') or 'locid' columns")
     }
+    y <- x
   } else {
     if (!is.null(x[[lon]]) & !is.null(x[[lat]])) {
       y <- x
     } else {
       if (verbose) cat("Adding 'locid' coordinates\n")
+      # y[[lon]] <- NULL; y[[lat]] <- NULL
+      # lid <- merra2ools::locid[,3]
+      # lid[[lon]] <- merra2ools::locid[["lon"]]
+      # lid[[lat]] <- merra2ools::locid[["lat"]]
+      # y$locid <- as.integer(y$locid)
+      # y <- dplyr::right_join(lid, y, by = "locid")
+      x <- add_coord(x)
       y <- x
-      y[[lon]] <- NULL; y[[lat]] <- NULL
-      lid <- merra2ools::locid[,3]
-      lid[[lon]] <- merra2ools::locid[["lon"]]
-      lid[[lat]] <- merra2ools::locid[["lat"]]
-      y$locid <- as.integer(y$locid)
-      y <- right_join(lid, y, by = "locid")
+      lon <- "lon"; lat <- "lat"
     }
   }
   if (verbose) cat("Calculating:\n")
   y <- solar_position(
-    x = y, datetime = datetime, yday = yday, hour = hour,
-    lon = lon, lat = lat, keep.all = FALSE, verbose = verbose) 
-  y <- solar_irradiance(x = y, yday = yday, keep.all = keep.all)
+    x = y, UTC = UTC, yday = yday, hour = hour,
+    lon = lon, lat = lat, integral_steps = integral_steps,
+    keep.all = TRUE, verbose = verbose) 
+  # browser()
+  y <- solar_irradiance(x = y, yday = yday, keep.all = TRUE, 
+                        verbose = verbose)
   y <- pv_array_position(x = y, array.type = array.type, 
-                         lat = lat, suffix = suffix)
+                         lat = lat, suffix = suffix, 
+                         verbose = verbose)
   y <- angle_of_incidence(x = y, array.type = array.type, 
-                          suffix = suffix) 
+                          suffix = suffix, verbose = verbose) 
   y <- poa_irradiance(x = y, array.type = array.type,
-                      suffix = suffix, verbose = verbose)
+                      suffix = suffix, verbose = verbose,
+                      keep.all = keep.all)
   nms <- names(y)
+  nms <- nms[!(nms %in% names(x))]
   if (!keep.all) nms <- nms[grepl("POA", nms)]
-  for (i in nms) {
-    x[[i]] <- y[[i]]
-  }
+  # for (i in nms) {
+  #   x[[i]] <- y[[i]]
+  # }
+  # bind_cols()
+  x <- cbind(x, dplyr::select(y, dplyr::all_of(nms)))
   return(x)
 }
 
@@ -448,57 +577,33 @@ fPOA <- function(x, array.type = "all",
 #' deg2rad(180)
 #' deg2rad(rad2deg(pi))
 #' cos(pi); cos(deg2rad(rad2deg(pi)))
-deg2rad <- function(x) {
-  x * pi / 180
-}
+deg2rad <- function(x) {x * pi / 180}
 
+#' @param x 
+#'
 #' @rdname deg2rad
 #' @export
-rad2deg <- function(x) x * 180 / pi
+rad2deg <- function(x) {x * 180 / pi}
 
-if (F) {
-  library(tidyverse)
-  library(data.table)
-  size <- energyRt::size
-  x <- merra2_dec %>%
-    # bind_rows(merra2_jan) %>%
-    # bind_rows(merra2_feb) %>%
-    # bind_rows(merra2_mar) %>%
-    # bind_rows(merra2_apr) %>%
-    # bind_rows(merra2_may) %>%
-    # bind_rows(merra2_jun) %>%
-    # bind_rows(merra2_jul) %>%
-    # bind_rows(merra2_aug) %>%
-    # bind_rows(merra2_sep) %>%
-    # bind_rows(merra2_oct) %>%
-    # bind_rows(merra2_nov) %>%
-  # bind_rows(merra2_dec) %>%
-  full_join(locid[,1:3])
-  y <- solar_position(x)
-  z <- solar_irradiance(y, keep.all = T) #, zenith_max = 90
-  # summary(z$DNI); summary(z$DHI)
-  # z0 <- pv_array_position(z, array.type = "fl")
-  # z0 <- pv_array_position(z0, array.type = "th")
-  # z0 <- pv_array_position(z0, array.type = "tl")
-  # z0 <- pv_array_position(z0, array.type = "tv")
-  # z0 <- pv_array_position(z0, array.type = "td")
-  z <- pv_array_position(z, array.type = "all")
-  # z1 <- angle_of_incidence(z0)
-  # z1 <- angle_of_incidence(z1, "th")
-  z <- angle_of_incidence(z, "all")
-  # summary(z$AOI.fl); summary(z$AOI.th)
-  # summary(select(z, starts_with("AOI")))
-  z <- poa_irradiance(z, array.type = "all", keep.all = T)
-  # z2 <- poa_irradiance(z2, array.type = "th", keep.all = T)
-  # z2
-  # summary(z2$POAb.fl)
-  # summary(z2$POA.fl)
-  # summary(z2$POA.th)
-  # z
-  # summary(select(z, starts_with("POA.")))
-  sapply(select(z, starts_with("POA.")), sum, na.rm = T)/1e6
-  
-  # z1$array.azimuth.fl <- 180
-#   poa_irradiance(z1[1:10,], keep.all = T)
-#   poa_irradiance(z1, keep.all = T)
+cosd <- function(x, check = TRUE) {
+  x <- cos(x * pi / 180) # faster than cospi(x / 180) & same divergence from cos
+  if (check) { #
+    x[x > 1] <- 1
+    x[x < -1] <- -1
+  }
+  return(x)
 }
+
+sind <- function(x, check = TRUE) {
+  x <- sin(x * pi / 180) # faster than sinpi(x / 180) & closer to sin
+  if (check) { #
+    x[x > 1] <- 1
+    x[x < -1] <- -1
+  }
+  return(x)
+}
+
+tand <- function(x) {
+  tanpi(x / 180) # same speed as tanpi(x / 180) & same divergence from tan
+}
+

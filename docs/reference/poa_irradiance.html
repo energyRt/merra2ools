@@ -102,10 +102,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/data.html">MERRA-2 subset</a>
-    </li>
-    <li>
-      <a href="../articles/models.html">Models</a>
+      <a href="../articles/merra2.html">MERRA-2 subset</a>
     </li>
     <li>
       <a href="../articles/solarpower.html">Solar Power</a>
@@ -155,19 +152,24 @@
   DHI <span class='op'>=</span> <span class='st'>"DHI"</span>,
   ALBEDO <span class='op'>=</span> <span class='st'>"ALBEDO"</span>,
   array.tilt <span class='op'>=</span> <span class='st'>"array.tilt"</span>,
+  zenith <span class='op'>=</span> <span class='st'>"zenith"</span>,
+  tilt.param <span class='op'>=</span> <span class='fu'><a href='tilt.param.default.html'>tilt.param.default</a></span><span class='op'>(</span><span class='op'>)</span>,
   keep.all <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  verbose <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"merra2.verbose"</span><span class='op'>)</span>
+  verbose <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"merra2.verbose"</span><span class='op'>)</span>,
+  <span class='va'>...</span>
 <span class='op'>)</span>
 
 <span class='fu'>fPOA</span><span class='op'>(</span>
   <span class='va'>x</span>,
   array.type <span class='op'>=</span> <span class='st'>"all"</span>,
   suffix <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  datetime <span class='op'>=</span> <span class='st'>"datetime"</span>,
+  UTC <span class='op'>=</span> <span class='st'>"UTC"</span>,
   yday <span class='op'>=</span> <span class='st'>"yday"</span>,
   hour <span class='op'>=</span> <span class='st'>"hour"</span>,
   lon <span class='op'>=</span> <span class='st'>"lon"</span>,
   lat <span class='op'>=</span> <span class='st'>"lat"</span>,
+  integral_steps <span class='op'>=</span> <span class='fl'>3</span>,
+  tilt.param <span class='op'>=</span> <span class='fu'><a href='tilt.param.default.html'>tilt.param.default</a></span><span class='op'>(</span><span class='op'>)</span>,
   keep.all <span class='op'>=</span> <span class='cn'>FALSE</span>,
   verbose <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"merra2.verbose"</span><span class='op'>)</span>
 <span class='op'>)</span></pre>
@@ -216,7 +218,7 @@
       <td></td>
     </tr>
     <tr>
-      <th>datetime</th>
+      <th>UTC</th>
       <td></td>
     </tr>
     <tr>
