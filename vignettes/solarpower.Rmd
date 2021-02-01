@@ -88,6 +88,7 @@ if (file.exists(gif_file)) include_graphics(gif_file)
 
 ## Step-by-step
 ### Solar postion
+<!-- <<<<<<< HEAD -->
 ```{r, eval = FALSE}
 # x <- fPOA(merra, keep.all = T)
 x <- solar_position(merra, keep.all = T)
@@ -206,6 +207,10 @@ gif_merra(x, FUN = "fig.solar_postion", dirname = "images", fps = 5,
 
 # b + geom_polygon(data = world_df, aes(x = long, y = lat, group = group),
 #                  fill = NA, colour = "lightgrey", inherit.aes = F)
+# =======
+# ```{r}
+# x <- solar_position(merra, verbose = 0, keep.all = T)
+# >>>>>>> 7565c87630de585b2903564c9caaabb21c1daa70
 
 ```
 
@@ -218,8 +223,13 @@ if (file.exists(gif_file)) include_graphics(gif_file)
 
 
 ### Global Horizontal Irradiance decomposition
+<<<<<<< HEAD
 ```{r, eval = FALSE}
 x <- solar_irradiance(x, keep.all = T)
+# =======
+# ```{r}
+# x <- solar_irradiance(x, verbose=0, keep.all = T)
+# >>>>>>> 7565c87630de585b2903564c9caaabb21c1daa70
 
 summary(x$ext_irrad)
 fig.ext_irrad <- function(x, ...) {
@@ -259,6 +269,7 @@ plot_merra(x, "DHI", limits = c(0, 1500))
 
 
 ### PV-array position
+<!-- <<<<<<< HEAD -->
 ```{r, eval = FALSE}
 x <- pv_array_position(x, array.type = "all")
 x
@@ -319,10 +330,15 @@ plot_merra(x, "array.azimuth.td", limits = c(0, 360), direction = -1,
            palette = "Set1",
            scale = x$na)
 
+# =======
+# ```{r}
+# x <- pv_array_position(x, verbose = 0, array.type = "tl")
+# >>>>>>> 7565c87630de585b2903564c9caaabb21c1daa70
 
 ```
 
 ### Angle of Incidence (AOI)
+<!-- <<<<<<< HEAD -->
 ```{r, eval = FALSE}
 x <- angle_of_incidence(x, array.type = "all")
 
@@ -358,6 +374,15 @@ plot_merra(x, "AOI.td", limits = c(0, 90), direction = 1,
 ### Plane of Array (POA) irradiance 
 ```{r, eval = FALSE}
 x <- poa_irradiance(x, array.type = "all", keep.all = T)
+# =======
+# ```{r}
+# x <- angle_of_incidence(x, verbose = 0, array.type = "tl")
+```
+
+### Plane of Array (POA) irradiance 
+```{r}
+x <- poa_irradiance(x, verbose = 0, array.type = "tl", keep.all = T)
+# >>>>>>> 7565c87630de585b2903564c9caaabb21c1daa70
 
 summary(x$POA.td)
 # summary(rad2deg(x$POAb.td))
