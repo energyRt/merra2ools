@@ -100,49 +100,8 @@
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://olugovoy.github.io/merra2ools/">merra2ools</a></span><span class="op">)</span>
-<span class="co">#&gt; Loading required package: data.table</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span>
-<span class="co">#&gt; -- Attaching packages --------------------------------------- tidyverse 1.3.0 --</span>
-<span class="co">#&gt; v ggplot2 3.3.3     v purrr   0.3.4</span>
-<span class="co">#&gt; v tibble  3.0.5     v dplyr   1.0.3</span>
-<span class="co">#&gt; v tidyr   1.1.2     v stringr 1.4.0</span>
-<span class="co">#&gt; v readr   1.4.0     v forcats 0.5.1</span>
-<span class="co">#&gt; -- Conflicts ------------------------------------------ tidyverse_conflicts() --</span>
-<span class="co">#&gt; x dplyr::between()   masks data.table::between()</span>
-<span class="co">#&gt; x dplyr::filter()    masks stats::filter()</span>
-<span class="co">#&gt; x dplyr::first()     masks data.table::first()</span>
-<span class="co">#&gt; x dplyr::lag()       masks stats::lag()</span>
-<span class="co">#&gt; x dplyr::last()      masks data.table::last()</span>
-<span class="co">#&gt; x purrr::transpose() masks data.table::transpose()</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://wilkelab.org/cowplot/">"cowplot"</a></span><span class="op">)</span>
-
-<span class="co"># Example dataset</span>
-<span class="va">merra</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/merra2_sample.html">merra2_sample</a></span><span class="op">(</span><span class="fl">1</span>, add.coord <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>
-<span class="va">merra</span>
-<span class="co">#&gt;           locid                 UTC T10M W10M W50M PS_hPa SWGDN ALBEDO      lon</span>
-<span class="co">#&gt;       1:      1 2010-01-21 00:30:00  247  2.4  3.1    695   339    0.8 -180.000</span>
-<span class="co">#&gt;       2:      2 2010-01-21 00:30:00  247  2.4  3.1    695   339    0.8 -179.375</span>
-<span class="co">#&gt;       3:      3 2010-01-21 00:30:00  247  2.4  3.1    695   339    0.8 -178.750</span>
-<span class="co">#&gt;       4:      4 2010-01-21 00:30:00  247  2.4  3.1    695   339    0.8 -178.125</span>
-<span class="co">#&gt;       5:      5 2010-01-21 00:30:00  247  2.4  3.1    695   339    0.8 -177.500</span>
-<span class="co">#&gt;      ---                                                                       </span>
-<span class="co">#&gt; 4990460: 207932 2010-01-21 23:30:00  235  3.8  4.8   1021     0    0.0  176.875</span>
-<span class="co">#&gt; 4990461: 207933 2010-01-21 23:30:00  235  3.8  4.8   1021     0    0.0  177.500</span>
-<span class="co">#&gt; 4990462: 207934 2010-01-21 23:30:00  235  3.8  4.8   1021     0    0.0  178.125</span>
-<span class="co">#&gt; 4990463: 207935 2010-01-21 23:30:00  235  3.8  4.8   1021     0    0.0  178.750</span>
-<span class="co">#&gt; 4990464: 207936 2010-01-21 23:30:00  235  3.8  4.9   1021     0    0.0  179.375</span>
-<span class="co">#&gt;          lat</span>
-<span class="co">#&gt;       1: -90</span>
-<span class="co">#&gt;       2: -90</span>
-<span class="co">#&gt;       3: -90</span>
-<span class="co">#&gt;       4: -90</span>
-<span class="co">#&gt;       5: -90</span>
-<span class="co">#&gt;      ---    </span>
-<span class="co">#&gt; 4990460:  90</span>
-<span class="co">#&gt; 4990461:  90</span>
-<span class="co">#&gt; 4990462:  90</span>
-<span class="co">#&gt; 4990463:  90</span>
-<span class="co">#&gt; 4990464:  90</span></code></pre></div>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://wilkelab.org/cowplot/">"cowplot"</a></span><span class="op">)</span></code></pre></div>
 <div id="plane-of-array-poa-irradiance-model" class="section level1">
 <h1 class="hasAnchor">
 <a href="#plane-of-array-poa-irradiance-model" class="anchor"></a>Plane of Array (POA) irradiance model</h1>
@@ -150,22 +109,51 @@
 <h2 class="hasAnchor">
 <a href="#all-steps-at-once" class="anchor"></a>All steps at once</h2>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">poa</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/poa_irradiance.html">fPOA</a></span><span class="op">(</span><span class="va">merra</span><span class="op">)</span>
-<span class="co">#&gt; nrow(x) =  4990464 </span>
-<span class="co">#&gt; Calculating:</span>
-<span class="co">#&gt;    The day of the year (yday) and the hour (hour) at UTC timezone</span>
-<span class="co">#&gt;    Solar declination (declination)</span>
-<span class="co">#&gt;    Equation of time (eq_time)</span>
-<span class="co">#&gt;    Apparent solar time (solar_time) 1 2 3 </span>
-<span class="co">#&gt;    Hour angle (hour_angle) 1 2 3 </span>
-<span class="co">#&gt;    Zenith angle (zenith) 1 2 3 </span>
-<span class="co">#&gt;    Direct beam hour (beam)</span>
-<span class="co">#&gt;    Integrating...ok</span>
-<span class="co">#&gt;    Azimuth angle (azimuth) </span>
-<span class="co">#&gt;    DNI and DHI</span>
-<span class="co">#&gt;    PV-array position, array.type: fh fl th tv td </span>
-<span class="co">#&gt;    Angle of incidence (AOI), array.type: fh fl th tv td </span>
-<span class="co">#&gt;    Plane of Array Irradiance (POA), array.type: fh fl th tv td</span></code></pre></div>
+<code class="sourceCode R"><span class="co"># Example dataset</span>
+<span class="va">merra</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/merra2_sample.html">merra2_sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">6</span>, <span class="fl">12</span><span class="op">)</span>, add.coord <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>
+<span class="va">merra</span>
+<span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/poa_irradiance.html">fPOA</a></span><span class="op">(</span><span class="va">merra</span><span class="op">)</span></code></pre></div>
+<details><summary>
+Figure code
+</summary><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">fig.POA</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">name</span>, 
+                    <span class="va">legend.position</span> <span class="op">=</span> <span class="cn">NULL</span>, 
+                    <span class="va">timestamp.position</span> <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span>
+  <span class="fu"><a href="../reference/plot_merra.html">plot_merra</a></span><span class="op">(</span><span class="va">x</span>, name <span class="op">=</span> <span class="va">name</span>, limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1200</span><span class="op">)</span>, 
+           <span class="co"># legend.position = c(0.88, 0.05), </span>
+           legend.position <span class="op">=</span> <span class="va">legend.position</span>,
+           legend.name <span class="op">=</span> <span class="op">(</span><span class="st">"W/\u33A1"</span><span class="op">)</span>, 
+           timestamp.position <span class="op">=</span> <span class="va">timestamp.position</span>,
+           expand.x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.002</span>, <span class="fl">0.005</span><span class="op">)</span>, expand.y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.002</span>, <span class="fl">0.005</span><span class="op">)</span>
+           <span class="op">)</span>
+<span class="op">}</span>
+<span class="fu">fig.POA</span><span class="op">(</span><span class="va">x</span>, <span class="st">"SWGDN"</span><span class="op">)</span>
+
+<span class="va">fig.poa.grid</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, 
+                         <span class="va">legend.position</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.81</span>, <span class="fl">0.08</span><span class="op">)</span>, 
+                         <span class="va">timestamp.position</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">125</span>, <span class="fl">85</span><span class="op">)</span>, 
+                         <span class="va">...</span><span class="op">)</span> <span class="op">{</span>
+  <span class="fu"><a href="https://wilkelab.org/cowplot/reference/plot_grid.html">plot_grid</a></span><span class="op">(</span><span class="fu">fig.POA</span><span class="op">(</span><span class="va">x</span>, <span class="st">"SWGDN"</span>, <span class="va">...</span><span class="op">)</span>, 
+            <span class="fu">fig.POA</span><span class="op">(</span><span class="va">x</span>, <span class="st">"POA.fh"</span>, timestamp.position <span class="op">=</span> <span class="va">timestamp.position</span>, <span class="va">...</span><span class="op">)</span>,
+            <span class="fu">fig.POA</span><span class="op">(</span><span class="va">x</span>, <span class="st">"POA.fl"</span>, <span class="va">...</span><span class="op">)</span>, 
+            <span class="fu">fig.POA</span><span class="op">(</span><span class="va">x</span>, <span class="st">"POA.th"</span>, <span class="va">...</span><span class="op">)</span>,
+            <span class="fu">fig.POA</span><span class="op">(</span><span class="va">x</span>, <span class="st">"POA.tv"</span>, <span class="va">...</span><span class="op">)</span>, 
+            <span class="fu">fig.POA</span><span class="op">(</span><span class="va">x</span>, <span class="st">"POA.td"</span>, legend.position <span class="op">=</span> <span class="va">legend.position</span>, <span class="va">...</span><span class="op">)</span>,
+            <span class="co"># fig.dPS(x),</span>
+            labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"GHI"</span>, <span class="st">"POA.fh"</span>, <span class="st">"POA.fl"</span>, <span class="st">"POA.th"</span>, <span class="st">"POA.tv"</span>, <span class="st">"POA.td"</span><span class="op">)</span>,
+            ncol <span class="op">=</span> <span class="fl">2</span>, nrow <span class="op">=</span> <span class="fl">3</span>, hjust <span class="op">=</span> <span class="op">-</span><span class="fl">0.1</span>, vjust <span class="op">=</span> <span class="fl">1.1</span>, label_size <span class="op">=</span> <span class="fl">12</span>,
+            label_colour <span class="op">=</span> <span class="st">"black"</span><span class="op">)</span>
+<span class="op">}</span>
+<span class="fu">fig.poa.grid</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
+
+<span class="co"># ii &lt;- lubridate::hour(x$UTC) &lt;= 2; summary(ii)</span>
+<span class="fu"><a href="../reference/gif_merra.html">gif_merra</a></span><span class="op">(</span><span class="va">x</span>, FUN <span class="op">=</span> <span class="st">"fig.poa.grid"</span>, dirname <span class="op">=</span> <span class="st">"images"</span>, fps <span class="op">=</span> <span class="fl">10</span>,
+          gif.width <span class="op">=</span> <span class="fl">1.25</span> <span class="op">*</span> <span class="fl">576</span>, 
+          gif.height <span class="op">=</span> <span class="fl">1.25</span> <span class="op">*</span> <span class="fl">360</span> <span class="op">*</span> <span class="fl">1.21</span>, 
+          filename.prefix <span class="op">=</span> <span class="st">"POA_map_"</span><span class="op">)</span></code></pre></div>
+</details><div class="figure">
+<img src="../images/POA_map_720x544_10fps.gif" alt=""><p class="caption">Plane of Array (POA) Irradiance estimates for alternative tracking systems</p>
+</div>
 </div>
 <div id="step-by-step" class="section level2">
 <h2 class="hasAnchor">
@@ -173,45 +161,276 @@
 <div id="solar-postion" class="section level3">
 <h3 class="hasAnchor">
 <a href="#solar-postion" class="anchor"></a>Solar postion</h3>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/solar_position.html">solar_position</a></span><span class="op">(</span><span class="va">merra</span>, keep.all <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>
-<span class="co">#&gt;    The day of the year (yday) and the hour (hour) at UTC timezone</span>
-<span class="co">#&gt;    Solar declination (declination)</span>
-<span class="co">#&gt;    Equation of time (eq_time)</span>
-<span class="co">#&gt;    Apparent solar time (solar_time) 1 2 </span>
-<span class="co">#&gt;    Hour angle (hour_angle) 1 2 </span>
-<span class="co">#&gt;    Zenith angle (zenith) 1 2 </span>
-<span class="co">#&gt;    Direct beam hour (beam)</span>
-<span class="co">#&gt;    Integrating...ok</span>
-<span class="co">#&gt;    Azimuth angle (azimuth)</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># x &lt;- fPOA(merra, keep.all = T)</span>
+<span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/solar_position.html">solar_position</a></span><span class="op">(</span><span class="va">merra</span>, keep.all <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>
+<span class="va">x</span><span class="op">$</span><span class="va">na</span> <span class="op">&lt;-</span> <span class="fl">1L</span>; <span class="va">x</span><span class="op">$</span><span class="va">na</span><span class="op">[</span><span class="op">!</span><span class="va">x</span><span class="op">$</span><span class="va">beam</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">NA</span> <span class="co"># drop nights</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R">
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">beam</span><span class="op">)</span>
+<span class="fu"><a href="../reference/plot_merra.html">plot_merra</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"beam"</span>, limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, palette <span class="op">=</span> <span class="st">"YlGnBu"</span>,
+           legend.name <span class="op">=</span> <span class="st">""</span><span class="op">)</span>
+
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">declination</span><span class="op">)</span>
+<span class="va">fig.declination</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">limits</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">.5</span>, <span class="fl">.5</span><span class="op">)</span>, 
+                            <span class="va">legend.name</span> <span class="op">=</span> <span class="st">"angle\u00b0"</span>, 
+                            <span class="va">...</span><span class="op">)</span> <span class="op">{</span>
+  <span class="fu"><a href="../reference/plot_merra.html">plot_merra</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"declination"</span>, limits <span class="op">=</span> <span class="va">limits</span>, 
+             <span class="co"># palette = "YlGnBu",</span>
+             legend.name <span class="op">=</span> <span class="va">legend.name</span>, <span class="va">...</span><span class="op">)</span>
+<span class="op">}</span>
+<span class="fu">fig.declination</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
+
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">eq_time</span><span class="op">)</span>
+<span class="va">fig.eq_time</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">limits</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">15</span>, <span class="fl">15</span><span class="op">)</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span>
+  <span class="fu"><a href="../reference/plot_merra.html">plot_merra</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"eq_time"</span>, limits <span class="op">=</span> <span class="va">limits</span>, palette <span class="op">=</span> <span class="st">"PRGn"</span>, 
+                            legend.name <span class="op">=</span> <span class="st">"Munutes"</span>, direction <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>, <span class="va">...</span><span class="op">)</span>
+<span class="op">}</span>
+<span class="fu">fig.eq_time</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
+
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">solar_time</span><span class="op">)</span>
+<span class="va">fig.solar_time</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">limits</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">12</span>, <span class="fl">36</span><span class="op">)</span>, 
+           <span class="va">palette</span> <span class="op">=</span> <span class="st">"Dark2"</span>, <span class="va">legend.name</span> <span class="op">=</span> <span class="st">"Hours"</span>, 
+           <span class="va">...</span><span class="op">)</span> <span class="op">{</span>
+  <span class="fu"><a href="../reference/plot_merra.html">plot_merra</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"solar_time"</span>, limits <span class="op">=</span> <span class="va">limits</span>, 
+             palette <span class="op">=</span> <span class="va">palette</span>, legend.name <span class="op">=</span> <span class="va">legend.name</span>, <span class="va">...</span><span class="op">)</span>
+<span class="op">}</span>
+<span class="fu">fig.solar_time</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
+  
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">hour_angle</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="fu"><a href="../reference/deg2rad.html">rad2deg</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">hour_angle</span><span class="op">)</span><span class="op">)</span>
+<span class="va">fig.hour_angle</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">limits</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">360</span>, <span class="fl">360</span><span class="op">)</span>, <span class="va">scale</span> <span class="op">=</span> <span class="fl">180</span><span class="op">/</span><span class="va">pi</span>, 
+           <span class="va">palette</span> <span class="op">=</span> <span class="st">"Set1"</span>, <span class="va">legend.name</span> <span class="op">=</span> <span class="st">"angle\u00b0"</span>, 
+           <span class="va">direction</span> <span class="op">=</span> <span class="fl">1</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span>
+  <span class="fu"><a href="../reference/plot_merra.html">plot_merra</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"hour_angle"</span>, limits <span class="op">=</span> <span class="va">limits</span>, scale <span class="op">=</span> <span class="va">scale</span>,
+             palette <span class="op">=</span> <span class="va">palette</span>, legend.name <span class="op">=</span> <span class="va">legend.name</span>, direction <span class="op">=</span> <span class="va">direction</span>, <span class="va">...</span><span class="op">)</span>
+<span class="op">}</span>
+<span class="fu">fig.hour_angle</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
+
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">zenith</span><span class="op">)</span>
+<span class="va">fig.zenith</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span>
+  <span class="fu"><a href="../reference/plot_merra.html">plot_merra</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"zenith"</span>, limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">90</span><span class="op">)</span>, 
+             direction <span class="op">=</span> <span class="fl">1</span>, 
+             scale <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">na</span>,
+             palette <span class="op">=</span> <span class="st">"Spectral"</span>, 
+             legend.name <span class="op">=</span> <span class="st">"angle\u00b0"</span>, <span class="va">...</span><span class="op">)</span>
+<span class="op">}</span>
+<span class="fu">fig.zenith</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
+
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">azimuth</span><span class="op">)</span>
+<span class="va">fig.azimuth</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span>
+  <span class="fu"><a href="../reference/plot_merra.html">plot_merra</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"azimuth"</span>, limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">360</span><span class="op">)</span>, 
+             legend.name <span class="op">=</span> <span class="st">"angle\u00b0"</span>,
+             palette <span class="op">=</span> <span class="st">"Set1"</span>,
+             <span class="co"># palette = "Blues", </span>
+             scale <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">na</span>, direction <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>, <span class="va">...</span><span class="op">)</span>
+<span class="op">}</span>
+<span class="fu">fig.azimuth</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
+
+<span class="va">fig.solar_postion</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, 
+                         <span class="va">legend.position</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.81</span>, <span class="fl">0.08</span><span class="op">)</span>, 
+                         <span class="va">timestamp.position</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">125</span>, <span class="fl">85</span><span class="op">)</span>, 
+                         <span class="va">...</span><span class="op">)</span> <span class="op">{</span>
+  <span class="fu"><a href="https://wilkelab.org/cowplot/reference/plot_grid.html">plot_grid</a></span><span class="op">(</span><span class="fu">fig.declination</span><span class="op">(</span><span class="va">x</span>, timestamp.position <span class="op">=</span> <span class="cn">NULL</span>, 
+                            legend.position <span class="op">=</span> <span class="va">legend.position</span>, <span class="va">...</span><span class="op">)</span>, 
+            <span class="fu">fig.eq_time</span><span class="op">(</span><span class="va">x</span>, timestamp.position <span class="op">=</span> <span class="va">timestamp.position</span>, 
+                        legend.position <span class="op">=</span> <span class="va">legend.position</span>, <span class="va">...</span><span class="op">)</span>,
+            <span class="fu">fig.solar_time</span><span class="op">(</span><span class="va">x</span>, timestamp.position <span class="op">=</span> <span class="cn">NULL</span>, 
+                           legend.position <span class="op">=</span> <span class="va">legend.position</span>, <span class="va">...</span><span class="op">)</span>, 
+            <span class="fu">fig.hour_angle</span><span class="op">(</span><span class="va">x</span>, timestamp.position <span class="op">=</span> <span class="cn">NULL</span>, 
+                           legend.position <span class="op">=</span> <span class="va">legend.position</span>, <span class="va">...</span><span class="op">)</span>,
+            <span class="fu">fig.zenith</span><span class="op">(</span><span class="va">x</span>, timestamp.position <span class="op">=</span> <span class="cn">NULL</span>, 
+                       legend.position <span class="op">=</span> <span class="va">legend.position</span>, <span class="va">...</span><span class="op">)</span>, 
+            <span class="fu">fig.azimuth</span><span class="op">(</span><span class="va">x</span>, legend.position <span class="op">=</span> <span class="va">legend.position</span>, 
+                        timestamp.position <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span>,
+            <span class="co"># fig.dPS(x),</span>
+            labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"declination"</span>, <span class="st">"eq_time"</span>, <span class="st">"solar_time"</span>, 
+                       <span class="st">"hour_angle"</span>, <span class="st">"zenith"</span>, <span class="st">"azimuth"</span><span class="op">)</span>,
+            ncol <span class="op">=</span> <span class="fl">2</span>, nrow <span class="op">=</span> <span class="fl">3</span>, hjust <span class="op">=</span> <span class="op">-</span><span class="fl">0.1</span>, vjust <span class="op">=</span> <span class="fl">1.1</span>, label_size <span class="op">=</span> <span class="fl">12</span>,
+            label_colour <span class="op">=</span> <span class="st">"black"</span><span class="op">)</span>
+<span class="op">}</span>
+<span class="fu">fig.solar_postion</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
+
+<span class="co"># ii &lt;- lubridate::hour(x$UTC) &lt;= 2; summary(ii)</span>
+<span class="fu"><a href="../reference/gif_merra.html">gif_merra</a></span><span class="op">(</span><span class="va">x</span>, FUN <span class="op">=</span> <span class="st">"fig.solar_postion"</span>, dirname <span class="op">=</span> <span class="st">"images"</span>, fps <span class="op">=</span> <span class="fl">5</span>,
+          gif.width <span class="op">=</span> <span class="fl">1.25</span> <span class="op">*</span> <span class="fl">576</span>, 
+          gif.height <span class="op">=</span> <span class="fl">1.25</span> <span class="op">*</span> <span class="fl">360</span> <span class="op">*</span> <span class="fl">1.21</span>, 
+          filename.prefix <span class="op">=</span> <span class="st">"fig.solar_postion_"</span><span class="op">)</span>
+
+<span class="co"># ggplot(data = world) + </span>
+<span class="co">#   geom_sf(color = alpha("grey75", 1), fill = NA) </span>
+<span class="co">#     scale_x_continuous(expand = c(0,0)) +</span>
+<span class="co">#     scale_y_continuous(expand = c(0,0)) </span>
+
+<span class="co"># ggplot(world_map, aes(x = long, y = lat, group = group)) +</span>
+<span class="co">#   geom_polygon(fill = NA, colour = "grey75")</span>
+
+<span class="co"># world_map &lt;- map_data("world")</span>
+<span class="co"># world_sf &lt;- rnaturalearth::ne_countries(scale = "medium", returnclass = "sf")</span>
+<span class="co"># world_sp &lt;- rnaturalearth::ne_countries(scale = "medium", returnclass = "sp")</span>
+<span class="co"># world_df &lt;- fortify(world_sp)</span>
+
+<span class="co"># b + geom_sf(data = world_sf, color = "lightgrey", </span>
+<span class="co">#                        fill = NA, inherit.aes = F, size = .05) +</span>
+<span class="co">#   coord_sf(xlim = c(-180, 180), ylim = c(-90, 90))</span>
+
+<span class="co"># b + geom_polygon(data = world_df, aes(x = long, y = lat, group = group),</span>
+<span class="co">#                  fill = NA, colour = "lightgrey", inherit.aes = F)</span></code></pre></div>
+<div class="figure">
+<img src="../images/fig.solar_postion_720x544_10fps.gif" alt=""><p class="caption">Solar position variables</p>
+</div>
 </div>
 <div id="global-horizontal-irradiance-decomposition" class="section level3">
 <h3 class="hasAnchor">
 <a href="#global-horizontal-irradiance-decomposition" class="anchor"></a>Global Horizontal Irradiance decomposition</h3>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/solar_irradiance.html">solar_irradiance</a></span><span class="op">(</span><span class="va">x</span>, keep.all <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>
-<span class="co">#&gt;    DNI and DHI</span></code></pre></div>
+
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">ext_irrad</span><span class="op">)</span>
+<span class="va">fig.ext_irrad</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span>
+<span class="fu"><a href="../reference/plot_merra.html">plot_merra</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"ext_irrad"</span>, limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1300</span>, <span class="fl">1450</span><span class="op">)</span>, direction <span class="op">=</span> <span class="fl">1</span>,
+           palette <span class="op">=</span> <span class="st">"Oranges"</span>, legend.name <span class="op">=</span> <span class="st">"W/\u33A1"</span>, <span class="va">...</span><span class="op">)</span>
+<span class="op">}</span>
+<span class="fu">fig.ext_irrad</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
+
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">clearness_index</span><span class="op">)</span>
+<span class="va">fig.clearness_index</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span>
+  <span class="fu"><a href="../reference/plot_merra.html">plot_merra</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"clearness_index"</span>, limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, direction <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>, palette <span class="op">=</span> <span class="st">"Blues"</span><span class="op">)</span>
+<span class="op">}</span>
+<span class="fu">fig.clearness_index</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
+
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">diffuse_fraction</span><span class="op">)</span>
+<span class="va">fig.diffuse_fraction</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
+  <span class="fu"><a href="../reference/plot_merra.html">plot_merra</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"diffuse_fraction"</span>, limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, palette <span class="op">=</span> <span class="st">"Blues"</span>, direction <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
+<span class="op">}</span>
+<span class="fu">fig.diffuse_fraction</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
+
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">DNI</span><span class="op">)</span>
+<span class="co"># merra[x$DNI &gt; x$ext_irrad,]</span>
+<span class="co"># x[x$DNI &gt; x$ext_irrad,]</span>
+<span class="co"># solar_irradiance(x[x$DNI &gt; x$ext_irrad,])</span>
+
+<span class="va">fig.DNI</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
+  <span class="fu"><a href="../reference/plot_merra.html">plot_merra</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"DNI"</span>, limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1500</span><span class="op">)</span><span class="op">)</span>
+<span class="op">}</span>
+<span class="fu">fig.DNI</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
+
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">DHI</span><span class="op">)</span>
+<span class="fu"><a href="../reference/plot_merra.html">plot_merra</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"DHI"</span>, limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1500</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="pv-array-position" class="section level3">
 <h3 class="hasAnchor">
 <a href="#pv-array-position" class="anchor"></a>PV-array position</h3>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pv_array_position.html">pv_array_position</a></span><span class="op">(</span><span class="va">x</span>, array.type <span class="op">=</span> <span class="st">"all"</span><span class="op">)</span>
-<span class="co">#&gt;    PV-array position, array.type: fh fl th tv td</span></code></pre></div>
+<span class="va">x</span>
+
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">array.tilt.fh</span><span class="op">)</span>
+<span class="fu"><a href="../reference/plot_merra.html">plot_merra</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"array.tilt.fh"</span>, limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">90</span><span class="op">)</span>, direction <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>,
+           scale <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">na</span><span class="op">)</span>
+
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">array.azimuth.fh</span><span class="op">)</span>
+<span class="fu"><a href="../reference/plot_merra.html">plot_merra</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"array.azimuth.fh"</span>, limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">360</span><span class="op">)</span>, direction <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>, 
+           palette <span class="op">=</span> <span class="st">"Spectral"</span>,
+           scale <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">na</span><span class="op">)</span>
+
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">array.tilt.fl</span><span class="op">)</span>
+<span class="fu"><a href="../reference/plot_merra.html">plot_merra</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"array.tilt.fl"</span>, limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">90</span><span class="op">)</span>, direction <span class="op">=</span> <span class="op">-</span><span class="fl">1</span><span class="op">)</span>
+
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">array.azimuth.fl</span><span class="op">)</span>
+<span class="fu"><a href="../reference/plot_merra.html">plot_merra</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"array.azimuth.fl"</span>, limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">360</span><span class="op">)</span>, direction <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>, 
+           <span class="co"># palette = "Spectral", </span>
+           palette <span class="op">=</span> <span class="st">"Set1"</span>,
+           <span class="op">)</span>
+
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">array.tilt.th</span><span class="op">)</span>
+<span class="fu"><a href="../reference/plot_merra.html">plot_merra</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"array.tilt.th"</span>, limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">90</span><span class="op">)</span>, direction <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>,
+           scale <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">na</span><span class="op">)</span>
+
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">array.azimuth.th</span><span class="op">)</span>
+<span class="fu"><a href="../reference/plot_merra.html">plot_merra</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"array.azimuth.th"</span>, limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">360</span><span class="op">)</span>, direction <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>, 
+           <span class="co"># palette = "Spectral", </span>
+           palette <span class="op">=</span> <span class="st">"Set1"</span>
+           <span class="op">)</span>
+
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">array.tilt.tv</span><span class="op">)</span>
+<span class="fu"><a href="../reference/plot_merra.html">plot_merra</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"array.tilt.tv"</span>, limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">90</span><span class="op">)</span>, direction <span class="op">=</span> <span class="op">-</span><span class="fl">1</span><span class="op">)</span>
+
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">array.azimuth.tv</span><span class="op">)</span>
+<span class="fu"><a href="../reference/plot_merra.html">plot_merra</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"array.azimuth.tv"</span>, limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">360</span><span class="op">)</span>, direction <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>, 
+           <span class="co"># palette = "Spectral", </span>
+           palette <span class="op">=</span> <span class="st">"Set1"</span>,
+           scale <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">na</span><span class="op">)</span>
+
+<span class="fu"><a href="../reference/gif_merra.html">gif_merra</a></span><span class="op">(</span><span class="va">x</span>, FUN <span class="op">=</span> <span class="st">"plot_merra"</span>, dirname <span class="op">=</span> <span class="st">"images"</span>, fps <span class="op">=</span> <span class="fl">10</span>,
+          gif.width <span class="op">=</span> <span class="fl">576</span>, 
+          gif.height <span class="op">=</span> <span class="fl">360</span> <span class="op">*</span> <span class="fl">1.21</span>, 
+          filename.prefix <span class="op">=</span> <span class="st">"array.azimuth.tv_"</span>, name <span class="op">=</span> <span class="st">"array.azimuth.tv"</span>,
+          limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">360</span><span class="op">)</span>, direction <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>, palette <span class="op">=</span> <span class="st">"Set1"</span>,
+          <span class="co"># scale = x$na</span>
+          <span class="op">)</span>
+
+
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">array.tilt.td</span><span class="op">)</span>
+<span class="fu"><a href="../reference/plot_merra.html">plot_merra</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"array.tilt.td"</span>, limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">90</span><span class="op">)</span>, direction <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>,
+           scale <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">na</span><span class="op">)</span>
+
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">array.azimuth.td</span><span class="op">)</span>
+<span class="fu"><a href="../reference/plot_merra.html">plot_merra</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"array.azimuth.td"</span>, limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">360</span><span class="op">)</span>, direction <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>, 
+           <span class="co"># palette = "Spectral",</span>
+           palette <span class="op">=</span> <span class="st">"Set1"</span>,
+           scale <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">na</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="angle-of-incidence-aoi" class="section level3">
 <h3 class="hasAnchor">
 <a href="#angle-of-incidence-aoi" class="anchor"></a>Angle of Incidence (AOI)</h3>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/angle_of_incidence.html">angle_of_incidence</a></span><span class="op">(</span><span class="va">x</span>, array.type <span class="op">=</span> <span class="st">"all"</span><span class="op">)</span>
-<span class="co">#&gt;    Angle of incidence (AOI), array.type: fh fl th tv td</span></code></pre></div>
+
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">AOI.fh</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="fu"><a href="../reference/deg2rad.html">rad2deg</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">AOI.fh</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="../reference/plot_merra.html">plot_merra</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"AOI.fh"</span>, limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">90</span><span class="op">)</span>, direction <span class="op">=</span> <span class="fl">1</span>, 
+           palette <span class="op">=</span> <span class="st">"Blues"</span>, 
+           scale <span class="op">=</span> <span class="fl">180</span><span class="op">/</span><span class="va">pi</span><span class="op">)</span>
+
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="fu"><a href="../reference/deg2rad.html">rad2deg</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">AOI.fl</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="../reference/plot_merra.html">plot_merra</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"AOI.fl"</span>, limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">90</span><span class="op">)</span>, direction <span class="op">=</span> <span class="fl">1</span>, 
+           palette <span class="op">=</span> <span class="st">"Blues"</span>, 
+           scale <span class="op">=</span> <span class="fl">180</span><span class="op">/</span><span class="va">pi</span><span class="op">)</span>
+
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="fu"><a href="../reference/deg2rad.html">rad2deg</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">AOI.th</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="../reference/plot_merra.html">plot_merra</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"AOI.th"</span>, limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">90</span><span class="op">)</span>, direction <span class="op">=</span> <span class="fl">1</span>, 
+           palette <span class="op">=</span> <span class="st">"Blues"</span>, 
+           scale <span class="op">=</span> <span class="fl">180</span><span class="op">/</span><span class="va">pi</span><span class="op">)</span>
+
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="fu"><a href="../reference/deg2rad.html">rad2deg</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">AOI.tv</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="../reference/plot_merra.html">plot_merra</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"AOI.tv"</span>, limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">90</span><span class="op">)</span>, direction <span class="op">=</span> <span class="fl">1</span>, 
+           palette <span class="op">=</span> <span class="st">"Blues"</span>, <span class="co">#na.value = "#040434",</span>
+           scale <span class="op">=</span> <span class="fl">180</span><span class="op">/</span><span class="va">pi</span><span class="op">)</span>
+
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="fu"><a href="../reference/deg2rad.html">rad2deg</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">AOI.td</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="../reference/plot_merra.html">plot_merra</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"AOI.td"</span>, limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">90</span><span class="op">)</span>, direction <span class="op">=</span> <span class="fl">1</span>, 
+           palette <span class="op">=</span> <span class="st">"Blues"</span>, 
+           scale <span class="op">=</span> <span class="fl">180</span><span class="op">/</span><span class="va">pi</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="plane-of-array-poa-irradiance" class="section level3">
 <h3 class="hasAnchor">
 <a href="#plane-of-array-poa-irradiance" class="anchor"></a>Plane of Array (POA) irradiance</h3>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/poa_irradiance.html">poa_irradiance</a></span><span class="op">(</span><span class="va">x</span>, array.type <span class="op">=</span> <span class="st">"all"</span>, keep.all <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>
-<span class="co">#&gt;    Plane of Array Irradiance (POA), array.type: fh fl th tv td</span></code></pre></div>
+
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">POA.td</span><span class="op">)</span>
+<span class="co"># summary(rad2deg(x$POAb.td))</span>
+<span class="fu"><a href="../reference/plot_merra.html">plot_merra</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"POA.td"</span>, limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1200</span><span class="op">)</span>, direction <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>, 
+           <span class="co"># palette = "Blues", </span>
+           <span class="co"># na.value = "#000336",</span>
+           <span class="co"># na.value = "#000F4D",</span>
+           <span class="co"># na.value = "#002366",</span>
+           <span class="co"># na.value = "#040434",</span>
+           <span class="co"># na.value = "#070B34",</span>
+           scale <span class="op">=</span> <span class="va">x</span><span class="op">$</span><span class="va">na</span><span class="op">)</span>
+
+<span class="co"># save(x, )</span></code></pre></div>
 </div>
 </div>
 </div>

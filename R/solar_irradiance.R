@@ -1,8 +1,14 @@
 #' Irradiance decomposition
 #'
+#' @param x 
 #' @param yday day of a year, integer vector
 #' @param GHI Global Horizontal Irradiance from MERRA-2 subset (\mjseqn{GHI, W/m^2})
 #' @param zenith Zenith angle, degrees
+#' @param beam 
+#' @param method 
+#' @param zenith_max 
+#' @param keep.all 
+#' @param verbose 
 #'
 #' @details 
 #' \loadmathjax
@@ -46,7 +52,7 @@
 solar_irradiance <- function(x, yday = "yday", GHI = "SWGDN", 
                              zenith = "zenith", beam = "beam",
                              method = 0,
-                             zenith_max = 90, keep.all = FALSE, 
+                             zenith_max = 89, keep.all = FALSE, 
                              verbose = getOption("merra2.verbose")) {
   # browser()
   # if (is.null(x)) {

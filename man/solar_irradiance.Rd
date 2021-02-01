@@ -11,17 +11,29 @@ solar_irradiance(
   zenith = "zenith",
   beam = "beam",
   method = 0,
-  zenith_max = 90,
+  zenith_max = 89,
   keep.all = FALSE,
   verbose = getOption("merra2.verbose")
 )
 }
 \arguments{
+\item{x}{}
+
 \item{yday}{day of a year, integer vector}
 
 \item{GHI}{Global Horizontal Irradiance from MERRA-2 subset (\mjseqn{GHI, W/m^2})}
 
 \item{zenith}{Zenith angle, degrees}
+
+\item{beam}{}
+
+\item{method}{}
+
+\item{zenith_max}{}
+
+\item{keep.all}{}
+
+\item{verbose}{}
 }
 \value{
 

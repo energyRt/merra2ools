@@ -1,4 +1,3 @@
-
 #' Quick plots of wind speed and its dynamics
 #'
 #' @param x 
@@ -6,8 +5,8 @@
 #' @param scale 
 #' @param limits 
 #' @param legend.position 
-#' @param datetime.position 
-#' @param datetime.format 
+#' @param timestamp.position 
+#' @param timestamp.format 
 #' @param intercept 
 #' @param palette 
 #' @param direction 
@@ -25,13 +24,17 @@ plot_merra <- function(x,
                        name = "W50M", scale = 1, intercept = 0,
                       limits = c(0, 35), 
                       palette = "RdYlBu", direction = -1,
+                      na.value = "#040434",
+                      # na.value = "#070B34",
                       legend.position = c(0.91, 0.05),
-                      legend.name = "m/s",
-                      datetime = "UTC",
-                      datetime.position = c(150, 87),
-                      datetime.format = "%Y-%b-%d, %Hh %Z",
+                      legend.name = "",
+                      timestamp.variable = "UTC",
+                      timestamp.format = "%Y-%b-%d, %Hh %Z",
+                      timestamp.position = c(150, 87),
                       expand.x = c(0., 0.),
                       expand.y = c(0., 0.),
+                      map.border = "lightgrey",
+                      map.border.size = .25,
                       # gif = FALSE 
                       # gif.file = "merra_wind.gif",
                       # gif.nmax = 24, fps = 12,
@@ -50,50 +53,50 @@ plot_merra <- function(x,
     }
   }
   gif = FALSE 
-  # browser()
-  x$mps <- x[[name]] * scale + intercept
-  x$mps[x$mps < limits[1]] <- limits[1]
-  x$mps[x$mps > limits[2]] <- limits[2]
-  if (!is.null(x[[datetime]])) {
-    dat_time <- unique(x[[datetime]]) %>% sort()
+  x$tmp_var <- x[[name]] * scale + intercept
+  x$tmp_var[x$tmp_var < limits[1]] <- limits[1]
+  x$tmp_var[x$tmp_var > limits[2]] <- limits[2]
+  if (!is.null(x[[timestamp.variable]])) {
+    dat_time <- unique(x[[timestamp.variable]]) %>% sort()
   } else {
-    warning("`datetime` variable is not found")
+    warning("`timestamp.variable` is not found")
     dat_time <- NULL
-    datetime.position <- NULL
+    timestamp.position <- NULL
   }
-  
   if (length(dat_time) > 1) {
     if (!gif) {
-      warning("Multiple datetime values found, using the earliest one: ", dat_time[1])
-      ii <- x[[datetime]] == dat_time[1]
+      warning("Multiple timestamp values found, using the earliest one: ", dat_time[1])
+      ii <- x[[timestamp.variable]] == dat_time[1]
     } else if (!is.null(dat_time)) {
-      ii <- x[[datetime]] %in% dat_time[1:gif_nmax]
+      ii <- x[[timestamp.variable]] %in% dat_time[1:gif_nmax]
     } else {
       ii <- rep(TRUE, nrow(x))
-      x[[datetime]] <- NA
+      x[[timestamp.variable]] <- NA
     }
     x <- x[ii,]
+    dat_time <- dat_time[1]
   }
-  
+
   if (!is.null(dat_time)) {
-    x <- select(x, lon, lat, datetime, mps)
-    x$label <- format(x[[datetime]], datetime.format)
+    x <- select(x, lon, lat, dplyr::all_of(timestamp.variable), tmp_var)
+    timestamp.stamp <- format(dat_time, timestamp.format)
   } else {
-    x <- select(x, lon, lat, mps)
+    x <- select(x, lon, lat, tmp_var)
   }
   
   pp <-
     ggplot(x, aes(lon, lat)) + 
-    geom_raster(aes(fill = mps), alpha = 1, interpolate = F, 
+    geom_raster(aes(fill = tmp_var), alpha = 1, interpolate = F, 
                 show.legend = !is.null(legend.position)) +
     scale_fill_distiller(palette = palette, direction = direction,
-                         limits = limits, name = legend.name) +
+                         limits = limits, name = legend.name, 
+                         na.value = na.value) +
     # scale_fill_viridis_c(direction = direction, option = "inferno",
                          # limits = limits, name = legend.name) +
     theme_void() +
     # theme(panel.grid = element_blank(), panel.border = element_blank()) +
-    scale_x_continuous(expand = expand.x) +
-    scale_y_continuous(expand = expand.y) +
+    scale_x_continuous(expand = expand.x, limits = c(-180, 180)) +
+    scale_y_continuous(expand = expand.y, limits = c(-90, 90)) +
     theme(legend.position = legend.position,
           legend.direction = "horizontal", legend.box = "horizontal",
           # plot.title = element_text(hjust = 0.5), 
@@ -101,7 +104,7 @@ plot_merra <- function(x,
           # legend.background = element_rect(fill = alpha('white', 0.5)),
           legend.box.background = element_rect(size = 0.0, 
                                                colour = NA, 
-                                               fill = alpha('white', .2)),
+                                               fill = alpha('white', .25)),
           legend.margin = margin(3, 3, 3, 3),
           legend.title = element_text(vjust = .8))
 
@@ -114,22 +117,28 @@ plot_merra <- function(x,
     #     aes(x = 153, y = 87, label = '{closest_state}'), label.size = 0, color = "black",
     #     fill = "white", alpha = 0.2)
     # pp <- animate(p, renderer = gifski_renderer(), fps = fps, 
-    #               nframes = length(unique(x$datetime)), 
+    #               nframes = length(unique(x$timestamp)), 
     #               width = 1024, height = 1024*1080/1920)
 
   # } else {
     # browser()
-    if (!(is.null(datetime.position) || is.na(datetime.position))) {
+    if (!(is.null(timestamp.position) || is.na(timestamp.position))) {
     # } else {
       pp <- pp + 
         geom_label(
-          data = data.frame(x = datetime.position[1], 
-                            y = datetime.position[2],
-                            label = x$label[1]),
+          data = data.frame(x = timestamp.position[1], 
+                            y = timestamp.position[2],
+                            label = timestamp.stamp),
           aes(x = x, y = y, label = label), label.size = 0, color = "black",
-          fill = "white", alpha = 0.2)
+          fill = "white", alpha = 0.5)
     }
-    return(pp)
+  # browser()
+  if (!(is.null(map.border) || is.na(map.border))) {
+    world <- rnaturalearth::ne_countries(scale = "small", returnclass = "sf")
+    pp <- pp + geom_sf(data = world, color = map.border, 
+                       fill = NA, inherit.aes = F, size = map.border.size)
+  }
+  return(pp)
   # }
 }
 
@@ -138,7 +147,7 @@ if (F) {
   plot_merra(dat2, "w200", 1)
   plot_merra(dat2, "w50", 1, limits = c(0, 30))
   plot_merra(dat2, "w50", 1, limits = c(0, 50))
-  plot_merra(dat2, "w50", 1, datetime.position = NULL, legend.position = NULL)
+  plot_merra(dat2, "w50", 1, timestamp.position = NULL, legend.position = NULL)
   # a <- plot_merra(dat2, "w50", 1, gif = T, gif_nmax = 48)
 }
 
@@ -162,62 +171,46 @@ if (F) {
 #' @examples
 #' NA
 gif_merra <- function(x, 
-                      # name = "W10M",
                       FUN = "plot_merra",
-                     #  name = "W50M", scale = 1, 
-                     datetime = "UTC",
-                     nmax = 24*12,
-                     fps = 12,
-                     gif.width = 576, gif.height = 360,
-                     filename = NULL,
-                     dirname = ".",
-                     # limits = c(0, 35), 
-                     # palette = "RdYlBu", direction = -1,
-                     # legend.position = c(0.9, 0.05),
-                     # legend.name = "m/s",
-                     # datetime.position = c(145, 87),
-                     # datetime.format = "%Y-%b-%d, %Hh %Z",
-                     verbose = getOption("merra2.verbose"),
-                     ...
-                      ) {
-  # browser()
+                      timestamp.variable = "UTC",
+                      nmax = 24*12,
+                      fps = 12,
+                      gif.width = 576, gif.height = 360,
+                      filename = NULL,
+                      filename.prefix = "merra_",
+                      dirname = ".",
+                      verbose = getOption("merra2.verbose"),
+                      ...) {
   # dirname <- dirname(filename)
-  args <- list(...)
-  args$datetime <- datetime
+  arg <- list(...)
+  arg[["timestamp.variable"]] <- timestamp.variable
   if (is.null(filename)) {
-    name <- args$name
+    name <- arg$name
     filename <- paste0(
-      "merra_", name, "_", 
+      filename.prefix, 
       round(gif.width), "x", round(gif.height),
       "_", round(fps), "fps.gif")
   }
-  # args$name <- name
-  # for (a in names(args)) {
-  #   query[a] <- args[a]
+  # arg$name <- name
+  # for (a in names(arg)) {
+  #   query[a] <- arg[a]
   # }
   if (!dir.exists(dirname)) dir.create(dirname, recursive = TRUE, showWarnings = FALSE)
   homedir <- getwd()
   on.exit(setwd(homedir))
   setwd(dirname)
   filename <- basename(filename)
-  frames <- unique(x[[datetime]]) %>% sort()
+  frames <- unique(x[[timestamp.variable]]) %>% sort()
   nframes <- min(length(frames), nmax)
   # browser()
   animation::saveGIF({
     if (verbose) cat("frame:")
     for (i in 1:nframes) {
       if (verbose) cat(format(i, width = nchar(nframes) + 1))
-      ii <- x[[datetime]] == frames[i]
-      args$x <- x[ii,]
-      a <- do.call(FUN, args)
-      # a <- plot_merra(x[ii,], name = name, scale = scale,
-      #                limits = limits, palette = palette, direction = direction,
-      #                legend.name = legend.name,
-      #                legend.position = legend.position,
-      #                datetime.position = datetime.position,
-      #                datetime.format = datetime.format)
-      
-      
+      ii <- x[[timestamp.variable]] == frames[i]
+      arg$x <- x[ii,]
+      a <- do.call(FUN, arg, quote = FALSE)
+      # a <- rlang::exec(.fn = FUN, !!!arg)
       if (i == nframes) {
         if (verbose) cat(" -> creating GIF\n")
       } else {
@@ -225,8 +218,8 @@ gif_merra <- function(x,
       }
       if (!is.null(a)) print(a)
     }
-    }, 
-    interval = 1/fps, ani.width = gif.width, ani.height = gif.height, 
+    },
+    interval = 1/fps, ani.width = gif.width, ani.height = gif.height,
     movie.name = filename
   )
   return(file.path(dirname, filename))
@@ -242,26 +235,26 @@ ffmpeg_merra <- function(x, name = "W50M", scale = 1,
                       palette = "RdYlBu", direction = -1,
                       legend.position = c(0.91, 0.05),
                       legend.name = "m/s",
-                      datetime.position = c(149, 87),
-                      datetime.format = "%Y-%b-%d, %Hh %Z",
+                      timestamp.position = c(149, 87),
+                      timestamp.format = "%Y-%b-%d, %Hh %Z",
                       verbose = getOption("merra2.verbose")) {
   # browser()
   dr <- dirname(filename)
   if (!dir.exists(dr)) dir.create(dr, recursive = TRUE)
-  frames <- unique(x$datetime) %>% sort()
+  frames <- unique(x$timestamp) %>% sort()
   nframes <- min(length(frames), nmax)
   # browser()
   animation::saveVideo({
     if (verbose) cat("frame:")
     for (i in 1:nframes) {
       if (verbose) cat(format(i, width = nchar(nframes) + 1))
-      ii <- x$datetime == frames[i]
+      ii <- x$timestamp == frames[i]
       a <- plot_merra(x[ii,], name = name, scale = scale,
                       limits = limits, palette = palette, direction = direction,
                       legend.name = legend.name,
                       legend.position = legend.position,
-                      datetime.position = datetime.position,
-                      datetime.format = datetime.format)
+                      timestamp.position = timestamp.position,
+                      timestamp.format = timestamp.format)
       if (i == nframes) {
         if (verbose) cat(" -> creating GIF\n")
       } else {
@@ -301,8 +294,8 @@ if (F) {
                          na.value = "grey50",
                          legend.position = c(0.91, 0.05),
                          legend.name = "m/s",
-                         datetime.position = c(150, 87),
-                         datetime.format = "%Y-%b-%d, %Hh %Z"
+                         timestamp.position = c(150, 87),
+                         timestamp.format = "%Y-%b-%d, %Hh %Z"
                          # gif = FALSE 
                          # gif.file = "merra_wind.gif",
                          # gif.nmax = 24, fps = 12,
@@ -321,26 +314,26 @@ if (F) {
     }
     gif = FALSE 
     # browser()
-    x$mps <- x[[name]]*scale
-    x$mps[x$mps < limits[1]] <- limits[1]
-    x$mps[x$mps > limits[2]] <- limits[2]
-    dat_time <- unique(x$datetime) %>% sort()
+    x$tmp_var <- x[[name]]*scale
+    x$tmp_var[x$tmp_var < limits[1]] <- limits[1]
+    x$tmp_var[x$tmp_var > limits[2]] <- limits[2]
+    dat_time <- unique(x$timestamp) %>% sort()
     if (length(dat_time) > 1) {
       if (!gif) {
-        warning("Multiple datetime values found, using the earliest one: ", dat_time[1])
-        ii <- x$datetime == dat_time[1]
+        warning("Multiple timestamp values found, using the earliest one: ", dat_time[1])
+        ii <- x$timestamp == dat_time[1]
       } else {
-        ii <- x$datetime %in% dat_time[1:gif_nmax]
+        ii <- x$timestamp %in% dat_time[1:gif_nmax]
       }
       x <- x[ii,]
     }
     
-    x <- select(x, lon, lat, datetime, mps)
-    x$label <- format(x$datetime, datetime.format)
+    x <- select(x, lon, lat, timestamp, tmp_var)
+    x$label <- format(x$timestamp, timestamp.format)
     
     pp <-
       ggplot(x, aes(lon, lat)) + 
-      geom_tile(aes(fill = mps), alpha = 1, interpolate = F, 
+      geom_tile(aes(fill = tmp_var), alpha = 1, interpolate = F, 
                 show.legend = !is.null(legend.position)) +
       scale_fill_distiller(palette = palette, direction = direction, 
                            limits = limits, name = legend.name, na.value = na.value) +
@@ -368,16 +361,16 @@ if (F) {
     #     aes(x = 153, y = 87, label = '{closest_state}'), label.size = 0, color = "black",
     #     fill = "white", alpha = 0.2)
     # pp <- animate(p, renderer = gifski_renderer(), fps = fps, 
-    #               nframes = length(unique(x$datetime)), 
+    #               nframes = length(unique(x$timestamp)), 
     #               width = 1024, height = 1024*1080/1920)
     
     # } else {
     # browser()
-    if (!is.null(datetime.position) & all(!is.na(datetime.position))) {
+    if (!is.null(timestamp.position) & all(!is.na(timestamp.position))) {
       pp <- pp + 
         geom_label(
-          data = data.frame(x = datetime.position[1], 
-                            y = datetime.position[2],
+          data = data.frame(x = timestamp.position[1], 
+                            y = timestamp.position[2],
                             label = x$label[1]),
           aes(x = x, y = y, label = label), label.size = 0, color = "black",
           fill = "white", alpha = 0.2)
@@ -454,15 +447,15 @@ if (F) {
   z
   # Extraterrestrial irradiance
   summary(z$ext_irrad)
-  summary(z$ext_irrad[z$datetime == z$datetime[1]])
+  summary(z$ext_irrad[z$timestamp == z$timestamp[1]])
   plot_SWGND(z, name = "ext_irrad", scale = 1, limits = ..,
              direction = -1, palette = "Spectral",
              legend.name = "")
   
-  summary(z$clearness_index[z$datetime == z$datetime[1]])
+  summary(z$clearness_index[z$timestamp == z$timestamp[1]])
   plot_SWGND(z, name = "clearness_index", scale = 1, 
              limits = c(0, 1),
-             # limits = range(z$clearness_index[z$datetime == z$datetime[1]])/20,
+             # limits = range(z$clearness_index[z$timestamp == z$timestamp[1]])/20,
              direction = -1, palette = "Spectral",
              legend.name = "")
   gif_merra(z, name = "clearness_index", scale = 1, limits = c(0, 1),

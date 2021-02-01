@@ -12,13 +12,16 @@ plot_merra(
   limits = c(0, 35),
   palette = "RdYlBu",
   direction = -1,
+  na.value = "#040434",
   legend.position = c(0.91, 0.05),
-  legend.name = "m/s",
-  datetime = "UTC",
-  datetime.position = c(150, 87),
-  datetime.format = "\%Y-\%b-\%d, \%Hh \%Z",
+  legend.name = "",
+  timestamp.variable = "UTC",
+  timestamp.format = "\%Y-\%b-\%d, \%Hh \%Z",
+  timestamp.position = c(150, 87),
   expand.x = c(0, 0),
   expand.y = c(0, 0),
+  map.border = "lightgrey",
+  map.border.size = 0.25,
   ...
 )
 }
@@ -41,9 +44,9 @@ plot_merra(
 
 \item{legend.name}{}
 
-\item{datetime.position}{}
+\item{timestamp.format}{}
 
-\item{datetime.format}{}
+\item{timestamp.position}{}
 
 \item{expand.x}{}
 
