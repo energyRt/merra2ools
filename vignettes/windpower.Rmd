@@ -189,7 +189,7 @@ dat2 <- mutate(
 summary(dat2$w50); summary(dat2$af50)
 summary(dat2$af50[dat2$w50 > 25])
 
-plot_merra(dat2, "w50", 1)
+plot_merra(dat2, "w50", 1, map.border = NA)
 plot_merra(dat2, "af50", 1, limits = c(0, 1), 
           palette = "Blues", direction = 1, legend.name = "AF")
 plot_merra(dat2, "af10", 1, limits = c(0, 1),
@@ -204,7 +204,6 @@ gif_merra(dat2, "af50", 1, limits = c(0, 1), fps = 12,
          legend.name = "AF",
          filename = "merra_wind_af50_12fps.gif")
 
-
 ```
 
 
@@ -213,3 +212,41 @@ gif2 <- "../images/merra_wind_af50_12fps.gif"
 if (file.exists(gif2)) include_graphics(gif2)
 
 ```
+
+```{r, eval=FALSE}
+# load("data/merra_mean_40y.RData")
+d <- merra_mean_40y
+summary(d$W50M)
+
+d$w50 <- cut(d$W50M, breaks = wind_levels, include.lowest = T, 
+               labels = names(palette.windatlas), right = F)
+summary(d$w50)
+
+world <- rnaturalearth::ne_countries(scale = "small", returnclass = "sf")
+
+ggplot(d) +
+  geom_tile(aes(lon, lat, fill = w50)) +
+  # geom_tile(aes(lon, lat, fill = w50)) +
+  # scale_fill_brewer(palette = "Spectral", direction = -1)
+  scale_fill_manual(values = palette.windatlas,
+                    guide = guide_legend(reverse = TRUE),
+                    name = "m/s") + 
+  theme_void() + 
+  # labs(title = "Shortwave radiation flux on horizontal surface, average annual sum (1980-2019)") +
+  theme(legend.position = "bottom", legend.spacing.x = unit(1, "mm"),
+        legend.margin = margin(0,0,0,0),
+        legend.box.margin = margin(0,0,0,0),
+        plot.margin = unit(c(0,0,0,0), "mm"),
+        plot.title = element_text(hjust = 0.5)) +
+  guides(fill = guide_legend(nrow = 1, label.position = "bottom", 
+                             keywidth = unit(3, "mm"), keyheight = 5,
+                             default.unit = "mm")) +
+  scale_x_continuous(expand = c(0, 0), limits = c(-180, 180)) +
+  scale_y_continuous(expand = c(0, 0), limits = c(-90, 90)) +
+  geom_sf(data = world, color = alpha("black", 1), fill = NA, 
+          inherit.aes = F, size = unit(.25, "mm"))
+
+ggsave("images/wind_50m_40y_avr_24steps.png", width = 10.5, height = 6.)
+
+```
+

@@ -17,18 +17,18 @@ Tools to process MERRA-2 data (NASA) with focus on renewable energy
 
 (UNDER CONSTRUCTION)
 
-Estimated annual wind power output at 50 meters height, 40-years average  
-```{r}
+```{r, echo=FALSE}
+
+fig_file <- "images/ghi_40y_avr_24steps.png"
+include_graphics(fig_file)
 
 ```
 
-
-  
 
 ```{r, fig.cap="Estimated annual solar power output (fixed, optimal tilt angle), 40-years average", echo=FALSE}
 fig_file <- "images/poa_fl_40y_avr_24steps.png"
 include_graphics(fig_file)
-# if (file.exists(fig_file)) include_graphics(fig_file)
 
 ```
 
+Estimated annual wind power output at 50 meters height, 40-years average  

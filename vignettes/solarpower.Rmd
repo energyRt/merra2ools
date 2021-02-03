@@ -29,7 +29,7 @@ library("cowplot")
 ## All steps at once
 ```{r, eval = FALSE}
 # Example dataset
-merra <- merra2_sample(c(3, 6, 12), add.coord = T)
+merra <- merra2_sample(c(3), add.coord = T)
 merra
 x <- fPOA(merra)
 
@@ -79,7 +79,7 @@ gif_merra(x, FUN = "fig.poa.grid", dirname = "images", fps = 10,
 </details>
 
 ```{r fig_POA_all, fig.cap="Plane of Array (POA) Irradiance estimates for alternative tracking systems", echo=FALSE}
-gif_file <- "../images/POA_map_720x544_10fps.gif"
+gif_file <- "../images/POA_map_720x544_5fps.gif"
 if (file.exists(gif_file)) include_graphics(gif_file)
 
 ```
@@ -88,15 +88,20 @@ if (file.exists(gif_file)) include_graphics(gif_file)
 
 ## Step-by-step
 ### Solar postion
-<!-- <<<<<<< HEAD -->
+
 ```{r, eval = FALSE}
 # x <- fPOA(merra, keep.all = T)
 x <- solar_position(merra, keep.all = T)
-x$na <- 1L; x$na[!x$beam] <- NA # drop nights
+ii <- x$hour == 12; summary(ii)
+x <- x[ii,]
 
 ```
 
+<details><summary>Figure code</summary>
+
 ```{r, eval = FALSE}
+
+x$na <- 1L; x$na[!x$beam] <- NA # drop nights
 
 summary(x$beam)
 plot_merra(x, "beam", limits = c(0, 1), palette = "YlGnBu",
@@ -188,31 +193,8 @@ gif_merra(x, FUN = "fig.solar_postion", dirname = "images", fps = 5,
           gif.height = 1.25 * 360 * 1.21, 
           filename.prefix = "fig.solar_postion_")
 
-# ggplot(data = world) + 
-#   geom_sf(color = alpha("grey75", 1), fill = NA) 
-#     scale_x_continuous(expand = c(0,0)) +
-#     scale_y_continuous(expand = c(0,0)) 
-
-# ggplot(world_map, aes(x = long, y = lat, group = group)) +
-#   geom_polygon(fill = NA, colour = "grey75")
-
-# world_map <- map_data("world")
-# world_sf <- rnaturalearth::ne_countries(scale = "medium", returnclass = "sf")
-# world_sp <- rnaturalearth::ne_countries(scale = "medium", returnclass = "sp")
-# world_df <- fortify(world_sp)
-
-# b + geom_sf(data = world_sf, color = "lightgrey", 
-#                        fill = NA, inherit.aes = F, size = .05) +
-#   coord_sf(xlim = c(-180, 180), ylim = c(-90, 90))
-
-# b + geom_polygon(data = world_df, aes(x = long, y = lat, group = group),
-#                  fill = NA, colour = "lightgrey", inherit.aes = F)
-# =======
-# ```{r}
-# x <- solar_position(merra, verbose = 0, keep.all = T)
-# >>>>>>> 7565c87630de585b2903564c9caaabb21c1daa70
-
 ```
+<details>
 
 
 ```{r fig_sol_pos, fig.cap="Solar position variables", echo=FALSE}
@@ -223,13 +205,10 @@ if (file.exists(gif_file)) include_graphics(gif_file)
 
 
 ### Global Horizontal Irradiance decomposition
-<<<<<<< HEAD
+
+<details><summary>Figure code</summary>
 ```{r, eval = FALSE}
 x <- solar_irradiance(x, keep.all = T)
-# =======
-# ```{r}
-# x <- solar_irradiance(x, verbose=0, keep.all = T)
-# >>>>>>> 7565c87630de585b2903564c9caaabb21c1daa70
 
 summary(x$ext_irrad)
 fig.ext_irrad <- function(x, ...) {
@@ -263,110 +242,113 @@ fig.DNI(x)
 summary(x$DHI)
 plot_merra(x, "DHI", limits = c(0, 1500))
 
-
 ```
+<details>
 
 
 
 ### PV-array position
-<!-- <<<<<<< HEAD -->
+
+<details><summary>Figure code</summary>
 ```{r, eval = FALSE}
 x <- pv_array_position(x, array.type = "all")
 x
 
-summary(x$array.tilt.fh)
-plot_merra(x, "array.tilt.fh", limits = c(0, 90), direction = -1,
-           scale = x$na)
+fig.array.tilt <- function(x, array.type = "fl", ...) {
+  plot_merra(x, paste0("array.tilt.", array.type), limits = c(0, 90), 
+             palette = "Set1", direction = -1, ...)
+}
 
-summary(x$array.azimuth.fh)
-plot_merra(x, "array.azimuth.fh", limits = c(0, 360), direction = -1, 
-           palette = "Spectral",
-           scale = x$na)
+fig.array.azimuth <- function(x, array.type = "fl", ...) {
+  plot_merra(x,  paste0("array.azimuth.", array.type), limits = c(0, 360), 
+             direction = -1, palette = "Set1", ...)
+}
 
-summary(x$array.tilt.fl)
-plot_merra(x, "array.tilt.fl", limits = c(0, 90), direction = -1)
+summary(x$array.tilt.fh); summary(x$array.azimuth.fh)
+fig.array.tilt(x, "fh")
+fig.array.azimuth(x, "fh")
 
-summary(x$array.azimuth.fl)
-plot_merra(x, "array.azimuth.fl", limits = c(0, 360), direction = -1, 
-           # palette = "Spectral", 
-           palette = "Set1",
-           )
+summary(x$array.tilt.fl); summary(x$array.azimuth.fl)
+fig.array.tilt(x, "fl")
+fig.array.azimuth(x, "fl")
 
-summary(x$array.tilt.th)
-plot_merra(x, "array.tilt.th", limits = c(0, 90), direction = -1,
-           scale = x$na)
+summary(x$array.tilt.th); summary(x$array.azimuth.th)
+fig.array.tilt(x, "th")
+fig.array.azimuth(x, "th", scale = x$na)
 
-summary(x$array.azimuth.th)
-plot_merra(x, "array.azimuth.th", limits = c(0, 360), direction = -1, 
-           # palette = "Spectral", 
-           palette = "Set1"
-           )
+# summary(x$array.tilt.tl); summary(x$array.azimuth.tl)
+# fig.array.tilt(x, "tl")
+# fig.array.azimuth(x, "tl", scale = x$na)
 
-summary(x$array.tilt.tv)
-plot_merra(x, "array.tilt.tv", limits = c(0, 90), direction = -1)
+summary(x$array.tilt.tv); summary(x$array.azimuth.tv)
+fig.array.tilt(x, "tv")
+fig.array.azimuth(x, "tv", scale = x$na)
 
-summary(x$array.azimuth.tv)
-plot_merra(x, "array.azimuth.tv", limits = c(0, 360), direction = -1, 
-           # palette = "Spectral", 
-           palette = "Set1",
-           scale = x$na)
+summary(x$array.tilt.td); summary(x$array.azimuth.td)
+fig.array.tilt(x, "tv")
+fig.array.azimuth(x, "tv", scale = x$na)
 
-gif_merra(x, FUN = "plot_merra", dirname = "images", fps = 10,
-          gif.width = 576, 
-          gif.height = 360 * 1.21, 
-          filename.prefix = "array.azimuth.tv_", name = "array.azimuth.tv",
-          limits = c(0, 360), direction = -1, palette = "Set1",
-          # scale = x$na
-          )
+fig.position.grid <- function(
+  x, legend.position = c(0.81, 0.08), 
+  timestamp.position = c(125, 85), ...) {
+  plot_grid(
+    fig.array.tilt(x, "fh", timestamp.position = NULL, legend.position = NULL, ...), 
+    fig.array.azimuth(x, "fh", timestamp.position = timestamp.position, 
+                      legend.position = NULL, ...),
+    fig.array.tilt(x, "fl", timestamp.position = NULL, legend.position = NULL, ...), 
+    fig.array.azimuth(x, "fl", timestamp.position = NULL, legend.position = NULL, ...),
+    fig.array.tilt(x, "th", scale = x$na, 
+                   timestamp.position = NULL, legend.position = NULL, ...), 
+    fig.array.azimuth(x, "th",  scale = x$na, 
+                   timestamp.position = NULL, legend.position = NULL, ...),
+    fig.array.tilt(x, "tv", scale = x$na, 
+                   timestamp.position = NULL, legend.position = NULL, ...), 
+    fig.array.azimuth(x, "tv", scale = x$na, 
+                   timestamp.position = NULL, legend.position = NULL, ...),
+    fig.array.tilt(x, "td", scale = x$na, 
+                   timestamp.position = NULL, legend.position = NULL, ...), 
+    fig.array.azimuth(x, "td", scale = x$na, 
+                   timestamp.position = NULL, legend.position = legend.position, ...),
+  labels = c("fh - tilt", "fh - azimuth", 
+             "fl - tilt", "fl - azimuth", 
+             "th - tilt", "th - azimuth", 
+             # "tl - tilt", "tl - azimuth", 
+             "tv - tilt", "tv - azimuth", 
+             "td - tilt", "td - azimuth"),
+            ncol = 2, hjust = -0.1, vjust = 1.1, label_size = 12,
+            label_colour = "black")
+}
+fig.position.grid(x)
 
-
-summary(x$array.tilt.td)
-plot_merra(x, "array.tilt.td", limits = c(0, 90), direction = -1,
-           scale = x$na)
-
-summary(x$array.azimuth.td)
-plot_merra(x, "array.azimuth.td", limits = c(0, 360), direction = -1, 
-           # palette = "Spectral",
-           palette = "Set1",
-           scale = x$na)
-
-# =======
-# ```{r}
-# x <- pv_array_position(x, verbose = 0, array.type = "tl")
-# >>>>>>> 7565c87630de585b2903564c9caaabb21c1daa70
+ggsave("images/solar_array_position_by_type_tl.png", width = 7, height = 10.5)
 
 ```
+<details><summary>Figure code</summary>
+
 
 ### Angle of Incidence (AOI)
-<!-- <<<<<<< HEAD -->
 ```{r, eval = FALSE}
 x <- angle_of_incidence(x, array.type = "all")
 
-summary(x$AOI.fh)
-summary(rad2deg(x$AOI.fh))
-plot_merra(x, "AOI.fh", limits = c(0, 90), direction = 1, 
-           palette = "Blues", 
-           scale = 180/pi)
+fig.AOI <- function(x, array.type = "fl", ...) {
+  plot_merra(x, paste0("AOI.", array.type), limits = c(0, 90), direction = 1, 
+             palette = "Blues", scale = 180/pi)
+}
+summary(x$AOI.fh); summary(rad2deg(x$AOI.fh))
+fig.AOI(x, "fh")
 
 summary(rad2deg(x$AOI.fl))
-plot_merra(x, "AOI.fl", limits = c(0, 90), direction = 1, 
-           palette = "Blues", 
-           scale = 180/pi)
+fig.AOI(x, "fl")
 
 summary(rad2deg(x$AOI.th))
-plot_merra(x, "AOI.th", limits = c(0, 90), direction = 1, 
-           palette = "Blues", 
-           scale = 180/pi)
+fig.AOI(x, "th")
 
 summary(rad2deg(x$AOI.tv))
-plot_merra(x, "AOI.tv", limits = c(0, 90), direction = 1, 
-           palette = "Blues", #na.value = "#040434",
-           scale = 180/pi)
+fig.AOI(x, "tv")
 
 summary(rad2deg(x$AOI.td))
-plot_merra(x, "AOI.td", limits = c(0, 90), direction = 1, 
-           palette = "Blues", 
-           scale = 180/pi)
+fig.AOI(x, "td")
+
 
 
 ```
@@ -374,15 +356,15 @@ plot_merra(x, "AOI.td", limits = c(0, 90), direction = 1,
 ### Plane of Array (POA) irradiance 
 ```{r, eval = FALSE}
 x <- poa_irradiance(x, array.type = "all", keep.all = T)
-# =======
-# ```{r}
-# x <- angle_of_incidence(x, verbose = 0, array.type = "tl")
+fig.poa.grid(x)
+
+
+
 ```
 
 ### Plane of Array (POA) irradiance 
-```{r}
+```{r, eval = FALSE}
 x <- poa_irradiance(x, verbose = 0, array.type = "tl", keep.all = T)
-# >>>>>>> 7565c87630de585b2903564c9caaabb21c1daa70
 
 summary(x$POA.td)
 # summary(rad2deg(x$POAb.td))
