@@ -29,6 +29,6 @@ The package reproduces basic algorithms of solar geometry, irradiance
 decomposition, and the Plane-Of-Array models for different types of
 trackers for evaluation.
 
-<img src="images/poa_fl_40y_avr_24steps.png" width="2550" />
+<img src="docs/images/poa_fl_40y_avr_24steps.png" width="2550" />
 
-<img src="images/wind_50m_40y_avr_24steps.png" width="3150" />
+<img src="docs/images/wind_50m_40y_avr_24steps.png" width="3150" />

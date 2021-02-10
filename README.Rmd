@@ -15,6 +15,8 @@ knitr::opts_chunk$set(
 # merra2ools
 (UNDER CONSTRUCTION)
 
+website (manuals): <https://energyRt.github.io/merra2ools/>   
+
 ## Overview
 
 *merra2ools* package offers a set of tools to evaluate potential hourly output of solar and wind energy sources based on MERRA-2 data subset (forthcoming). 
@@ -34,14 +36,14 @@ All variables are hourly averages, UTC-time is given for a middle of every hour.
 The package reproduces basic algorithms of solar geometry, irradiance decomposition, and the Plane-Of-Array models for different types of trackers for evaluation.  
 
 ```{r, fig.cap="", echo=FALSE}
-fig_file <- "images/poa_fl_40y_avr_24steps.png"
+fig_file <- "docs/images/poa_fl_40y_avr_24steps.png"
 include_graphics(fig_file)
 
 ```
 
 
 ```{r, fig.cap="", echo=FALSE}
-fig_file <- "images/wind_50m_40y_avr_24steps.png"
+fig_file <- "docs/images/wind_50m_40y_avr_24steps.png"
 include_graphics(fig_file)
 
 ```
