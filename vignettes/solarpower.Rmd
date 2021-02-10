@@ -39,7 +39,7 @@ poa <- fPOA(merra)
 ### Solar postion
 ```{r}
 x <- solar_position(merra, verbose = 0, keep.all = T)
-
+x <- azimuth.convertion(x)
 ```
 
 ### Global Horizontal Irradiance decomposition
@@ -50,18 +50,18 @@ x <- solar_irradiance(x, verbose=0, keep.all = T)
 
 ### PV-array position
 ```{r}
-x <- pv_array_position(x, verbose = 0, array.type = "tl")
+x <- pv_array_position(x, verbose = 0, array.type = "all")
 
 ```
 
 ### Angle of Incidence (AOI)
 ```{r}
-x <- angle_of_incidence(x, verbose = 0, array.type = "tl")
+x <- angle_of_incidence(x, verbose = 0, array.type = "all")
 ```
 
 ### Plane of Array (POA) irradiance 
 ```{r}
-x <- poa_irradiance(x, verbose=0, array.type = "tl", keep.all = T)
+x <- poa_irradiance(x, verbose=0, array.type = "all", keep.all = F)
 
 ```
 

@@ -1,6 +1,6 @@
 .pv_array_type <- function(array.type) {
+  # .tracking_types <- c("fh", "fl", "th", "tv", "td")
   .tracking_types <- c("fh", "fl", "th", "tl", "tv", "td")
-  # .tracking_types <- c("fh", "fl", "th", "tl", "tv", "td")
   # "fh" # "Horizontal (h) fixed (f) arrays"
   # "fl" # "Tilted (l) fixed (f) arrays"
   # "th" # "Horizontal (h) single axis tracking (t) arrays"
@@ -162,6 +162,8 @@ pv_array_position <- function(x,
     )
     if (i == "fh") { 
       # fixed horizontal ####
+      # y$array.azimuth <- 0 # Southern hemisphere facing North
+      # y$array.azimuth[x[[lat]] > 0] <- 180 # Northern hemisphere facing South
       y$array.azimuth <- 0 # facing equator
       y$array.tilt <- 0
       # y$array.tilt[y$array.tilt < array.tilt.range.fh[1]] <- array.tilt.range.fh[1]
@@ -169,12 +171,15 @@ pv_array_position <- function(x,
       
     } else if (i == "fl") { 
       # fixed tilted ####
+      # y$array.azimuth <- 0 # Southern hemisphere facing North
+      # y$array.azimuth[x[[lat]] > 0] <- 180 # Northern hemisphere facing South
       y$array.azimuth <- 0 # facing equator
       y$array.tilt <- abs(x[[lat]])
       # y$array.tilt[y$array.tilt < array.tilt.range.fl[1]] <- array.tilt.range.fl[1]
       # y$array.tilt[y$array.tilt > array.tilt.range.fl[2]] <- array.tilt.range.fl[2]
     } else if (i == "th") { 
       # tracking horizontal ####
+      # y$array.azimuth <- 90 + as.numeric(x[[azimuth]] > 180) * 180
       y$array.azimuth <- -90 + as.numeric(x[[azimuth]] >= 0) * 180
       # ii <- x[[zenith]] < 90
       y$array.tilt[ii] <- 
@@ -187,7 +192,7 @@ pv_array_position <- function(x,
       # y$array.tilt[y$array.tilt < array.tilt.range.th[1]] <- array.tilt.range.th[1]
       # y$array.tilt[y$array.tilt > array.tilt.range.th[2]] <- array.tilt.range.th[2]
       # y$array.tilt[y$array.tilt > array.tilt.range.th[4]] <- 0
-    } else if (i == "tl-bug") { 
+    } else if (i == "tl-old") { 
       # browser()
       Zenith <- x$zenith
       Azimuth <- x$azimuth
@@ -216,6 +221,8 @@ pv_array_position <- function(x,
       # tracking tilted ####
       # browser()
       y$array.tilt <- abs(x[[lat]])
+      y$array.tilt[y$array.tilt < tilt.param$tl$min] <- tilt.param$tl$min
+      y$array.tilt[y$array.tilt > tilt.param$tl$max] <- tilt.param$tl$max
       y$array.azimuth <- 0 # facing equator
       y[[zenith]] <- as.numeric(NA)
       y[[azimuth]] <- as.numeric(NA)
@@ -230,12 +237,15 @@ pv_array_position <- function(x,
       )
       
       delta.gamma <- atan(
+        # sind(y[[zenith]][ii]) * sind((y[[azimuth]][ii] - 180)) /
         sind(y[[zenith]][ii]) * sind((y[[azimuth]][ii] - 0)) /
           (cos(AOI.fl) * sind(y$array.tilt[ii]))
         ) / pi * 180
       # rm(array.azimuth,array.tilt,AOI.fx)
       
       y$array.azimuth[ii] <- 
+        # (180 + delta.gamma + ((delta.gamma * (y[[azimuth]][ii] - 180)) < 0) * 
+        #    (2*((y[[azimuth]][ii] - 180) >= 0) - 1) * 180) #* (zenith < 90)        
         (delta.gamma + ((delta.gamma * y[[azimuth]][ii]) < 0) * 
            (2*(y[[azimuth]][ii] >= 0) - 1) * 180) #* (zenith < 90)
       rm(delta.gamma, AOI.fl)
@@ -244,6 +254,8 @@ pv_array_position <- function(x,
         atan(
           tand(y$array.tilt[ii]) / cosd(y$array.azimuth[ii])) + 
           (cosd(y$array.azimuth[ii]) < 0) * pi) / pi * 180 
+          # tand(y[[zenith]][ii]) / cosd((y[[azimuth]][ii] - 180))) + 
+          # (cosd(y[[azimuth]][ii] - 180) < 0) * pi) / pi * 180           
       y$array.tilt[!ii] <- 0
       
       y$zenith <- NULL; y$azimuth <- NULL
@@ -317,8 +329,8 @@ tilt.param.default <- function(x = NULL) {
   list(
     fh = list(min = 0, max = 0, shading = 90, backtracking = FALSE),
     fl = list(min = 0, max = 75, shading = 90, backtracking = FALSE),
-    th = list(min = 0, max = 90, shading = 90, backtracking = TRUE),
-    tl = list(min = 0, max = 90, shading = 90, backtracking = TRUE),
+    th = list(min = 0, max = 45, shading = 90, backtracking = TRUE),
+    tl = list(min = 0, max = 45, shading = 85, backtracking = TRUE),
     tv = list(min = 0, max = 75, shading = 90, backtracking = FALSE),
     td = list(min = 0, max = 60, shading = 90, backtracking = TRUE)
   )
@@ -541,7 +553,7 @@ fPOA <- function(x, array.type = "all",
     lon = lon, lat = lat, integral_steps = integral_steps,
     keep.all = TRUE, verbose = verbose) 
   # browser()
-  y <- solar_irradiance(x = y, yday = yday, keep.all = TRUE, 
+  y <- ghi_decomposition(x = y, yday = yday, keep.all = TRUE, 
                         verbose = verbose)
   y <- pv_array_position(x = y, array.type = array.type, 
                          lat = lat, suffix = suffix, 
@@ -601,7 +613,8 @@ sind <- function(x, check = TRUE) {
   return(x)
 }
 
-tand <- function(x) {
+tand <- function(x, Inf.eps = 1e-12, Inf.val = NaN) {
+  
   tanpi(x / 180) # same speed as tanpi(x / 180) & same divergence from tan
 }
 
