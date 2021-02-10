@@ -122,21 +122,21 @@ plot_merra <- function(x,
 
   # } else {
     # browser()
-    if (!(is.null(timestamp.position) || is.na(timestamp.position))) {
-    # } else {
-      pp <- pp + 
-        geom_label(
-          data = data.frame(x = timestamp.position[1], 
-                            y = timestamp.position[2],
-                            label = timestamp.stamp),
-          aes(x = x, y = y, label = label), label.size = 0, color = "black",
-          fill = "white", alpha = 0.5)
-    }
   # browser()
   if (!(is.null(map.border) || is.na(map.border))) {
     world <- rnaturalearth::ne_countries(scale = "small", returnclass = "sf")
     pp <- pp + geom_sf(data = world, color = map.border, 
                        fill = NA, inherit.aes = F, size = map.border.size)
+  }
+  if (!(is.null(timestamp.position) || is.na(timestamp.position))) {
+    # } else {
+    pp <- pp + 
+      geom_label(
+        data = data.frame(x = timestamp.position[1], 
+                          y = timestamp.position[2],
+                          label = timestamp.stamp),
+        aes(x = x, y = y, label = label), label.size = 0, color = "black",
+        fill = "white", alpha = 0.7)
   }
   return(pp)
   # }
@@ -431,7 +431,7 @@ if (F) {
            legend.name = "", fps = 4)
   
   # Irradiance
-  # z <- solar_irradiance(y, ALL = T)
+  # z <- ghi_decomposition(y, ALL = T)
   z
   summary(z$SWGDN)
   summary(z$DNI)

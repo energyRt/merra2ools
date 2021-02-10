@@ -43,6 +43,9 @@
     <loc>https://olugovoy.github.io/merra2ools//reference/get_merra2_subset.html</loc>
   </url>
   <url>
+    <loc>https://olugovoy.github.io/merra2ools//reference/ghi_decomposition.html</loc>
+  </url>
+  <url>
     <loc>https://olugovoy.github.io/merra2ools//reference/gif_merra.html</loc>
   </url>
   <url>
@@ -68,9 +71,6 @@
   </url>
   <url>
     <loc>https://olugovoy.github.io/merra2ools//reference/read_merra_file.html</loc>
-  </url>
-  <url>
-    <loc>https://olugovoy.github.io/merra2ools//reference/solar_irradiance.html</loc>
   </url>
   <url>
     <loc>https://olugovoy.github.io/merra2ools//reference/solar_position.html</loc>

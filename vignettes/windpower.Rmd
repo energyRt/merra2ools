@@ -213,7 +213,7 @@ if (file.exists(gif2)) include_graphics(gif2)
 
 ```
 
-```{r, eval=FALSE}
+```{r, eval=FALSE, echo=FALSE}
 # load("data/merra_mean_40y.RData")
 d <- merra_mean_40y
 summary(d$W50M)
@@ -232,7 +232,7 @@ ggplot(d) +
                     guide = guide_legend(reverse = TRUE),
                     name = "m/s") + 
   theme_void() + 
-  # labs(title = "Shortwave radiation flux on horizontal surface, average annual sum (1980-2019)") +
+  labs(title = "Wind speed at 50 meters height, long-term average (1980-2019)") +
   theme(legend.position = "bottom", legend.spacing.x = unit(1, "mm"),
         legend.margin = margin(0,0,0,0),
         legend.box.margin = margin(0,0,0,0),
@@ -247,6 +247,13 @@ ggplot(d) +
           inherit.aes = F, size = unit(.25, "mm"))
 
 ggsave("images/wind_50m_40y_avr_24steps.png", width = 10.5, height = 6.)
+
+```
+
+```{r, eval=FALSE, echo=FALSE}
+# summary(d$AF100M)
+
+
 
 ```
 

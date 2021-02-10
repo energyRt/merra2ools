@@ -91,18 +91,42 @@
 <div id="merra2ools" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#merra2ools" class="anchor"></a>merra2ools</h1></div>
-<p>Tools to process MERRA-2 data (NASA) with focus on renewable energy</p>
 <p>(UNDER CONSTRUCTION)</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">fig_file</span> <span class="op">&lt;-</span> <span class="st">"images/ghi_40y_avr_24steps.png"</span>
-<span class="fu">include_graphics</span><span class="op">(</span><span class="va">fig_file</span><span class="op">)</span></code></pre></div>
-<p><img src="images/ghi_40y_avr_24steps.png" width="2550"></p>
-<div class="figure">
-<img src="images/poa_fl_40y_avr_24steps.png" alt="Estimated annual solar power output (fixed, optimal tilt angle), 40-years average" width="2550"><p class="caption">
-Estimated annual solar power output (fixed, optimal tilt angle), 40-years average
-</p>
+<div id="overview" class="section level2">
+<h2 class="hasAnchor">
+<a href="#overview" class="anchor"></a>Overview</h2>
+<p><em>merra2ools</em> package offers a set of tools to evaluate potential hourly output of solar and wind energy sources based on MERRA-2 data subset (forthcoming).</p>
+<p>The MERRA-2 subset includes:</p>
+<ul>
+<li>
+<strong>locid</strong> - location IDs, an index of locations in MERRA-2 dataset, from 1 to 207936;<br>
+</li>
+<li>
+<strong>UTC</strong> - date and time in UTC timezone;<br>
+</li>
+<li>
+<strong>T10M</strong> - 10-meter air temperature (K);<br>
+</li>
+<li>
+<strong>W10M</strong> - 10-meter wind speed (calculated sqrt(V10M^2 + U10M^2) where V10M and U10M are northward and eastward wind at 10-meter, m/s);<br>
+</li>
+<li>
+<strong>W50M</strong> - 50-meter wind speed (calculated sqrt(V50M^2 + U50M^2) where V50M and U50M are northward and eastward wind at 50-meter, m/s);<br>
+</li>
+<li>
+<strong>PS_hPa</strong> - surface pressure (hPa);<br>
+</li>
+<li>
+<strong>SWGDN</strong> - Incident shortwave land (W/m^2);<br>
+</li>
+<li>
+<strong>ALBEDO</strong> - surface albedo (index <span class="math display">0, 1</span>).</li>
+</ul>
+<p>All variables are hourly averages, UTC-time is given for a middle of every hour.</p>
+<p>The package reproduces basic algorithms of solar geometry, irradiance decomposition, and the Plane-Of-Array models for different types of trackers for evaluation.</p>
+<p><img src="images/poa_fl_40y_avr_24steps.png" width="2550"></p>
+<p><img src="images/wind_50m_40y_avr_24steps.png" width="3150"></p>
 </div>
-<p>Estimated annual wind power output at 50 meters height, 40-years average</p>
 </div>
   </div>
 

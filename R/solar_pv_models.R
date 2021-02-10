@@ -192,7 +192,7 @@ pv_array_position <- function(x,
       # y$array.tilt[y$array.tilt < array.tilt.range.th[1]] <- array.tilt.range.th[1]
       # y$array.tilt[y$array.tilt > array.tilt.range.th[2]] <- array.tilt.range.th[2]
       # y$array.tilt[y$array.tilt > array.tilt.range.th[4]] <- 0
-    } else if (i == "tl-bug") { 
+    } else if (i == "tl-old") { 
       # browser()
       Zenith <- x$zenith
       Azimuth <- x$azimuth
@@ -217,7 +217,7 @@ pv_array_position <- function(x,
       y$array.azimuth <- array.azimuth; rm(array.azimuth)
       rm(Azimuth, Zenith)
       
-    } else if (i == "tl") { 
+    } else if (i == "tl-debug") { 
       # tracking tilted ####
       # browser()
       y$array.tilt <- abs(x[[lat]])
@@ -329,8 +329,8 @@ tilt.param.default <- function(x = NULL) {
   list(
     fh = list(min = 0, max = 0, shading = 90, backtracking = FALSE),
     fl = list(min = 0, max = 75, shading = 90, backtracking = FALSE),
-    th = list(min = 0, max = 90, shading = 90, backtracking = TRUE),
-    tl = list(min = 0, max = 89, shading = 90, backtracking = TRUE),
+    th = list(min = 0, max = 45, shading = 90, backtracking = TRUE),
+    # tl = list(min = 0, max = 45, shading = 85, backtracking = TRUE),
     tv = list(min = 0, max = 75, shading = 90, backtracking = FALSE),
     td = list(min = 0, max = 60, shading = 90, backtracking = TRUE)
   )
@@ -553,7 +553,7 @@ fPOA <- function(x, array.type = "all",
     lon = lon, lat = lat, integral_steps = integral_steps,
     keep.all = TRUE, verbose = verbose) 
   # browser()
-  y <- solar_irradiance(x = y, yday = yday, keep.all = TRUE, 
+  y <- ghi_decomposition(x = y, yday = yday, keep.all = TRUE, 
                         verbose = verbose)
   y <- pv_array_position(x = y, array.type = array.type, 
                          lat = lat, suffix = suffix, 
