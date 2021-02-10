@@ -36,14 +36,14 @@ All variables are hourly averages, UTC-time is given for a middle of every hour.
 The package reproduces basic algorithms of solar geometry, irradiance decomposition, and the Plane-Of-Array models for different types of trackers for evaluation.  
 
 ```{r, fig.cap="", echo=FALSE}
-fig_file <- "docs/images/poa_fl_40y_avr_24steps.png"
+fig_file <- "images/poa_fl_40y_avr_24steps.png"
 include_graphics(fig_file)
 
 ```
 
 
 ```{r, fig.cap="", echo=FALSE}
-fig_file <- "docs/images/wind_50m_40y_avr_24steps.png"
+fig_file <- "images/wind_50m_40y_avr_24steps.png"
 include_graphics(fig_file)
 
 ```

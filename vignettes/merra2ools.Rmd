@@ -20,7 +20,7 @@ knitr::opts_chunk$set(fig.width = 7, fig.height = 6, fig.align = "center")
 # Installation of `merra2ools` package
 pkg <- function() rownames(installed.packages()) # returns names of installed packages
 if (!("devtools" %in% pkg())) install.packages("devtools")
-if (!("merra2ools" %in% pkg())) devtools::install_github("olugovoy/merra2ools")
+if (!("merra2ools" %in% pkg())) devtools::install_github("energyRt/merra2ools")
   
 # Installation of packages used in the vignette
 ## gis/spatial objects and method

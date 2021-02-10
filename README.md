@@ -3,6 +3,8 @@
 
 (UNDER CONSTRUCTION)
 
+website (manuals): <https://energyRt.github.io/merra2ools/>
+
 ## Overview
 
 *merra2ools* package offers a set of tools to evaluate potential hourly
