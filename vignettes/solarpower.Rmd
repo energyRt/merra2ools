@@ -44,7 +44,6 @@ x <- fPOA(merra)
 
 ```
 
-
 <details><summary>Figure code</summary>
 ```{r, eval = rerun}
 fig.POA <- function(x, name, 
@@ -84,7 +83,6 @@ gif_merra(x[ii,], FUN = "fig.poa.grid", dirname = "images", fps = 5,
           gif.height = 1.25 * 360 * 1.21, 
           filename.prefix = "POA_map_")
 
-```
 </details>
 
 ```{r fig_POA_all, fig.cap="Plane of Array (POA) Irradiance estimates for alternative tracking systems", echo=FALSE}
@@ -98,6 +96,8 @@ if (file.exists(gif_file)) include_graphics(gif_file)
 
 ```{r, eval = rerun}
 x <- solar_position(merra, keep.all = T)
+# x <- solar_position(merra, verbose = 0, keep.all = T)
+x <- azimuth.convertion(x)
 
 ```
 
@@ -377,6 +377,7 @@ gif_merra(x, FUN = "fig.pv_array_position", dirname = "images", fps = 5,
           gif.width = 1.25 * 576, 
           gif.height = round(1.25 * 360 * 1.21 * 5 / 3), 
           filename.prefix = "fig.pv_array_position_")
+# >>>>>>> master
 
 ```
 </details>

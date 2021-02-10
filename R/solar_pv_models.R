@@ -1,6 +1,11 @@
 .pv_array_type <- function(array.type) {
-  .tracking_types <- c("fh", "fl", "th", "tv", "td")
-  # .tracking_types <- c("fh", "fl", "th", "tl", "tv", "td")
+#<<<<<<< tl_tracking
+  # .tracking_types <- c("fh", "fl", "th", "tv", "td")
+  .tracking_types <- c("fh", "fl", "th", "tl", "tv", "td")
+#=======
+#  .tracking_types <- c("fh", "fl", "th", "tv", "td")
+# .tracking_types <- c("fh", "fl", "th", "tl", "tv", "td")
+#>>>>>>> master
   # "fh" # "Horizontal (h) fixed (f) arrays"
   # "fl" # "Tilted (l) fixed (f) arrays"
   # "th" # "Horizontal (h) single axis tracking (t) arrays"
@@ -162,25 +167,42 @@ pv_array_position <- function(x,
     )
     if (i == "fh") { 
       # fixed horizontal ####
-      y$array.azimuth <- 0 # Southern hemisphere facing North
-      y$array.azimuth[x[[lat]] > 0] <- 180 # Northern hemisphere facing South
+#<<<<<<< tl_tracking
+      # y$array.azimuth <- 0 # Southern hemisphere facing North
+      # y$array.azimuth[x[[lat]] > 0] <- 180 # Northern hemisphere facing South
+      y$array.azimuth <- 0 # facing equator
+#=======
+#      y$array.azimuth <- 0 # Southern hemisphere facing North
+#      y$array.azimuth[x[[lat]] > 0] <- 180 # Northern hemisphere facing South
       # y$array.azimuth <- 0 # facing equator
+#>>>>>>> master
       y$array.tilt <- 0
       # y$array.tilt[y$array.tilt < array.tilt.range.fh[1]] <- array.tilt.range.fh[1]
       # y$array.tilt[y$array.tilt > array.tilt.range.fh[2]] <- array.tilt.range.fh[2]
       
     } else if (i == "fl") { 
       # fixed tilted ####
-      y$array.azimuth <- 0 # Southern hemisphere facing North
-      y$array.azimuth[x[[lat]] > 0] <- 180 # Northern hemisphere facing South
+#<<<<<<< tl_tracking
+      # y$array.azimuth <- 0 # Southern hemisphere facing North
+      # y$array.azimuth[x[[lat]] > 0] <- 180 # Northern hemisphere facing South
+      y$array.azimuth <- 0 # facing equator
+#=======
+#      y$array.azimuth <- 0 # Southern hemisphere facing North
+#      y$array.azimuth[x[[lat]] > 0] <- 180 # Northern hemisphere facing South
       # y$array.azimuth <- 0 # facing equator
+#>>>>>>> master
       y$array.tilt <- abs(x[[lat]])
       # y$array.tilt[y$array.tilt < array.tilt.range.fl[1]] <- array.tilt.range.fl[1]
       # y$array.tilt[y$array.tilt > array.tilt.range.fl[2]] <- array.tilt.range.fl[2]
     } else if (i == "th") { 
       # tracking horizontal ####
-      y$array.azimuth <- 90 + as.numeric(x[[azimuth]] > 180) * 180
+#<<<<<<< tl_tracking
+      # y$array.azimuth <- 90 + as.numeric(x[[azimuth]] > 180) * 180
+      y$array.azimuth <- -90 + as.numeric(x[[azimuth]] >= 0) * 180
+#=======
+#      y$array.azimuth <- 90 + as.numeric(x[[azimuth]] > 180) * 180
       # y$array.azimuth <- -90 + as.numeric(x[[azimuth]] >= 0) * 180
+#>>>>>>> master
       # ii <- x[[zenith]] < 90
       y$array.tilt[ii] <- 
         atan(abs(
@@ -237,25 +259,44 @@ pv_array_position <- function(x,
       )
       
       delta.gamma <- atan(
+#<<<<<<< tl_tracking
+        # sind(y[[zenith]][ii]) * sind((y[[azimuth]][ii] - 180)) /
+        sind(y[[zenith]][ii]) * sind((y[[azimuth]][ii] - 0)) /
+#=======
         # sind(y[[zenith]][ii]) * sind((y[[azimuth]][ii] - 0)) /
-        sind(y[[zenith]][ii]) * sind((y[[azimuth]][ii] - 180)) /
+#        sind(y[[zenith]][ii]) * sind((y[[azimuth]][ii] - 180)) /
+#>>>>>>> master
           (cos(AOI.fl) * sind(y$array.tilt[ii]))
         ) / pi * 180
       # rm(array.azimuth,array.tilt,AOI.fx)
       
       y$array.azimuth[ii] <- 
-        (180 + delta.gamma + ((delta.gamma * (y[[azimuth]][ii] - 180)) < 0) * 
-           (2*((y[[azimuth]][ii] - 180) >= 0) - 1) * 180) #* (zenith < 90)        
+#<<<<<<< tl_tracking
+        # (180 + delta.gamma + ((delta.gamma * (y[[azimuth]][ii] - 180)) < 0) * 
+        #    (2*((y[[azimuth]][ii] - 180) >= 0) - 1) * 180) #* (zenith < 90)        
+        (delta.gamma + ((delta.gamma * y[[azimuth]][ii]) < 0) * 
+           (2*(y[[azimuth]][ii] >= 0) - 1) * 180) #* (zenith < 90)
+#=======
+#        (180 + delta.gamma + ((delta.gamma * (y[[azimuth]][ii] - 180)) < 0) * 
+#           (2*((y[[azimuth]][ii] - 180) >= 0) - 1) * 180) #* (zenith < 90)        
         # (delta.gamma + ((delta.gamma * y[[azimuth]][ii]) < 0) * 
         #    (2*(y[[azimuth]][ii] >= 0) - 1) * 180) #* (zenith < 90)
+#>>>>>>> master
       rm(delta.gamma, AOI.fl)
       # gc()
       y$array.tilt[ii] <- (
         atan(
-          tand(y[[zenith]][ii]) / cosd((y[[azimuth]][ii] - 180))) + 
-          (cosd(y[[azimuth]][ii] - 180) < 0) * pi) / pi * 180           
+#<<<<<<< tl_tracking
+          tand(y$array.tilt[ii]) / cosd(y$array.azimuth[ii])) + 
+          (cosd(y$array.azimuth[ii]) < 0) * pi) / pi * 180 
+          # tand(y[[zenith]][ii]) / cosd((y[[azimuth]][ii] - 180))) + 
+          # (cosd(y[[azimuth]][ii] - 180) < 0) * pi) / pi * 180           
+#=======
+#          tand(y[[zenith]][ii]) / cosd((y[[azimuth]][ii] - 180))) + 
+#          (cosd(y[[azimuth]][ii] - 180) < 0) * pi) / pi * 180           
           # tand(y$array.tilt[ii]) / cosd(y$array.azimuth[ii])) + 
           # (cosd(y$array.azimuth[ii]) < 0) * pi) / pi * 180 
+#>>>>>>> master
       y$array.tilt[!ii] <- 0
       
       y$zenith <- NULL; y$azimuth <- NULL
@@ -330,7 +371,11 @@ tilt.param.default <- function(x = NULL) {
     fh = list(min = 0, max = 0, shading = 90, backtracking = FALSE),
     fl = list(min = 0, max = 75, shading = 90, backtracking = FALSE),
     th = list(min = 0, max = 45, shading = 90, backtracking = TRUE),
+#<<<<<<< tl_tracking
+    tl = list(min = 0, max = 45, shading = 85, backtracking = TRUE),
+#=======
     # tl = list(min = 0, max = 45, shading = 85, backtracking = TRUE),
+#>>>>>>> master
     tv = list(min = 0, max = 75, shading = 90, backtracking = FALSE),
     td = list(min = 0, max = 60, shading = 90, backtracking = TRUE)
   )
