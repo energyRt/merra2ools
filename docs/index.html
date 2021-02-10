@@ -71,7 +71,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/olugovoy/merra2ools/">
+  <a href="https://github.com/energyRt/merra2ools/">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -91,15 +91,42 @@
 <div id="merra2ools" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#merra2ools" class="anchor"></a>merra2ools</h1></div>
-<p>Tools to process MERRA-2 data (NASA) with focus on renewable energy</p>
 <p>(UNDER CONSTRUCTION)</p>
-<div id="estimated-annual-wind-power-output-at-50-meters-height-40-years-average" class="section level2">
+<p>website (manuals): <a href="https://energyRt.github.io/merra2ools/" class="uri">https://energyRt.github.io/merra2ools/</a></p>
+<div id="overview" class="section level2">
 <h2 class="hasAnchor">
-<a href="#estimated-annual-wind-power-output-at-50-meters-height-40-years-average" class="anchor"></a>Estimated annual wind power output at 50 meters height, 40-years average</h2>
-</div>
-<div id="estimated-annual-solar-power-output-fixed-optimal-tilt-angle-40-years-average" class="section level2">
-<h2 class="hasAnchor">
-<a href="#estimated-annual-solar-power-output-fixed-optimal-tilt-angle-40-years-average" class="anchor"></a>Estimated annual solar power output (fixed, optimal tilt angle), 40-years average</h2>
+<a href="#overview" class="anchor"></a>Overview</h2>
+<p><em>merra2ools</em> package offers a set of tools to evaluate potential hourly output of solar and wind energy sources based on MERRA-2 data subset (forthcoming).</p>
+<p>The MERRA-2 subset includes:</p>
+<ul>
+<li>
+<strong>locid</strong> - location IDs, an index of locations in MERRA-2 dataset, from 1 to 207936;<br>
+</li>
+<li>
+<strong>UTC</strong> - date and time in UTC timezone;<br>
+</li>
+<li>
+<strong>T10M</strong> - 10-meter air temperature (K);<br>
+</li>
+<li>
+<strong>W10M</strong> - 10-meter wind speed (calculated sqrt(V10M^2 + U10M^2) where V10M and U10M are northward and eastward wind at 10-meter, m/s);<br>
+</li>
+<li>
+<strong>W50M</strong> - 50-meter wind speed (calculated sqrt(V50M^2 + U50M^2) where V50M and U50M are northward and eastward wind at 50-meter, m/s);<br>
+</li>
+<li>
+<strong>PS_hPa</strong> - surface pressure (hPa);<br>
+</li>
+<li>
+<strong>SWGDN</strong> - Incident shortwave land (W/m^2);<br>
+</li>
+<li>
+<strong>ALBEDO</strong> - surface albedo (index <span class="math display">0, 1</span>).</li>
+</ul>
+<p>All variables are hourly averages, UTC-time is given for a middle of every hour.</p>
+<p>The package reproduces basic algorithms of solar geometry, irradiance decomposition, and the Plane-Of-Array models for different types of trackers for evaluation.</p>
+<p><img src="images/poa_fl_40y_avr_24steps.png" width="2550"></p>
+<p><img src="images/wind_50m_40y_avr_24steps.png" width="3150"></p>
 </div>
 </div>
   </div>
@@ -108,9 +135,9 @@
     <div class="links">
 <h2>Links</h2>
 <ul class="list-unstyled">
-<li>Browse source code at <br><a href="https://github.com/olugovoy/merra2ools/">https://​github.com/​olugovoy/​merra2ools/​</a>
+<li>Browse source code at <br><a href="https://github.com/energyRt/merra2ools/">https://​github.com/​energyRt/​merra2ools/​</a>
 </li>
-<li>Report a bug at <br><a href="https://github.com/olugovoy/merra2ools/issues">https://​github.com/​olugovoy/​merra2ools/​issues</a>
+<li>Report a bug at <br><a href="https://github.com/energyRt/merra2ools/issues">https://​github.com/​energyRt/​merra2ools/​issues</a>
 </li>
 </ul>
 </div>

@@ -1,8 +1,14 @@
 #' Irradiance decomposition
 #'
+#' @param x 
 #' @param yday day of a year, integer vector
 #' @param GHI Global Horizontal Irradiance from MERRA-2 subset (\mjseqn{GHI, W/m^2})
 #' @param zenith Zenith angle, degrees
+#' @param beam 
+#' @param method 
+#' @param zenith_max 
+#' @param keep.all 
+#' @param verbose 
 #'
 #' @details 
 #' \loadmathjax
@@ -43,10 +49,10 @@
 #'
 #' @examples
 #' NA
-solar_irradiance <- function(x, yday = "yday", GHI = "SWGDN", 
+ghi_decomposition <- function(x, yday = "yday", GHI = "SWGDN", 
                              zenith = "zenith", beam = "beam",
                              method = 0,
-                             zenith_max = 90, keep.all = FALSE, 
+                             zenith_max = 89, keep.all = FALSE, 
                              verbose = getOption("merra2.verbose")) {
   # browser()
   # if (is.null(x)) {
@@ -153,11 +159,11 @@ diffuse_fraction <- function(yday, zenith, GHI) {
 }
 
 if (F) {
-  # system.time(z1 <- solar_irradiance(y))
+  # system.time(z1 <- ghi_decomposition(y))
   # system.time(z2 <- diffuse_fraction(y$yday, y$zenith, y$GHI))
   # identical(z1, z2)
   
-  z <- solar_irradiance(y, keep.all = T, zenith_max = 85)
+  z <- ghi_decomposition(y, keep.all = T, zenith_max = 85)
   summary(z$DNI)
   summary(z$DHI)
   summary(z$clearness_index)

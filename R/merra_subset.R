@@ -69,7 +69,6 @@ get_merra2_subset <- function(locid = 1:207936L,
                               rows_lim = 2*10^9,
                               original.units = TRUE) {
   # browser()
-  # tz <- "Pacific/Auckland"
   if (!any(grepl("package:fst", search()))) library("fst")
   
   op <- getOption("dplyr.summarise.inform")
@@ -95,15 +94,16 @@ get_merra2_subset <- function(locid = 1:207936L,
     message("The request might exeed rows' number limit ('rows_lim').\nTry to reduce the number of locations ('locid') and/or the time interval ('from' & 'to')")
     return(invisible(NULL))
   }
+  # browser()
   sam <- NULL
   for (f in 1:length(fls)) {
     if (!quiet) cat("file:", fls[f])
-    merra <- fst::read_fst(file.path(mr$path, fls[f]), as.data.table = T)
+    sam_i <- fst::read_fst(file.path(mr$path, fls[f]), as.data.table = T)
     if (!is.null(sam_i[["loc_id"]])) sam_i <- dplyr::rename(sam_i, locid = loc_id)
     if (!is.null(sam_i[["datetime"]])) sam_i <- dplyr::rename(sam_i, UTC = datetime)
     if (!is.null(cols)) sam_i <- sam_i[, ..cols]    
-    ii <- merra$locid %in% locid 
-    sam_i <- merra[ii,]
+    ii <- sam_i$locid %in% locid 
+    sam_i <- sam_i[ii,]
     ii <- sam_i$UTC %in% from_to_h
     sam_i <- sam_i[ii,]
     # browser()

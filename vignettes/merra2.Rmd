@@ -132,11 +132,22 @@ gif_merra(x, name = "SWGDN", dirname = "images", fps = 5,
 ```
 </details>
 
+
 ```{r fig_SWGDN, fig.cap="Global Horizontal Irradiance", echo=FALSE}
 gif_file <- "../images/merra_SWGDN_576x360_5fps.gif"
 if (file.exists(gif_file)) include_graphics(gif_file)
 
 ```
+
+#### 40 years average
+```{r, echo=FALSE}
+
+fig_file <- "../images/ghi_40y_avr_24steps.png"
+include_graphics(fig_file)
+
+```
+
+
 
 ### Albedo (ALBEDO), index [0..1]
 <details><summary>Figure code</summary>

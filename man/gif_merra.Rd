@@ -7,12 +7,13 @@
 gif_merra(
   x,
   FUN = "plot_merra",
-  datetime = "UTC",
+  timestamp.variable = "UTC",
   nmax = 24 * 12,
   fps = 12,
   gif.width = 576,
   gif.height = 360,
   filename = NULL,
+  filename.prefix = "merra_",
   dirname = ".",
   verbose = getOption("merra2.verbose"),
   ...
