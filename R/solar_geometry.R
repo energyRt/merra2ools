@@ -63,6 +63,7 @@ solar_position <- function(x,
                            UTC = "UTC",
                            yday = "yday", hour = "hour",
                            lon = "lon", lat = "lat",
+                           # azimuth = "azimuth",
                            integral_steps = 2,
                            keep.all = TRUE, 
                            verbose = getOption("merra2.verbose"), ...) {
@@ -126,9 +127,9 @@ solar_position <- function(x,
   solar_time <- matrix(as.numeric(NA), nrow = nrow(x), ncol = integral_steps)
   hour_angle <- solar_time
   zenith <- solar_time
-  sin.azimuth <- matrix(as.numeric(NA), nrow = nrow(x), ncol = 1)
-  cos.azimuth <- sin.azimuth
-  azimuth <- sin.azimuth
+  sin.azimuth_N <- matrix(as.numeric(NA), nrow = nrow(x), ncol = 1)
+  cos.azimuth_N <- sin.azimuth_N
+  azimuth_N <- sin.azimuth_N
   # Apparent solar time ####
   if (verbose) cat("   Apparent solar time (solar_time) ")
   for (i in 1:integral_steps) {
@@ -159,7 +160,7 @@ solar_position <- function(x,
   if (verbose) cat("   Direct beam hour (beam)\n")
   x$beam <- rowSums(zenith < 90) == integral_steps
   # Integrating...
-  if (verbose) cat("   Integrating...")
+  if (verbose) cat("   Integrating\n")
   # dh <- c(0L, 1L, 0L)
   zenith <- zenith %*% dh
   # zenith <- matrix(apply(zenith, 1, min, na.rm = T), ncol = 1)
@@ -167,38 +168,37 @@ solar_position <- function(x,
   hour_angle <- hour_angle %*% dh
   # solar_time <- matrix(x[[hour]] + 0.5 + eq_time / 60 + x[[lon]] / 15, ncol = 1) 
   # hour_angle <- matrix(pi * (solar_time - 12) / 12, ncol = 1)
-  if (verbose) cat("ok\n")  
+  # if (verbose) cat("ok\n")  
   # Azimuth angle ####
   # x$azimuth <- azimuth(yday = x[[yday]], lon = x[[lon]], lat = x[[lat]], )
-  if (verbose) cat("   Azimuth angle (azimuth) ")
+  if (verbose) cat("   Azimuth angle facing North (azimuth_N)")
   # browser()
   # for (i in 1:integral_steps) {
   for (i in 1) {
     # cat(i, " ", sep = "")
     # A
-    sin.azimuth[,i] <- -sin(hour_angle[,i]) * cos(declination) /
+    sin.azimuth_N[,i] <- -sin(hour_angle[,i]) * cos(declination) /
                            sinpi(zenith[,i] / 180)
-    sin.azimuth[sin.azimuth[,i] < -1] <- -1
-    sin.azimuth[sin.azimuth[,i] > 1] <- 1
-    sin.azimuth[is.nan(sin.azimuth[,i]),i] <- 0 # temporary solution for poles
+    sin.azimuth_N[sin.azimuth_N[,i] < -1] <- -1
+    sin.azimuth_N[sin.azimuth_N[,i] > 1] <- 1
+    sin.azimuth_N[is.nan(sin.azimuth_N[,i]),i] <- 0 # temporary solution for poles
     # B
-    cos.azimuth[,i] <-
+    cos.azimuth_N[,i] <-
       (sin(declination) - sind(x[[lat]]) * cosd(zenith[,i])) /
         (cosd(x[[lat]]) * sind(zenith[,i]))
-    cos.azimuth[cos.azimuth[,i] < -1] <- -1
-    cos.azimuth[cos.azimuth[,i] > 1] <- 1
-    cos.azimuth[is.nan(cos.azimuth[,i]),i] <- 0 # temporary solution for poles
+    cos.azimuth_N[cos.azimuth_N[,i] < -1] <- -1
+    cos.azimuth_N[cos.azimuth_N[,i] > 1] <- 1
+    cos.azimuth_N[is.nan(cos.azimuth_N[,i]),i] <- 0 # temporary solution for poles
     # browser()
     # azimuth[,i] <- rep_len(NA, length(sin.azimuth[,i]))
-    jj <- cos.azimuth[,i] >= 0 
-    azimuth[!jj,i] <- 180 / pi * (pi - asin(sin.azimuth[!jj,i]))
-    ii <- jj & sin.azimuth[,i] >= 0
-    azimuth[ii,i] <- 180 / pi * asin(sin.azimuth[ii,i])
-    ii <- jj & sin.azimuth[,i] < 0
-    azimuth[ii,i] <-  180 / pi * (2 * pi + asin(sin.azimuth[ii,i]))    
+    jj <- cos.azimuth_N[,i] >= 0 
+    azimuth_N[!jj,i] <- 180 / pi * (pi - asin(sin.azimuth_N[!jj,i]))
+    ii <- jj & sin.azimuth_N[,i] >= 0
+    azimuth_N[ii,i] <- 180 / pi * asin(sin.azimuth_N[ii,i])
+    ii <- jj & sin.azimuth_N[,i] < 0
+    azimuth_N[ii,i] <-  180 / pi * (2 * pi + asin(sin.azimuth_N[ii,i]))    
   }
-  if (verbose) cat("\n")
-  rm(sin.azimuth, cos.azimuth, ii, jj)
+  rm(sin.azimuth_N, cos.azimuth_N, ii, jj)
   # Full hour beam logical variable
 
   # azimuth <- azimuth %*% dh
@@ -212,7 +212,10 @@ solar_position <- function(x,
     x$hour_angle <- hour_angle #%*% dh
   }
   x$zenith <- zenith #%*% dh
-  x$azimuth <- azimuth #%*% dh
+  x$azimuth_N <- azimuth_N #%*% dh
+  if (verbose) cat(", facing Equator (azimuth_Q)")
+  x <- azimuth_N2Q(x, lat = lat, lon = lon)
+  if (verbose) cat("\n")
   # browser()
   return(x)
 }
@@ -250,7 +253,7 @@ if (F) {
   summary(y$zenith)
   # summary(y$zenith_avr)
   # summary(y$beam)
-  summary(y$azimuth)
+  summary(y$azimuth_N)
   
   # mathjaxr::preview_rd("solar_position", type = "pdf")
   
@@ -325,7 +328,7 @@ zenith <- function(lat, theta.d = NULL, theta.hr = NULL,
   return(zenith)
 }
 
-azimuth <- function(yday, lon, lat, hour, check_yday = TRUE) {
+azimuth_N <- function(yday, lon, lat, hour, check_yday = TRUE) {
   # solar azimuth angle (in degrees, from 0 to 360 degree,
   # with 0 degree at north and 90 degree at east)
   # given in horizontal coordinate system
@@ -338,20 +341,20 @@ azimuth <- function(yday, lon, lat, hour, check_yday = TRUE) {
   theta.hr <- hour_angle(T.solar)
   zenith <- zenith(lat, theta.d, theta.hr)
   # A
-  sin.azimuth <- round(-sin(theta.hr) * cos(theta.d) /
+  sin.azimuth_N <- round(-sin(theta.hr) * cos(theta.d) /
                          sinpi(zenith / 180), digits = 12)
   # B
-  cos.azimuth <- round(
+  cos.azimuth_N <- round(
     (sin(theta.d) - sind(lat) * cosd(zenith)) /
       (cosd(lat) * sind(zenith)),
     digits = 12
   )
   
-  azimuth <- 180 / pi * (
-    (sin.azimuth >= 0) * (cos.azimuth >= 0) * asin(sin.azimuth) +
-      (cos.azimuth < 0) * (pi - asin(sin.azimuth)) +
-      (sin.azimuth < 0) * (cos.azimuth >= 0) * (2 * pi + asin(sin.azimuth))
+  azimuth_N <- 180 / pi * (
+    (sin.azimuth_N >= 0) * (cos.azimuth_N >= 0) * asin(sin.azimuth_N) +
+      (cos.azimuth_N < 0) * (pi - asin(sin.azimuth_N)) +
+      (sin.azimuth_N < 0) * (cos.azimuth_N >= 0) * (2 * pi + asin(sin.azimuth_N))
   )
-  # rm(sin.azimuth,cos.azimuth)
-  return(azimuth)
+  # rm(sin.azimuth_N,cos.azimuth_N)
+  return(azimuth_N)
 }

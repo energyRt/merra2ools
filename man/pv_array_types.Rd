@@ -4,7 +4,7 @@
 \alias{pv_array_types}
 \title{List tracking system types}
 \usage{
-pv_array_types(array.type = "all")
+pv_array_types(array.type = "all", asFactor = FALSE)
 }
 \value{
 

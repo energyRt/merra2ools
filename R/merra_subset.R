@@ -67,25 +67,37 @@ get_merra2_subset <- function(locid = 1:207936L,
                               cols = NULL,
                               quiet = FALSE,
                               rows_lim = 2*10^9,
-                              original.units = TRUE) {
+                              as_integers = FALSE) {
   # browser()
   if (!any(grepl("package:fst", search()))) library("fst")
+  
+  raw_cols <- c("UTC",  "locid", "W10M.e1", "W50M.e1", "WDIR.e_1", "T10M.C", 
+                "SWGDN", "ALBEDO.e2", "PRECTOTCORR.g_m2_h.e1", "RHOA.e2")
+  
+  if (!is.null(cols)) {
+    if (is.numeric(cols)) {
+      cols <- raw_cols[cols]
+    }
+  }
   
   op <- getOption("dplyr.summarise.inform")
   options(dplyr.summarise.inform = F)
 
-  from <- lubridate::ymd_h(from, tz = tz) + lubridate::minutes(30L)
-  from <- lubridate::with_tz(from, tzone = "UTC")
+  from <- lubridate::ymd_h(from, tz = tz)
+  from <- lubridate::with_tz(from, tzone = "UTC") 
+  from <- lubridate::round_date(from, unit = "hour") + lubridate::minutes(30L)
   
-  to <- lubridate::ymd_h(to, tz = tz) + lubridate::minutes(30L)
-  to <- lubridate::with_tz(to, tzone = "UTC")
+  to <- lubridate::ymd_h(to, tz = tz)
+  to <- lubridate::with_tz(to, tzone = "UTC") 
+  to <- lubridate::round_date(to, unit = "hour") + lubridate::minutes(30L)
   
   stopifnot(to >= from)
   
   from_to_h <- seq(from, to, by = "hour")
   
   yrs <- seq(lubridate::year(from), lubridate::year(to))
-  yyyymm <- unique(format(seq(as.Date(from), as.Date(to), by = "day"), format = "%Y%m"))
+  yyyymm <- unique(format(seq(as.Date(from), as.Date(to), by = "day"), 
+                          format = "%Y%m"))
   mr <- check_merra2(detailed = T)
   
   fls <- mr$merra_files[grepl(paste(yyyymm, collapse = "|"), mr$merra_files)]
@@ -96,12 +108,20 @@ get_merra2_subset <- function(locid = 1:207936L,
   }
   # browser()
   sam <- NULL
-  for (f in 1:length(fls)) {
-    if (!quiet) cat("file:", fls[f])
-    sam_i <- fst::read_fst(file.path(mr$path, fls[f]), as.data.table = T)
-    if (!is.null(sam_i[["loc_id"]])) sam_i <- dplyr::rename(sam_i, locid = loc_id)
-    if (!is.null(sam_i[["datetime"]])) sam_i <- dplyr::rename(sam_i, UTC = datetime)
-    if (!is.null(cols)) sam_i <- sam_i[, ..cols]    
+  # for (f in 1:length(fls)) {
+  for (i in 1:length(yyyymm)) {
+    if (!quiet) cat("file:", fls[i])
+    # if (!quiet) cat("file:", fls[f])
+    # sam_i <- fst::read_fst(file.path(mr$path, fls[f]), as.data.table = T)
+    sam_i <- read_merra_file(yyyymm[i], as_integers = TRUE)
+    # if (!is.null(sam_i[["loc_id"]])) sam_i <- dplyr::rename(sam_i, locid = loc_id)
+    # if (!is.null(sam_i[["datetime"]])) sam_i <- dplyr::rename(sam_i, UTC = datetime)
+    if (!is.null(cols)) {
+      raw_cols <- names(sam_i)
+      raw_cols <- raw_cols[grepl(paste(cols, collapse = "|"), raw_cols)]
+      raw_cols <- unique(c("UTC", "locid", raw_cols))
+      sam_i <- sam_i[, ..raw_cols]    
+    }
     ii <- sam_i$locid %in% locid 
     sam_i <- sam_i[ii,]
     ii <- sam_i$UTC %in% from_to_h
@@ -122,62 +142,13 @@ get_merra2_subset <- function(locid = 1:207936L,
   }
   options(dplyr.summarise.inform = op)
   # browser()
-  if (original.units) {
-    if (!is.null(sam[["W10M"]])) sam[["W10M"]] <- sam[["W10M"]]/10
-    if (!is.null(sam[["W50M"]])) sam[["W50M"]] <- sam[["W50M"]]/10
-    if (!is.null(sam[["ALBEDO"]])) sam[["ALBEDO"]] <- sam[["ALBEDO"]]/100
+  if (!as_integers) {
+    # if (!is.null(sam[["W10M"]])) sam[["W10M"]] <- sam[["W10M"]]/10
+    # if (!is.null(sam[["W50M"]])) sam[["W50M"]] <- sam[["W50M"]]/10
+    # if (!is.null(sam[["ALBEDO"]])) sam[["ALBEDO"]] <- sam[["ALBEDO"]]/100
+    sam <- convert_units(sam)
   }
   return(sam)
-}
-
-if (F) {
-  get_merra2_subset()
-  lids <- sample(merra2_mar$locid, 10)
-  merra_fl <- get_merra2_subset(
-    locid = lids,
-    from = "2000-01-14 00", to = "2000-01-15 23", tz = "America/New_York")
-  
-  merra_fl2 <- get_merra2_subset(
-    locid = lids, cols = 1:3,
-    from = "1990-01-01 00", to = "1990-03-31 23", tz = "America/New_York")
-
-  merra_fl3 <- get_merra2_subset(
-    locid = lids, cols = c("UTC", "locid", "T10M", "W10M", "W50M"),
-    from = "1990-01-01 00", to = "1990-03-31 23", tz = "America/New_York")
-  
-  # write.fst(sam, path = file.path("tmp/merra2_subset.fst"), 100)  
-  # merra2_mar <- sam
-  merra2_mar <- get_merra2_subset(from = "2001-01-21 00", to = "2001-01-21 23")
-  # save(merra2_mar, file = "data/merra2_mar.RData")
-  save(merra2_mar, file = "tmp/merra2_mar_3d.RData")
-  fst::write_fst(merra2_mar, path = "tmp/merra2_mar_3d.fst", 100)
-
-  merra2_jan <- get_merra2_subset(from = "2010-01-21 00", to = "2010-01-21 23")
-  merra2_feb2 <- get_merra2_subset(from = "2010-02-21 00", to = "2010-02-21 23")
-  merra2_mar <- get_merra2_subset(from = "2010-03-21 00", to = "2010-03-21 23")
-  merra2_apr <- get_merra2_subset(from = "2010-04-21 00", to = "2010-04-21 23")
-  merra2_may <- get_merra2_subset(from = "2010-05-21 00", to = "2010-05-21 23")
-  merra2_jun <- get_merra2_subset(from = "2010-06-21 00", to = "2010-06-21 23")
-  merra2_jul <- get_merra2_subset(from = "2010-07-21 00", to = "2010-07-21 23")
-  merra2_aug <- get_merra2_subset(from = "2010-08-21 00", to = "2010-08-21 23")
-  merra2_sep <- get_merra2_subset(from = "2010-09-21 00", to = "2010-09-21 23")
-  merra2_oct <- get_merra2_subset(from = "2010-10-21 00", to = "2010-10-21 23")
-  merra2_nov <- get_merra2_subset(from = "2010-11-21 00", to = "2010-11-21 23")
-  merra2_dec <- get_merra2_subset(from = "2010-12-21 00", to = "2010-12-21 23")
-  
-  save(merra2_jan, file = "data/merra2_jan.RData")
-  save(merra2_feb, file = "data/merra2_feb.RData")
-  save(merra2_mar, file = "data/merra2_mar.RData")
-  save(merra2_apr, file = "data/merra2_apr.RData")
-  save(merra2_may, file = "data/merra2_may.RData")
-  save(merra2_jun, file = "data/merra2_jun.RData")
-  save(merra2_jul, file = "data/merra2_jul.RData")
-  save(merra2_aug, file = "data/merra2_aug.RData")
-  save(merra2_sep, file = "data/merra2_sep.RData")
-  save(merra2_oct, file = "data/merra2_oct.RData")
-  save(merra2_nov, file = "data/merra2_nov.RData")
-  save(merra2_dec, file = "data/merra2_dec.RData")
-  
 }
 
 
@@ -197,7 +168,7 @@ if (F) {
 #' }
 read_merra_file <- function(YYYYMM, 
                             path = get_merra2_dir(), 
-                            original.units = TRUE) {
+                            as_integers = FALSE) {
   # Internal function
   if (!any(grepl("package:fst", search()))) library("fst")
   
@@ -219,16 +190,54 @@ read_merra_file <- function(YYYYMM,
   if (!is.null(merra[["loc_id"]])) merra <- dplyr::rename(merra, locid = loc_id)
   if (!is.null(merra[["datetime"]])) merra <- dplyr::rename(merra, UTC = datetime)
   
-  if (original.units) {
-    if (!is.null(merra[["W10M"]])) merra[["W10M"]] <- merra[["W10M"]]/10
-    if (!is.null(merra[["W50M"]])) merra[["W50M"]] <- merra[["W50M"]]/10
-    if (!is.null(merra[["ALBEDO"]])) merra[["ALBEDO"]] <- merra[["ALBEDO"]]/100
-  }
+  if (!as_integers) {merra <- convert_units(merra)}
+  
   return(merra)
 }
 
+convert_units <- function(merra) {
+    if (!is.null(merra[["W10M.e1"]])) {
+      merra[["W10M.e1"]] <- merra[["W10M.e1"]]/10
+      merra <- dplyr::rename(merra, W10M = W10M.e1)
+    }
+    if (!is.null(merra[["W50M.e1"]])) {
+      merra[["W50M.e1"]] <- merra[["W50M.e1"]]/10
+      merra <- dplyr::rename(merra, W50M = W50M.e1)
+    }
+    if (!is.null(merra[["WDIR.e_1"]])) {
+      merra[["WDIR.e_1"]] <- merra[["WDIR.e_1"]]*10L
+      merra <- dplyr::rename(merra, WDIR = WDIR.e_1)
+    }
+    if (!is.null(merra[["T10M.C"]])) {
+      merra <- dplyr::rename(merra, T10M = T10M.C)
+    }
+    if (!is.null(merra[["ALBEDO.e2"]])) {
+      merra[["ALBEDO.e2"]] <- merra[["ALBEDO.e2"]]/100L
+      merra <- dplyr::rename(merra, ALBEDO = ALBEDO.e2)
+    }
+    if (!is.null(merra[["PRECTOTCORR.kg_m2_h.e1"]])) {
+      merra[["PRECTOTCORR.kg_m2_h.e1"]] <- merra[["PRECTOTCORR.kg_m2_h.e1"]]/10L # convert to kg
+      merra <- dplyr::rename(merra, PRECTOTCORR = PRECTOTCORR.kg_m2_h.e1)
+    }
+    if (!is.null(merra[["RHOA.e2"]])) {
+      merra[["RHOA.e2"]] <- merra[["RHOA.e2"]]/100L
+      merra <- dplyr::rename(merra, RHOA = RHOA.e2)
+    }
+    
+    return(merra)
+  # }
+  
+}
+
+
 if (F) {
-  read_merra_file("200001")
+  read_merra_file("200001", as_integers = T)
+  read_merra_file("200001", as_integers = F)
+  read_merra_file("200001", as_integers = T) %>% summary()
+  read_merra_file("198001", as_integers = T)
+  read_merra_file("202012", as_integers = T)
+  read_merra_file("202012", as_integers = F)
+  
 }
 
 #' Add longitude and latitude of 'locid'
@@ -281,6 +290,7 @@ add_locid <- function(x) {
 #'  merra2_sample()
 #'  merra2_sample(2:3)
 merra2_sample <- function(month = 1:12, add.coord = FALSE) {
+  # library(merra2sample)
   nms <- unique(tolower(month.abb[month]))
   nms <- paste0("merra2_", nms)
   x <- lapply(nms, get)

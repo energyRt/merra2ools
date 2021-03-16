@@ -17,16 +17,52 @@ knitr::opts_chunk$set(
 )
 
 # Code execution parameters ####
-# rerun <- TRUE # if TRUE, (re)runs the script and (re)saves all figures and gifs
+rerun <- TRUE # if TRUE, (re)runs all the script and (re)saves all figures, inlc. gifs
 rerun <- FALSE # if FALSE, knits the document using saved figures
 
 ```
 
-```{r setup, eval = rerun}
+# Plane of Array (POA) irradiance model
+
+## Types of PV array trackers
+```{r, echo=FALSE}
+kableExtra::kable(merra2ools::pv_array_types())
+
+```
+
+## Fixed tilt (fh & fl)
+
+<a title="SayCheeeeeese, CC0, via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File:Fixed_Tilt_Solar_panel_at_Canterbury_Municipal_Building_Canterbury_New_Hampshire.jpg"><img width="512" alt="Fixed Tilt Solar panel at Canterbury Municipal Building Canterbury New Hampshire" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Fixed_Tilt_Solar_panel_at_Canterbury_Municipal_Building_Canterbury_New_Hampshire.jpg/512px-Fixed_Tilt_Solar_panel_at_Canterbury_Municipal_Building_Canterbury_New_Hampshire.jpg"></a>
+
+
+## One axis trackers 
+
+### Horizontal (th)
+<a title="Vinaykumar8687, CC BY-SA 4.0 &lt;https://creativecommons.org/licenses/by-sa/4.0&gt;, via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File:4MW_single_axis_horizontal_tracker_in_Vellakoil,_Tamil_Nadu,_India.jpg"><img width="512" alt="4MW single axis horizontal tracker in Vellakoil, Tamil Nadu, India" src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/4MW_single_axis_horizontal_tracker_in_Vellakoil%2C_Tamil_Nadu%2C_India.jpg/512px-4MW_single_axis_horizontal_tracker_in_Vellakoil%2C_Tamil_Nadu%2C_India.jpg"></a>
+
+
+### Vertical (tv)
+<a title="Fmsierra1978, Public domain, via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File:Seguidor2ejes.jpg"><img width="512" alt="Seguidor2ejes" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Seguidor2ejes.jpg/512px-Seguidor2ejes.jpg"></a>
+
+
+### Tilted (tl)
+<a title="Vinaykumar8687, CC BY-SA 4.0 &lt;https://creativecommons.org/licenses/by-sa/4.0&gt;, via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File:Suntrix_tilt_single_axis_tracker-_Siziwangqi.JPG"><img width="512" alt="Suntrix tilt single axis tracker- Siziwangqi" src="https://upload.wikimedia.org/wikipedia/commons/5/5b/Suntrix_tilt_single_axis_tracker-_Siziwangqi.JPG"></a>
+
+## Dual axis tracker
+<a title="Vinaykumar8687, CC BY-SA 4.0 &lt;https://creativecommons.org/licenses/by-sa/4.0&gt;, via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File:Suntrix_Dual_Axis_Tracker.JPG"><img width="512" alt="Suntrix Dual Axis Tracker" src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Suntrix_Dual_Axis_Tracker.JPG"></a>
+
+
+## All steps at once
+
+```{r setup, eval = rerun, results = FALSE}
 library(merra2ools)
+# if (rerun) library(merra2sample)
 library(tidyverse)
 library(cowplot)
 
+```
+
+```{r, eval = rerun}
 # Example dataset
 # merra <- merra2_sample(month = 1:12, add.coord = T)
 # Note: month = 1:12 requires ~64Gb of RAM
@@ -34,13 +70,7 @@ library(cowplot)
 merra <- merra2_sample(month = c(3, 6, 9, 12), add.coord = T)
 merra
 
-```
-
-## Plane of Array (POA) irradiance model
-### All steps at once
-```{r, eval = rerun}
-x <- fPOA(merra)
-# x <- fPOA(merra, keep.all = T) # keeps all interim variables
+x <- fPOA(merra) # keep.all = T - keeps all interim variables
 
 ```
 
@@ -59,30 +89,35 @@ fig.POA <- function(x, name,
 }
 fig.POA(x, "SWGDN")
 
-fig.poa.grid <- function(x, 
+fig.POA.grid <- function(x, 
                          legend.position = c(0.81, 0.08), 
                          timestamp.position = c(125, 85), 
                          ...) {
-  plot_grid(fig.POA(x, "SWGDN", ...), 
-            fig.POA(x, "POA.fh", timestamp.position = timestamp.position, ...),
-            fig.POA(x, "POA.fl", ...), 
-            fig.POA(x, "POA.th", ...),
-            fig.POA(x, "POA.tv", ...), 
-            fig.POA(x, "POA.td", legend.position = legend.position, ...),
-            # fig.dPS(x),
-            labels = c("GHI", "POA.fh", "POA.fl", "POA.th", "POA.tv", "POA.td"),
-            ncol = 2, nrow = 3, hjust = -0.1, vjust = 1.1, label_size = 12,
-            label_colour = "black")
+  plot_grid(
+    # fig.POA(x, "SWGDN", ...), 
+    fig.POA(x, "POA.fh", ...),
+    fig.POA(x, "POA.fl", timestamp.position = timestamp.position, ...), 
+    fig.POA(x, "POA.th", ...), 
+    fig.POA(x, "POA.tv", ...), 
+    fig.POA(x, "POA.tl", ...),
+    fig.POA(x, "POA.td", legend.position = legend.position, ...),
+    # fig.dPS(x),
+    labels = c( #"GHI", 
+               "POA.fh", "POA.fl", 
+               "POA.th", "POA.tv", 
+               "POA.tl", "POA.td"),
+    ncol = 2, nrow = 3, hjust = -0.1, vjust = 1.1, label_size = 12,
+    label_colour = "black")
 }
-fig.poa.grid(x)
+fig.POA.grid(x)
 
 ii <- rep(TRUE, nrow(x))
 # ii <- lubridate::month(x$UTC) <= 1; summary(ii)
-gif_merra(x[ii,], FUN = "fig.poa.grid", dirname = "images", fps = 5,
-          gif.width = 1.25 * 576, 
-          gif.height = 1.25 * 360 * 1.21, 
-          filename.prefix = "POA_map_")
-
+gif_merra(x[ii,], FUN = "fig.POA.grid", dirname = "images", fps = 5,
+          gif.width = 1.25 * 576,
+          gif.height = 1.25 * 360 * 1.21,
+          filename.prefix = "fig.POA.grid")
+```
 </details>
 
 ```{r fig_POA_all, fig.cap="Plane of Array (POA) Irradiance estimates for alternative tracking systems", echo=FALSE}
@@ -91,20 +126,19 @@ if (file.exists(gif_file)) include_graphics(gif_file)
 
 ```
 
-### Step-by-step
-#### Solar position
+## Step-by-step
+### Solar position
 
 ```{r, eval = rerun}
 x <- solar_position(merra, keep.all = T)
 # x <- solar_position(merra, verbose = 0, keep.all = T)
-x <- azimuth.convertion(x)
+# x <- azimuth.convertion(x)
 
 ```
 
 <details><summary>Figure code</summary>
 
 ```{r, eval = rerun}
-
 x$na <- 1L; x$na[!x$beam] <- NA # drop nights
 
 summary(x$beam)
@@ -157,9 +191,11 @@ fig.zenith <- function(x, ...) {
 }
 fig.zenith(x)
 
-summary(x$azimuth)
+summary(x$azimuth_N)
 fig.azimuth <- function(x, ...) {
-  plot_merra(x, "azimuth", limits = c(0, 360), 
+  plot_merra(x, "azimuth_N", 
+             # limits = c(0, 360),
+             limits = c(-180, 180), 
              legend.name = "angle\u00b0",
              palette = "Set1",
              # palette = "Blues", 
@@ -185,7 +221,7 @@ fig.solar_postion <- function(x,
                         timestamp.position = NULL, ...),
             # fig.dPS(x),
             labels = c("declination", "eq_time", "solar_time", 
-                       "hour_angle", "zenith", "azimuth"),
+                       "hour_angle", "zenith", "azimuth_N"),
             ncol = 2, nrow = 3, hjust = -0.1, vjust = 1.1, label_size = 12,
             label_colour = "black")
 }
@@ -208,7 +244,7 @@ if (file.exists(gif_file)) include_graphics(gif_file)
 ```
 
 
-#### Global Horizontal Irradiance decomposition
+### Global Horizontal Irradiance decomposition
 
 <details><summary>Figure code</summary>
 ```{r, eval = rerun}
@@ -223,44 +259,46 @@ fig.ext_irrad(x)
 
 summary(x$clearness_index)
 fig.clearness_index <- function(x, ...) {
-  plot_merra(x, "clearness_index", limits = c(0, 1), direction = -1, palette = "Blues")
+  plot_merra(x, "clearness_index", limits = c(0, 1), direction = -1, 
+             palette = "Blues", ...)
 }
 fig.clearness_index(x)
 
 summary(x$diffuse_fraction)
 fig.diffuse_fraction <- function(x, ...) {
-  plot_merra(x, "diffuse_fraction", limits = c(0, 1), palette = "Blues", direction = 1)
+  plot_merra(x, "diffuse_fraction", limits = c(0, 1), palette = "Blues", 
+             direction = 1, ...)
 }
 fig.diffuse_fraction(x)
 
 summary(x$DNI)
 fig.DNI <- function(x, ...) {
-  plot_merra(x, "DNI", limits = c(0, 1200), ...)
+  plot_merra(x, "DNI", legend.name = "W/\u33A1", limits = c(0, 1200), ...)
 }
 fig.DNI(x)
 
 summary(x$DHI)
 fig.DHI <- function(x, ...) {
-  plot_merra(x, "DHI", limits = c(0, 1200), ...)
+  plot_merra(x, "DHI", legend.name = "W/\u33A1", limits = c(0, 1200), ...)
 }
 fig.DHI(x)
 
 fig.ghi_decomposition <- function(x, 
-                         legend.position = c(0.81, 0.08), 
+                         legend.position = c(0.81, 0.09), 
                          timestamp.position = c(125, 85), 
                          ...) {
   plot_grid(fig.POA(x, "SWGDN", timestamp.position = NULL,
-                    legend.position = legend.position, 
-                    limits = c(0, 1500), ...),
+                    legend.position = NULL, 
+                    limits = c(0, 1200), ...),
             fig.ext_irrad(x, timestamp.position = timestamp.position, 
                           legend.position = legend.position, ...), 
             fig.clearness_index(
-              x, timestamp.position = timestamp.position, 
-              legend.position = legend.position, ...),
+              x, timestamp.position = NULL, 
+              legend.position = NULL, ...),
             fig.diffuse_fraction(x, timestamp.position = NULL, 
                            legend.position = legend.position, ...), 
             fig.DNI(x, timestamp.position = NULL, 
-                           legend.position = legend.position, ...),
+                           legend.position = NULL, ...),
             fig.DHI(x, timestamp.position = NULL, 
                        legend.position = legend.position, ...), 
             # fig.azimuth(x, legend.position = legend.position, 
@@ -289,26 +327,38 @@ if (file.exists(gif_file)) include_graphics(gif_file)
 ```
 
 
-#### PV-array position
+### PV-array position
 
 <details><summary>Figure code</summary>
 ```{r, eval = rerun}
 x <- pv_array_position(x, array.type = "all")
 x
 
+# convert azimuth from "Q" to "N" for figures
+x <- azimuth_Q2N(
+  x,
+  paste0("array.azimuth_Q.", pv_array_types()[,1]),
+  paste0("array.azimuth_N.", pv_array_types()[,1]))
+
+
 fig.array.tilt <- function(x, array.type = "fl", ...) {
   plot_merra(x, paste0("array.tilt.", array.type), limits = c(0, 90), 
              palette = "Spectral", direction = -1, ...)
 }
 
-fig.array.azimuth <- function(x, array.type = "fl", ...) {
-  plot_merra(x,  paste0("array.azimuth.", array.type), limits = c(0, 360), 
+fig.array.azimuth <- function(x, array.type = "fl", azimuth.suffix = "_N",
+                              limits = c(0, 360), ...) {
+  plot_merra(x,  paste0("array.azimuth", azimuth.suffix, ".", array.type), 
+             limits = limits, # c(0, 360)
+             # limits = c(-180, 180), 
              direction = -1, palette = "Set1", ...)
 }
 
 summary(x$array.tilt.fh); summary(x$array.azimuth.fh)
 fig.array.tilt(x, "fh")
 fig.array.azimuth(x, "fh")
+fig.array.azimuth(x, "fh", azimuth.suffix = "_Q")
+
 
 summary(x$array.tilt.fl); summary(x$array.azimuth.fl)
 fig.array.tilt(x, "fl")
@@ -318,9 +368,9 @@ summary(x$array.tilt.th); summary(x$array.azimuth.th)
 fig.array.tilt(x, "th")
 fig.array.azimuth(x, "th", scale = x$na)
 
-# summary(x$array.tilt.tl); summary(x$array.azimuth.tl)
-# fig.array.tilt(x, "tl")
-# fig.array.azimuth(x, "tl", scale = x$na)
+summary(x$array.tilt.tl); summary(x$array.azimuth.tl)
+fig.array.tilt(x, "tl")
+fig.array.azimuth(x, "tl", scale = x$na)
 
 summary(x$array.tilt.tv); summary(x$array.azimuth.tv)
 fig.array.tilt(x, "tv")
@@ -329,67 +379,107 @@ fig.array.azimuth(x, "tv", scale = x$na)
 summary(x$array.tilt.td); summary(x$array.azimuth.td)
 fig.array.tilt(x, "td")
 fig.array.azimuth(x, "td", scale = x$na)
+fig.array.azimuth(x, "td", azimuth.suffix = "")
 
-fig.pv_array_position <- function(
+fig.array.tilt.grid <- function(
   x, legend.position = c(0.81, 0.08), 
   timestamp.position = c(125, 85), ...) {
   plot_grid(
-    fig.array.tilt(x, "fh", timestamp.position = NULL, legend.position = NULL, 
-                   scale = x$na, ...), 
-    fig.array.azimuth(x, "fh", timestamp.position = timestamp.position, 
-                      legend.position = NULL, scale = x$na, ...),
-    fig.array.tilt(x, "fl", timestamp.position = NULL, legend.position = NULL, 
-                   scale = x$na, ...), 
-    fig.array.azimuth(x, "fl", timestamp.position = NULL, legend.position = NULL, 
-                      scale = x$na, ...),
+    fig.array.tilt(x, "fh", timestamp.position = NULL, legend.position = NULL,
+                   scale = x$na, ...),
+    fig.array.tilt(x, "fl", timestamp.position = timestamp.position,
+                   legend.position = NULL, scale = x$na, ...),
     fig.array.tilt(x, "th", scale = x$na, 
                    timestamp.position = NULL, legend.position = NULL, ...), 
-    fig.array.azimuth(x, "th",  scale = x$na, 
+    fig.array.tilt(x, "tv", scale = x$na,
                    timestamp.position = NULL, legend.position = NULL, ...),
-    # fig.array.tilt(x, "tl", scale = x$na, 
-    #                timestamp.position = NULL, legend.position = NULL, ...), 
-    # fig.array.azimuth(x, "tl",  scale = x$na, 
-    #                timestamp.position = NULL, legend.position = NULL, ...),
-    fig.array.tilt(x, "tv", scale = x$na, 
-                   timestamp.position = NULL, legend.position = NULL, ...), 
-    fig.array.azimuth(x, "tv", scale = x$na, 
+    fig.array.tilt(x, "tl", scale = x$na,
                    timestamp.position = NULL, legend.position = NULL, ...),
-    fig.array.tilt(x, "td", scale = x$na, 
-                   timestamp.position = NULL, 
-                   legend.position = legend.position, ...), 
-    fig.array.azimuth(x, "td", scale = x$na, 
-                   timestamp.position = NULL, 
+    fig.array.tilt(x, "td", scale = x$na,
+                   timestamp.position = NULL,
                    legend.position = legend.position, ...),
-  labels = c("fh - tilt", "fh - azimuth", 
-             "fl - tilt", "fl - azimuth", 
-             "th - tilt", "th - azimuth", 
-             # "tl - tilt", "tl - azimuth",
-             "tv - tilt", "tv - azimuth", 
-             "td - tilt", "td - azimuth"),
+  labels = c("fh", "fl", "th", "tv", "tl","td"),
             ncol = 2, hjust = -0.1, vjust = 1.1, label_size = 12,
             label_colour = "#fdf8db")
 }
-fig.pv_array_position(x)
 
-# ggsave("images/solar_array_position_by_type.png", width = 7, height = 10.5)
+ii <- x$hour == 12
+b <- fig.array.tilt.grid(x[ii,], legend.position = c(0.81, 0.12))
+ggsave("images/fig.array.tilt.grid.png", b, width = 7, height = 10.5/2)
 
-gif_merra(x, FUN = "fig.pv_array_position", dirname = "images", fps = 5,
+gif_merra(x, FUN = "fig.array.tilt.grid", 
+          dirname = "images", fps = 5,
           gif.width = 1.25 * 576, 
-          gif.height = round(1.25 * 360 * 1.21 * 5 / 3), 
-          filename.prefix = "fig.pv_array_position_")
-# >>>>>>> master
+          gif.height = round(1.25 * 360 * 1.21), 
+          filename.prefix = "fig.array.tilt.grid_")
+
+fig.array.azimuth.grid <- function(
+  x, legend.position = c(0.81, 0.08), 
+  timestamp.position = c(125, 85), ...) {
+  plot_grid(
+    fig.array.azimuth(x, "fh", 
+                      timestamp.position = NULL, legend.position = NULL, 
+                      scale = x$na, ...),
+    fig.array.azimuth(x, "fl", timestamp.position = timestamp.position, 
+                      legend.position = NULL,
+                      scale = x$na, ...),
+    fig.array.azimuth(x, "th",  scale = x$na, 
+                      timestamp.position = NULL, legend.position = NULL, ...),
+    fig.array.azimuth(x, "tv", scale = x$na, 
+                      timestamp.position = NULL, legend.position = NULL, ...),
+    fig.array.azimuth(x, "tl",  scale = x$na,
+                      timestamp.position = NULL, legend.position = NULL, ...),
+    fig.array.azimuth(x, "td", scale = x$na, timestamp.position = NULL, 
+                      legend.position = legend.position, ...),
+  labels = c("fh", "fl", "th", "tv", "tl","td"),
+            ncol = 2, hjust = -0.1, vjust = 1.1, label_size = 12,
+            label_colour = "#fdf8db")
+}
+
+ii <- x$hour == 12
+b <- fig.array.azimuth.grid(x[ii,], legend.position = c(0.81, 0.12))
+ggsave("images/fig.array.azimuth.grid.png", b, 
+       width = 7, height = 10.5/2)
+
+gif_merra(x, FUN = "fig.array.azimuth.grid", 
+          dirname = "images", fps = 5,
+          gif.width = 1.25 * 576, 
+          gif.height = round(1.25 * 360 * 1.21), 
+          filename.prefix = "fig.array.azimuth_N.grid_")
+
+gif_merra(x, FUN = "fig.array.azimuth.grid", 
+          azimuth.suffix = "_Q", limits = c(-180, 180),
+          dirname = "images", fps = 5,
+          gif.width = 1.25 * 576, 
+          gif.height = round(1.25 * 360 * 1.21), 
+          filename.prefix = "fig.array.azimuth_Q.grid_")
 
 ```
 </details>
 
 
-```{r fig_array_position, fig.cap="PV-array position for alternative tracking systems", echo=FALSE}
-gif_file <- "../images/fig.pv_array_position_720x908_5fps.gif"
+```{r fig_array_tilt, fig.cap="PV-array tilt for alternative tracking systems", echo=FALSE}
+gif_file <- "../images/fig.array.tilt.grid_720x544_5fps.gif"
 if (file.exists(gif_file)) include_graphics(gif_file)
 
 ```
 
-#### Angle of Incidence (AOI)
+
+```{r fig_array_azimuth_N, fig.cap="PV-array azimuth_N (facing North) by tracking systems", echo=FALSE}
+gif_file <- "../images/fig.array.azimuth_N.grid_720x544_5fps.gif"
+if (file.exists(gif_file)) include_graphics(gif_file)
+
+```
+
+
+```{r fig_array_azimuth_Q, fig.cap="PV-array azimuth_Q (facing Equator) by tracking systems", echo=FALSE, include=FALSE}
+gif_file <- "../images/fig.array.azimuth_Q.grid_720x544_5fps.gif"
+if (file.exists(gif_file)) include_graphics(gif_file)
+
+```
+
+
+### Angle of Incidence (AOI)
 <details><summary>Figure code</summary>
 ```{r, eval = rerun}
 x <- angle_of_incidence(x, array.type = "all")
@@ -411,8 +501,8 @@ fig.AOI(x, "fl")
 summary(rad2deg(x$AOI.th))
 fig.AOI(x, "th")
 
-# summary(rad2deg(x$AOI.tl))
-# fig.AOI(x, "tl")
+summary(rad2deg(x$AOI.tl))
+fig.AOI(x, "tl")
 
 summary(rad2deg(x$AOI.tv))
 fig.AOI(x, "tv")
@@ -420,7 +510,7 @@ fig.AOI(x, "tv")
 summary(rad2deg(x$AOI.td))
 fig.AOI(x, "td")
 
-fig.AOI.matrix <- function(x, 
+fig.AOI.grid <- function(x, 
                          legend.position = c(0.81, 0.08), 
                          timestamp.position = c(125, 85), 
                          ...) {
@@ -431,44 +521,44 @@ fig.AOI.matrix <- function(x,
             legend.position = NULL, ...),
     fig.AOI(x, "th", timestamp.position = NULL, 
             legend.position = NULL, ...), 
-    # fig.AOI(x, "tl", timestamp.position = NULL, 
-    #         legend.position = legend.position, ...),
     fig.AOI(x, "tv", timestamp.position = NULL, 
             legend.position = NULL, ...), 
+    fig.AOI(x, "tl", timestamp.position = NULL,
+            legend.position = NULL, ...),
     fig.AOI(x, "td", legend.position = legend.position, 
             timestamp.position = NULL, ...),
             # fig.dPS(x),
-            labels = c("AOI - fh", "AOI - fl", "AOI - th", 
-                       # "AOI - tl", 
-                       "AOI - tv", "AOI - td"),
+            labels = c("AOI - fh", "AOI - fl", 
+                       "AOI - th", "AOI - tv",
+                       "AOI - tl", "AOI - td"),
             ncol = 2, nrow = 3, hjust = -0.1, vjust = 1.1, label_size = 12,
             label_colour = "#fdf8db")
 }
-fig.AOI.matrix(x)
+ii <- x$hour == 12
+a <- fig.AOI.grid(x[ii,], legend.position = c(0.78, .12))
+ggsave("images/fig.AOI.grid.png", a, width = 8, height = 6)
 
-# ggsave("images/AOI_by_type.png", width = 7, height = 8.5)
-
-gif_merra(x, FUN = "fig.AOI.matrix", dirname = "images", fps = 5,
+gif_merra(x, FUN = "fig.AOI.grid", dirname = "images", fps = 5,
           gif.width = 1.25 * 576, 
           gif.height = round(1.25 * 360 * 1.21), 
-          filename.prefix = "fig.AOI.matrix_")
+          filename.prefix = "fig.AOI.grid_")
 
 ```
 </details>
 
 
 ```{r fig_AOI, fig.cap="PV-array position for alternative tracking systems", echo=FALSE}
-gif_file <- "../images/fig.AOI.matrix_720x544_5fps.gif"
+gif_file <- "../images/fig.AOI.grid_720x544_5fps.gif"
 if (file.exists(gif_file)) include_graphics(gif_file)
 
 ```
 
 
-#### Plane of Array (POA) irradiance 
+### Plane of Array (POA) irradiance 
 
 ```{r, eval = rerun}
 x <- poa_irradiance(x, array.type = "all", keep.all = T)
-fig.poa.grid(x)
+fig.POA.grid(x)
 
 # ggsave("images/poa_by_type.png", width = 7, height = 8.)
 
@@ -485,7 +575,7 @@ st_id <- merra2ools::pvwatts_stations_sample
 # Fetching the data from PVWAtts in select locations
 if (!file.exists("tmp/pvwatts_poa_db.RData")) {
   ll <- list()
-  for (tp in c("fh", "fl", "th", "tv", "td")) {
+  for (tp in c("fh", "fl", "th", "tv", "tl", "td")) {
     for (i in 1:nrow(st_id)) {
       x <- fetch_pvwatts(
         array.type = tp,
@@ -559,6 +649,9 @@ if (!file.exists("tmp/pvwatts_poa_db.RData")) {
   (load("tmp/pvwatts_poa_db.RData"))
 }    
 
+db$array.type[db$array.type == "tv"] <- "tl"
+
+
 # summarizing the data for comparison
 db_m <- db %>% 
   group_by(lonlat, locid, month, hour, array.type) %>%
@@ -611,7 +704,7 @@ x <- mutate(x,
     POA.fh = max(POA.fh, na.rm = T),
     POA.fl = max(POA.fl, na.rm = T),
     POA.th = max(POA.th, na.rm = T),
-    # POA.tl = max(POA.tl, na.rm = T),
+    POA.tl = max(POA.tl, na.rm = T),
     POA.tv = max(POA.tv, na.rm = T),
     POA.td = max(POA.td, na.rm = T)
     # SWGDN = max(SWGDN, na.rm = T)
@@ -686,7 +779,8 @@ lids <- unique(y$locid) %>% sort()
 fld <- "images/poa_pvwatts_merra"
 if (!dir.exists(fld)) dir.create(fld, recursive = T)
 for (i in lids) {
-  cat(i, "\n")
+  if (i == lids[1]) cat("locid: ")
+  cat(i, "")
   gg <- fig.PVWatts_MERRA(y, i)
   fname <- paste0("poa_pvwatts_vs_merra2_locid_", formatC(i, width = 6, flag = "0"), ".png")
   ggsave(file.path(fld, fname), gg, width = 6, height = 8, units = "in")

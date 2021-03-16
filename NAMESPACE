@@ -2,6 +2,7 @@
 
 export(add_coord)
 export(angle_of_incidence)
+export(azimuth_N2Q)
 export(check_merra2)
 export(closest_locid)
 export(coord2tz_offset)

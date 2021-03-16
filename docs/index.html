@@ -96,37 +96,76 @@
 <div id="overview" class="section level2">
 <h2 class="hasAnchor">
 <a href="#overview" class="anchor"></a>Overview</h2>
-<p><em>merra2ools</em> package offers a set of tools to evaluate potential hourly output of solar and wind energy sources based on MERRA-2 data subset (forthcoming).</p>
-<p>The MERRA-2 subset includes:</p>
+<p><em>merra2ools</em> package offers a set of tools and MERRA-2 data subset to evaluate hourly output potential of solar and wind energy sources, as well as precipitations for weather-dependent hydro power output. The goal of the project is to provide both - the dataset and algorithms to estimate potential output and so-called capacity factors for variable energy sources, used as an input data in energy system modeling and broader application. To keep the size of the database lower than 300Gb for online publication, the original subset of MERRA-2 time series have been minimally processed, rounded, and saved as scaled integers in highly compressed format provided by <a href="https://www.fstpackage.org/index.html"><code>fst</code></a> package.<br>
+The <em>merra2ools</em> dataset has 41 years (1980-2000) of the hourly time-series:</p>
 <ul>
 <li>
-<strong>locid</strong> - location IDs, an index of locations in MERRA-2 dataset, from 1 to 207936;<br>
+<strong>locid</strong> - location IDs (key), an index of locations in MERRA-2 dataset, from 1 to 207936;<br>
 </li>
 <li>
-<strong>UTC</strong> - date and time in UTC timezone;<br>
+<strong>UTC</strong> - date and time (key) in Coordinated Universal Time (UTC) timezone;<br>
 </li>
 <li>
-<strong>T10M</strong> - 10-meter air temperature (K);<br>
+<strong>W10M</strong> - 10-meter wind speed (calculated <code><a href="https://rdrr.io/r/base/MathFun.html">sqrt(V10M^2 + U10M^2)</a></code> where <code>V10M</code> and <code>U10M</code> are northward and eastward wind at 10-meter, m/s, rounded to the first decimal place);<br>
 </li>
 <li>
-<strong>W10M</strong> - 10-meter wind speed (calculated sqrt(V10M^2 + U10M^2) where V10M and U10M are northward and eastward wind at 10-meter, m/s);<br>
+<strong>W50M</strong> - 50-meter wind speed (calculated <code><a href="https://rdrr.io/r/base/MathFun.html">sqrt(V50M^2 + U50M^2)</a></code> where <code>V50M</code> and <code>U50M</code> are northward and eastward wind at 50-meter, m/s, rounded to the first decimal place);<br>
 </li>
 <li>
-<strong>W50M</strong> - 50-meter wind speed (calculated sqrt(V50M^2 + U50M^2) where V50M and U50M are northward and eastward wind at 50-meter, m/s);<br>
+<strong>WDIR</strong> - Direction of wind at 50-meter height (calculated <code><a href="https://rdrr.io/r/base/Trig.html">atan2(V50M/U50M)</a></code>, rounded to tens);<br>
 </li>
 <li>
-<strong>PS_hPa</strong> - surface pressure (hPa);<br>
+<strong>T10M</strong> - 10-meter air temperature (Celsius, rounded to the nearest integer);<br>
 </li>
 <li>
-<strong>SWGDN</strong> - Incident shortwave land (W/m^2);<br>
+<strong>SWGDN</strong> - Incident shortwave land (W/m^2, rounded to the nearest integer);<br>
 </li>
 <li>
-<strong>ALBEDO</strong> - surface albedo (index <span class="math display">0, 1</span>).</li>
+<strong>ALBEDO</strong> - Surface albedo (index <span class="math display">0, 1</span>, rounded to second decimal place);<br>
+</li>
+<li>
+<strong>PRECTOTCORR</strong> - Bias corrected total precipitation (kg/m^2/hour, rounded to the first decimal place);<br>
+</li>
+<li>
+<strong>RHOA</strong> - Air density at surface (kg/m^2, rounded to second decimal place).</li>
 </ul>
+<p>Representation of wind with three variables (<code>W10M</code>, <code>W50M</code>, <code>WDIR</code>) is the main difference from the original MERRA-2 data (<code>V10M</code>, <code>U10M</code>, <code>V50M</code>, <code>U50M</code>). This conversion reduces the size of the database and further computational burden of wind power capacity factors.</p>
 <p>All variables are hourly averages, UTC-time is given for a middle of every hour.</p>
-<p>The package reproduces basic algorithms of solar geometry, irradiance decomposition, and the Plane-Of-Array models for different types of trackers for evaluation.</p>
+<p>The <em>merra2ools</em> package includes:</p>
+<ul>
+<li>MERRA-2 grid information and functions to match geo-locations with MERRA-2 grid;<br>
+</li>
+<li>functions to read and subset data from the compressed files (<code>fst</code> format);<br>
+</li>
+<li>functions and methods to evaluate solar photovoltaics hourly output/capacity factors;<br>
+</li>
+<li>functions and methods wind speed extrapolation for higher altitudes (50-200+ meters) and estimate wind power capacity factors;<br>
+</li>
+<li>functions to fetch data from NREL’s PVWatts model and the dataset by locations (with a goal of validation the POA model and the data);<br>
+</li>
+<li>functions and methods for “quick” figures and animated gif figures for instant evaluation of the data and the used methodology;<br>
+</li>
+<li>long term summary statistics of the provided time series for purpose of clustering and aggregation in further modeling and analytics.</li>
+</ul>
+</div>
+<div id="solar-power" class="section level2">
+<h2 class="hasAnchor">
+<a href="#solar-power" class="anchor"></a>Solar Power</h2>
+<p>The package reproduces basic algorithms of solar geometry, irradiance decomposition, and the Plane-Of-Array models for different types of solar PV trackers.</p>
 <p><img src="images/poa_fl_40y_avr_24steps.png" width="2550"></p>
+</div>
+<div id="wind-power" class="section level2">
+<h2 class="hasAnchor">
+<a href="#wind-power" class="anchor"></a>Wind power</h2>
 <p><img src="images/wind_50m_40y_avr_24steps.png" width="3150"></p>
+</div>
+<div id="additional-datasets" class="section level2">
+<h2 class="hasAnchor">
+<a href="#additional-datasets" class="anchor"></a>Additional datasets</h2>
+</div>
+<div id="references" class="section level2">
+<h2 class="hasAnchor">
+<a href="#references" class="anchor"></a>References</h2>
 </div>
 </div>
   </div>

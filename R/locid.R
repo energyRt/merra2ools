@@ -177,3 +177,8 @@ closest_locid <- function(lon, lat, asList = FALSE) {
   }
   return(id)
 }
+
+coord2locid <- function() {}
+
+locid2coord <- function() {}
+

@@ -19,6 +19,7 @@ knitr::opts_chunk$set(fig.width = 6, fig.height = 4, fig.align = "center")
 
 ```{r setup, echo=TRUE, warning=FALSE, message=FALSE}
 library(merra2ools)
+# library(merra2sample)
 library(tidyverse)
 library(data.table)
 # library(kableExtra)
@@ -28,7 +29,7 @@ library(data.table)
 
 ### Hellmann constant
 ```{r}
-dat <- merra2ools::merra2_mar %>%
+dat <- merra2_mar %>%
   select(-SWGDN,	-ALBEDO) %>% # drop solar radiation
   mutate(h = fH(W10M = W10M, W50M = W50M)) # Hellmann constant
 

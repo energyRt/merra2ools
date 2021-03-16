@@ -9,7 +9,7 @@ angle_of_incidence(
   x,
   array.type = "fh",
   suffix = TRUE,
-  azimuth = "azimuth",
+  azimuth_Q = "azimuth_Q",
   zenith = "zenith",
   na.val = NA,
   zenith.max = 90,
@@ -22,7 +22,7 @@ fAOI(
   x,
   array.type = "fh",
   suffix = TRUE,
-  azimuth = "azimuth",
+  azimuth_Q = "azimuth_Q",
   zenith = "zenith",
   na.val = NA,
   zenith.max = 90,
@@ -38,7 +38,7 @@ fAOI(
 
 \item{suffix}{}
 
-\item{azimuth}{the solar zenith angle, degrees}
+\item{azimuth_Q}{the solar zenith angle, degrees}
 
 \item{zenith}{the solar azimuth angle, degrees}
 

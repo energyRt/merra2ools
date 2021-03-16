@@ -9,7 +9,7 @@ pv_array_position(
   array.type = "fl",
   suffix = TRUE,
   lat = "lat",
-  azimuth = "azimuth",
+  azimuth_Q = "azimuth_Q",
   zenith = "zenith",
   verbose = getOption("merra2.verbose"),
   tilt.param = tilt.param.default()
@@ -24,7 +24,7 @@ pv_array_position(
 
 \item{lat}{latitude of PV location (\mjseqn{-90 \leq lat \leq 90})}
 
-\item{azimuth}{solar azimuth angle for the PV location (\mjseqn{0 \leq azimuth < 360})}
+\item{azimuth_Q}{solar azimuth angle for the PV location (\mjseqn{0 \leq azimuth < 360})}
 
 \item{zenith}{solar zenith angle for the PV location (\mjseqn{0 \leq azimuth \leq 90})}
 

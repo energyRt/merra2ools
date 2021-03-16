@@ -4,7 +4,7 @@
 \alias{read_merra_file}
 \title{Reads one file from MERRA-2 subset for a given year and month}
 \usage{
-read_merra_file(YYYYMM, path = get_merra2_dir(), original.units = TRUE)
+read_merra_file(YYYYMM, path = get_merra2_dir(), as_integers = FALSE)
 }
 \arguments{
 \item{YYYYMM}{character, year and month}

@@ -136,10 +136,10 @@ fetch_pvwatts <- function(
     } else if (array.type == "th") {
       query$array_type <- 2
       query$tilt <- 0
-    } else if (array.type == "tv") {
+    } else if (array.type == "tl") {
       query$array_type <- 2
       query$tilt <- abs(query$lat)
-    } else if (array.type == "tl") {
+    } else if (array.type == "tv") {
       warning("The array type is not available")
       return(list())
     } else if (array.type == "td") {

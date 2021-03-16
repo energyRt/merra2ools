@@ -143,7 +143,7 @@ if (file.exists(gif_file)) include_graphics(gif_file)
 ```{r, echo=FALSE}
 
 fig_file <- "../images/ghi_40y_avr_24steps.png"
-include_graphics(fig_file)
+if (file.exists(fig_file)) include_graphics(fig_file)
 
 ```
 

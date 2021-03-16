@@ -12,7 +12,7 @@ get_merra2_subset(
   cols = NULL,
   quiet = FALSE,
   rows_lim = 2 * 10^9,
-  original.units = TRUE
+  as_integers = FALSE
 )
 }
 \arguments{
