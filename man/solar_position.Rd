@@ -11,7 +11,7 @@ solar_position(
   hour = "hour",
   lon = "lon",
   lat = "lat",
-  integral_steps = 2,
+  integral_steps = 1,
   keep.all = TRUE,
   verbose = getOption("merra2.verbose"),
   ...
@@ -30,7 +30,7 @@ solar_position(
 
 \item{lat}{latitude of the location}
 
-\item{integral_steps}{integer number of steps for calculation of solar_time, hour_angle, and zenith within an hour, and  logical variable; default is 2 (start and the end of every hour)}
+\item{integral_steps}{integer number of steps for calculation of solar_time, hour_angle, and zenith within an hour, and the logical variable; default is 2 (start and the end of every hour)}
 
 \item{keep.all}{if TRUE, the interim variables declination, eq_time, solar_time, and hour_angle will be added to x and returned}
 

@@ -93,7 +93,7 @@ check_merra2 <- function(path = get_merra2_dir(), detailed = FALSE,
   locid <- file.exists(file.path(path, "locid.RData"))
 
   if (!detailed) {
-    if (verbose) cat(length(fls), "MERRA-2 files found")
+    if (verbose) cat(length(fls), "merra2ools data-files found")
     return(invisible(length(fls)))
   }
 

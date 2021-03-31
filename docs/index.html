@@ -12,8 +12,9 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
 <script src="pkgdown.js"></script><meta property="og:title" content="R-tools to process MERRA-2 data (NASA) with focus on renewable energy ">
-<meta property="og:description" content="More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.">
+<meta property="og:description" content="A toolbox for evaluation of hourly availability of solar and wind 
+    energy potential globally, based on MERRA-2 satellite reanalysis data subset 
+    (requires the data download from: https://doi.org/10.5061/dryad.v41ns1rtt). ">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -92,7 +93,8 @@
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#merra2ools" class="anchor"></a>merra2ools</h1></div>
 <p>(UNDER CONSTRUCTION)</p>
-<p>website (manuals): <a href="https://energyRt.github.io/merra2ools/" class="uri">https://energyRt.github.io/merra2ools/</a></p>
+<p>manuals: <a href="https://energyRt.github.io/merra2ools/" class="uri">https://energyRt.github.io/merra2ools/</a><br>
+dataset: <a href="https://doi.org/10.5061/dryad.v41ns1rtt" class="uri">https://doi.org/10.5061/dryad.v41ns1rtt</a></p>
 <div id="overview" class="section level2">
 <h2 class="hasAnchor">
 <a href="#overview" class="anchor"></a>Overview</h2>
@@ -100,10 +102,10 @@
 The <em>merra2ools</em> dataset has 41 years (1980-2000) of the hourly time-series:</p>
 <ul>
 <li>
-<strong>locid</strong> - location IDs (key), an index of locations in MERRA-2 dataset, from 1 to 207936;<br>
+<strong>UTC</strong> - date and time (key) in Coordinated Universal Time (UTC) timezone;<br>
 </li>
 <li>
-<strong>UTC</strong> - date and time (key) in Coordinated Universal Time (UTC) timezone;<br>
+<strong>locid</strong> - location IDs (key), an index of locations in MERRA-2 dataset, from 1 to 207936;<br>
 </li>
 <li>
 <strong>W10M</strong> - 10-meter wind speed (calculated <code><a href="https://rdrr.io/r/base/MathFun.html">sqrt(V10M^2 + U10M^2)</a></code> where <code>V10M</code> and <code>U10M</code> are northward and eastward wind at 10-meter, m/s, rounded to the first decimal place);<br>
@@ -152,16 +154,16 @@ The <em>merra2ools</em> dataset has 41 years (1980-2000) of the hourly time-seri
 <h2 class="hasAnchor">
 <a href="#solar-power" class="anchor"></a>Solar Power</h2>
 <p>The package reproduces basic algorithms of solar geometry, irradiance decomposition, and the Plane-Of-Array models for different types of solar PV trackers.</p>
-<p><img src="images/poa_fl_40y_avr_24steps.png" width="2550"></p>
+<p><img src="images/ghi_40y_avr_24steps.png" width="2550"></p>
 </div>
 <div id="wind-power" class="section level2">
 <h2 class="hasAnchor">
 <a href="#wind-power" class="anchor"></a>Wind power</h2>
 <p><img src="images/wind_50m_40y_avr_24steps.png" width="3150"></p>
 </div>
-<div id="additional-datasets" class="section level2">
+<div id="additional-time-series" class="section level2">
 <h2 class="hasAnchor">
-<a href="#additional-datasets" class="anchor"></a>Additional datasets</h2>
+<a href="#additional-time-series" class="anchor"></a>Additional time-series</h2>
 </div>
 <div id="references" class="section level2">
 <h2 class="hasAnchor">

@@ -182,6 +182,8 @@ gif_merra <- function(x,
                       verbose = getOption("merra2.verbose"),
                       ...) {
   # dirname <- dirname(filename)
+  # browser()
+  x <- as.data.table(x)
   arg <- list(...)
   arg[["timestamp.variable"]] <- timestamp.variable
   if (is.null(filename)) {
@@ -238,7 +240,8 @@ ffmpeg_merra <- function(x, name = "W50M", scale = 1,
                       timestamp.position = c(149, 87),
                       timestamp.format = "%Y-%b-%d, %Hh %Z",
                       verbose = getOption("merra2.verbose")) {
-  # browser()
+  browser()
+  x <- as.data.table(x)
   dr <- dirname(filename)
   if (!dir.exists(dr)) dir.create(dr, recursive = TRUE)
   frames <- unique(x$timestamp) %>% sort()

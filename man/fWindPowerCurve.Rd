@@ -5,9 +5,9 @@
 \alias{fWPC}
 \title{Wind power curve function. Estimates power output based on the speed of wind.}
 \usage{
-fWindPowerCurve(mps, cutin = 3, cutoff = 25, data = NULL)
+fWindPowerCurve(mps, cutin = 3, cutoff = 25, data = NULL, ...)
 
-fWPC(mps, cutin = 3, cutoff = 25, data = NULL)
+fWPC(mps, cutin = 3, cutoff = 25, data = NULL, ...)
 }
 \arguments{
 \item{mps}{wind speed, meters per second}

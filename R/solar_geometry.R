@@ -7,7 +7,7 @@
 #' @param lon longitude of the location
 #' @param lat latitude of the location
 #' @param verbose 
-#' @param integral_steps integer number of steps for calculation of solar_time, hour_angle, and zenith within an hour, and  logical variable; default is 2 (start and the end of every hour)
+#' @param integral_steps integer number of steps for calculation of solar_time, hour_angle, and zenith within an hour, and the logical variable; default is 2 (start and the end of every hour)
 #' @param keep.all if TRUE, the interim variables declination, eq_time, solar_time, and hour_angle will be added to x and returned
 #'
 #' @details  
@@ -64,7 +64,7 @@ solar_position <- function(x,
                            yday = "yday", hour = "hour",
                            lon = "lon", lat = "lat",
                            # azimuth = "azimuth",
-                           integral_steps = 2,
+                           integral_steps = 1,
                            keep.all = TRUE, 
                            verbose = getOption("merra2.verbose"), ...) {
   # browser()
@@ -157,7 +157,7 @@ solar_position <- function(x,
   }
   if (verbose) cat("\n")
   # browser()
-  if (verbose) cat("   Direct beam hour (beam)\n")
+  if (verbose & integral_steps > 1) cat("   Direct beam hour (beam)\n")
   x$beam <- rowSums(zenith < 90) == integral_steps
   # Integrating...
   if (verbose) cat("   Integrating\n")

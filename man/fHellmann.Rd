@@ -5,9 +5,9 @@
 \alias{fH}
 \title{Hellmann function to extrapolate wind speed from 10 and 50 meters to higher altitudes}
 \usage{
-fHellmann(W10M, W50M, na = 0, inf = 0, lo = 0, up = 0.6)
+fHellmann(W10M, W50M, na = 0, inf = 0, lo = 0, up = 0.6, ...)
 
-fH(W10M, W50M, na = 0, inf = 0, lo = 0, up = 0.6)
+fH(W10M, W50M, na = 0, inf = 0, lo = 0, up = 0.6, ...)
 }
 \arguments{
 \item{W10M}{wind speed (m/s) at 10 meters altitude}

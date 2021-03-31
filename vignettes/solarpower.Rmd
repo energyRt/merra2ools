@@ -19,7 +19,6 @@ knitr::opts_chunk$set(
 # Code execution parameters ####
 rerun <- TRUE # if TRUE, (re)runs all the script and (re)saves all figures, inlc. gifs
 rerun <- FALSE # if FALSE, knits the document using saved figures
-
 ```
 
 # Plane of Array (POA) irradiance model
@@ -56,10 +55,10 @@ kableExtra::kable(merra2ools::pv_array_types())
 
 ```{r setup, eval = rerun, results = FALSE}
 library(merra2ools)
+library(merra2sample)
 # if (rerun) library(merra2sample)
 library(tidyverse)
 library(cowplot)
-
 ```
 
 ```{r, eval = rerun}
@@ -71,7 +70,6 @@ merra <- merra2_sample(month = c(3, 6, 9, 12), add.coord = T)
 merra
 
 x <- fPOA(merra) # keep.all = T - keeps all interim variables
-
 ```
 
 <details><summary>Figure code</summary>
@@ -130,7 +128,7 @@ if (file.exists(gif_file)) include_graphics(gif_file)
 ### Solar position
 
 ```{r, eval = rerun}
-x <- solar_position(merra, keep.all = T)
+x <- solar_position(merra, keep.all = T, integral_steps = 1)
 # x <- solar_position(merra, verbose = 0, keep.all = T)
 # x <- azimuth.convertion(x)
 
@@ -335,8 +333,7 @@ x <- pv_array_position(x, array.type = "all")
 x
 
 # convert azimuth from "Q" to "N" for figures
-x <- azimuth_Q2N(
-  x,
+x <- merra2ools:::azimuth_Q2N(x,
   paste0("array.azimuth_Q.", pv_array_types()[,1]),
   paste0("array.azimuth_N.", pv_array_types()[,1]))
 
@@ -536,7 +533,7 @@ fig.AOI.grid <- function(x,
 }
 ii <- x$hour == 12
 a <- fig.AOI.grid(x[ii,], legend.position = c(0.78, .12))
-ggsave("images/fig.AOI.grid.png", a, width = 8, height = 6)
+ggsave("images/fig.AOI.grid_int2.png", a, width = 8, height = 6)
 
 gif_merra(x, FUN = "fig.AOI.grid", dirname = "images", fps = 5,
           gif.width = 1.25 * 576, 

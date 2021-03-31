@@ -15,14 +15,15 @@ knitr::opts_chunk$set(
 # merra2ools
 (UNDER CONSTRUCTION)
 
-website (manuals): <https://energyRt.github.io/merra2ools/>   
+manuals: <https://energyRt.github.io/merra2ools/>   
+dataset: <https://doi.org/10.5061/dryad.v41ns1rtt>   
 
 ## Overview
 
 *merra2ools* package offers a set of tools and MERRA-2 data subset to evaluate hourly output potential of solar and wind energy sources, as well as precipitations for weather-dependent hydro power output. The goal of the project is to provide both - the dataset and algorithms to estimate potential output and so-called capacity factors for variable energy sources, used as an input data in energy system modeling and broader application. To keep the size of the database lower than 300Gb for online publication, the original subset of MERRA-2 time series have been minimally processed, rounded, and saved as scaled integers in highly compressed format provided by [`fst`](https://www.fstpackage.org/index.html) package.  
 The *merra2ools* dataset has 41 years (1980-2000) of the hourly time-series:  
-  - **locid** - location IDs (key), an index of locations in MERRA-2 dataset, from 1 to 207936;  
   - **UTC** - date and time (key) in Coordinated Universal Time (UTC) timezone;  
+  - **locid** - location IDs (key), an index of locations in MERRA-2 dataset, from 1 to 207936;  
   - **W10M** - 10-meter wind speed (calculated `sqrt(V10M^2 + U10M^2)` where `V10M` and `U10M` are northward and eastward wind at 10-meter, m/s, rounded to the first decimal place);  
   - **W50M** - 50-meter wind speed (calculated `sqrt(V50M^2 + U50M^2)` where `V50M` and `U50M` are northward and eastward wind at 50-meter, m/s, rounded to the first decimal place);  
   - **WDIR** - Direction of wind at 50-meter height (calculated `atan2(V50M/U50M)`, rounded to tens);  
@@ -49,9 +50,8 @@ The *merra2ools* package includes:
 The package reproduces basic algorithms of solar geometry, irradiance decomposition, and the Plane-Of-Array models for different types of solar PV trackers.  
 
 ```{r, fig.cap="", echo=FALSE}
-fig_file <- "images/poa_fl_40y_avr_24steps.png"
+fig_file <- "images/ghi_40y_avr_24steps.png"
 include_graphics(fig_file)
-
 ```
 
 ## Wind power  
@@ -59,7 +59,6 @@ include_graphics(fig_file)
 ```{r, fig.cap="", echo=FALSE}
 fig_file <- "images/wind_50m_40y_avr_24steps.png"
 include_graphics(fig_file)
-
 ```
 
 ## Additional time-series

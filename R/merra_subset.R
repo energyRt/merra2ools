@@ -290,7 +290,7 @@ add_locid <- function(x) {
 #'  merra2_sample()
 #'  merra2_sample(2:3)
 merra2_sample <- function(month = 1:12, add.coord = FALSE) {
-  # library(merra2sample)
+  if (!any(grepl("package:merra2sample", search()))) library("merra2sample")
   nms <- unique(tolower(month.abb[month]))
   nms <- paste0("merra2_", nms)
   x <- lapply(nms, get)

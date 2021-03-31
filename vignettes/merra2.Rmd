@@ -16,6 +16,8 @@ knitr::opts_chunk$set(
 library(knitr)
 ```
 
+## Variables
+
 ```{r fig_all, fig.cap="MERRA-2 variables in merra2ools database", echo=FALSE}
 gif_file <- "../images/merra_576x540_10fps.gif"
 if (file.exists(gif_file)) include_graphics(gif_file)
@@ -139,7 +141,7 @@ if (file.exists(gif_file)) include_graphics(gif_file)
 
 ```
 
-#### 40 years average
+#### 41-years average
 ```{r, echo=FALSE}
 
 fig_file <- "../images/ghi_40y_avr_24steps.png"
@@ -147,6 +149,14 @@ if (file.exists(fig_file)) include_graphics(fig_file)
 
 ```
 
+
+#### Annual standard deviation
+```{r, echo=FALSE}
+
+fig_file <- "../images/ghi_40y_avr_24steps.png"
+if (file.exists(fig_file)) include_graphics(fig_file)
+
+```
 
 
 ### Albedo (ALBEDO), index [0..1]

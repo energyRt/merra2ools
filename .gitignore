@@ -6,3 +6,5 @@ tmp/*
 doc
 images/*
 Meta
+.httr-oauth
+.rds

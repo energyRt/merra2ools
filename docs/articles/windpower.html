@@ -85,13 +85,13 @@
 
       
 
-      </header><script src="windpower_files/header-attrs-2.6/header-attrs.js"></script><script src="windpower_files/kePrint-0.0.1/kePrint.js"></script><link href="windpower_files/lightable-0.0.1/lightable.css" rel="stylesheet">
+      </header><script src="windpower_files/header-attrs-2.7/header-attrs.js"></script><script src="windpower_files/kePrint-0.0.1/kePrint.js"></script><link href="windpower_files/lightable-0.0.1/lightable.css" rel="stylesheet">
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Wind Power</h1>
             
-            <h4 class="date">2021-03-15</h4>
+            <h4 class="date">2021-03-30</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/energyRt/merra2ools/blob/master/vignettes/windpower.Rmd"><code>vignettes/windpower.Rmd</code></a></small>
       <div class="hidden name"><code>windpower.Rmd</code></div>
@@ -102,9 +102,10 @@
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://energyRt.github.io/merra2ools/">merra2ools</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://energyRt.github.io/merra2sample/">merra2sample</a></span><span class="op">)</span>
 <span class="co"># library(merra2sample)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://Rdatatable.gitlab.io/data.table">data.table</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com">data.table</a></span><span class="op">)</span>
 <span class="co"># library(kableExtra)</span></code></pre></div>
 <div id="wind-speed-extrapolation" class="section level2">
 <h2 class="hasAnchor">
@@ -347,7 +348,7 @@ Figure code
                  alpha <span class="op">=</span> <span class="fl">.75</span>, show.legend <span class="op">=</span> <span class="cn">F</span>, bins <span class="op">=</span> <span class="fl">50</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu">labs</span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Hellmann exponent (h)"</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu">geom_vline</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>xintercept <span class="op">=</span> <span class="va">x</span>, linetype <span class="op">=</span> <span class="va">name</span><span class="op">)</span>,
-             data <span class="op">=</span> <span class="fu">tibble</span><span class="op">(</span>name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"mean"</span>, <span class="st">"median"</span><span class="op">)</span>,
+             data <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/tibble.html">tibble</a></span><span class="op">(</span>name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"mean"</span>, <span class="st">"median"</span><span class="op">)</span>,
                            x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">h_mean</span>, <span class="va">h_median</span><span class="op">)</span><span class="op">)</span>,
              colour <span class="op">=</span> <span class="st">"blue"</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu">scale_linetype</span><span class="op">(</span>name <span class="op">=</span> <span class="st">"Statistics"</span><span class="op">)</span> <span class="op">+</span>
@@ -397,7 +398,7 @@ Figure code
                      breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10</span>, <span class="fl">50</span>, <span class="fl">100</span>, <span class="fl">150</span>, <span class="fl">200</span><span class="op">)</span>,
                      minor_breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">25</span>, <span class="fl">200</span>, by <span class="op">=</span> <span class="fl">25</span><span class="op">)</span><span class="op">)</span>,
                      labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10</span>, <span class="fl">50</span>, <span class="fl">100</span>, <span class="fl">150</span>, <span class="fl">200</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">geom_text</span><span class="op">(</span>data <span class="op">=</span> <span class="fu">tibble</span><span class="op">(</span>name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"wind speed at 10m from MERRA-2 (W10M)"</span>, 
+  <span class="fu">geom_text</span><span class="op">(</span>data <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/tibble.html">tibble</a></span><span class="op">(</span>name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"wind speed at 10m from MERRA-2 (W10M)"</span>, 
                                    <span class="st">"wind speed at 10m from MERRA-2 (W50M)"</span><span class="op">)</span>, 
                           x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">19.2</span>, <span class="fl">19.2</span><span class="op">)</span>, y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">11</span>, <span class="fl">51</span><span class="op">)</span><span class="op">)</span>,
                           size <span class="op">=</span> <span class="fl">3</span>, colour <span class="op">=</span> <span class="st">"black"</span>, alpha <span class="op">=</span> <span class="fl">.85</span>,
@@ -432,7 +433,7 @@ Figure code
 Figure code
 </summary><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Simplified wind power curve</span>
-<span class="va">wpc</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="op">(</span> 
+<span class="va">wpc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/tibble.html">tibble</a></span><span class="op">(</span> 
   mps <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span><span class="op">:</span><span class="fl">25</span>, <span class="cn">NA</span>, <span class="fl">25.01</span>, <span class="fl">26</span><span class="op">:</span><span class="fl">30</span><span class="op">)</span>, <span class="co"># wind speed m/s</span>
   af <span class="op">=</span> <span class="fu"><a href="../reference/fWindPowerCurve.html">fWPC</a></span><span class="op">(</span><span class="va">mps</span><span class="op">)</span> <span class="co"># availability factor [0,1]</span>
 <span class="op">)</span>

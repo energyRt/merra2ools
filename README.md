@@ -3,7 +3,8 @@
 
 (UNDER CONSTRUCTION)
 
-website (manuals): <https://energyRt.github.io/merra2ools/>
+manuals: <https://energyRt.github.io/merra2ools/>  
+dataset: <https://doi.org/10.5061/dryad.v41ns1rtt>
 
 ## Overview
 
@@ -20,10 +21,10 @@ highly compressed format provided by
 [`fst`](https://www.fstpackage.org/index.html) package.  
 The *merra2ools* dataset has 41 years (1980-2000) of the hourly
 time-series:  
-- **locid** - location IDs (key), an index of locations in MERRA-2
-dataset, from 1 to 207936;  
 - **UTC** - date and time (key) in Coordinated Universal Time (UTC)
 timezone;  
+- **locid** - location IDs (key), an index of locations in MERRA-2
+dataset, from 1 to 207936;  
 - **W10M** - 10-meter wind speed (calculated `sqrt(V10M^2 + U10M^2)`
 where `V10M` and `U10M` are northward and eastward wind at 10-meter,
 m/s, rounded to the first decimal place);  
@@ -73,12 +74,12 @@ The package reproduces basic algorithms of solar geometry, irradiance
 decomposition, and the Plane-Of-Array models for different types of
 solar PV trackers.
 
-<img src="images/poa_fl_40y_avr_24steps.png" width="2550" />
+<img src="images/ghi_40y_avr_24steps.png" width="2550" />
 
 ## Wind power
 
 <img src="images/wind_50m_40y_avr_24steps.png" width="3150" />
 
-## Additional datasets
+## Additional time-series
 
 ## References

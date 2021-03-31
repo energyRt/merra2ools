@@ -525,7 +525,7 @@ fPOA <- function(x, array.type = "all",
                  UTC = "UTC",
                  yday = "yday", hour = "hour", 
                  lon = "lon", lat = "lat",
-                 integral_steps = 3,
+                 integral_steps = 1,
                  tilt.param = tilt.param.default(),
                  keep.all = FALSE, verbose = getOption("merra2.verbose")) {
   # browser()

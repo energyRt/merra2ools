@@ -10,13 +10,13 @@
 #' @examples
 #' fWPC(0:30)
 #' plot(0:35, WindPowerCurve(0:35), type = "l", col = "red", lwd = 2)
-fWindPowerCurve <- function(mps, cutin = 3, cutoff = 25, data = NULL) {
+fWindPowerCurve <- function(mps, cutin = 3, cutoff = 25, data = NULL, ...) {
   # browser()
   if (is.null(data)) {
     data <- data.frame(
       # averaged data from "WindCurves" package
-      speed <- c(1:25, 30),
-      af <- c(
+      speed = c(1:25, 30),
+      af = c(
         0, 0, 0, 0.017, 0.066, 0.138, 0.235, 0.362, 0.518, 0.688,
         0.84, 0.941, 0.983, 0.995, 0.999, 1, 1, 1, 1, 1, 1, 1, 1,
         1, 1, 1
@@ -60,7 +60,7 @@ if (F) {
 #'
 #' @examples
 #' fH(5, 10)
-fHellmann <- function(W10M, W50M, na = 0, inf = 0, lo = 0, up = 0.6) {
+fHellmann <- function(W10M, W50M, na = 0, inf = 0, lo = 0, up = 0.6, ...) {
   # checks
   if (length(W10M) > 1 & length(W50M) > 1) {
     stopifnot(length(W50M) == length(W10M))
@@ -105,3 +105,45 @@ fWindSpeedExtrapolation <- function(m, W10M, hellmann) {
 #' @rdname fWindSpeedExtrapolation
 #' @export
 fWSE <- fWindSpeedExtrapolation
+
+#' Title
+#'
+#' @param x data frame with MERRA-2 subset
+#' @param height height over ground
+#' @param mps name of wind speed variable available in `x` or will be extrapolated using `fHellmann` and `fWSE` functions
+#' @param return_name name of the variable, which will be added (or overwritten) to `x`
+#' @param hellmann name of the variable with Hellmann constant, either available in `x` or will be calculated using `fHellmann` function
+#' @param W10M name of the variable with wind speed at 10 meters height
+#' @param W50M name of the variable with wind speed at 10 meters height
+#' @param WPC name of the wind power capacity function
+#' @param verbose if TRUE, the process will be reported
+#' @param ... additional parameters for `fHellmann`, `fWSE`, `WPC` functions
+#'
+#' @return `x` with added (or overwritten) column of wind power capacity factors; the name of the column is given by `return_name` parameter.
+#' 
+#' @export
+#'
+#' @examples
+#' NA
+fWindCF <- function(x, height = 50, 
+                    mps = paste0("W", height, "M"),
+                    return_name = paste0("win", height, "af"),
+                    hellmann = "hellmann", W10M = "W10M", W50M = "W50M",
+                    WPC = fWindPowerCurve, #keep.all = TRUE, 
+                    verbose = TRUE, ...) {
+  # browser()
+  if (is.null(x[[mps]])) {
+    # Extrapolating wind speed
+    stopifnot(!is.null(x[[W10M]]))
+    stopifnot(!is.null(x[[W50M]]))
+    if (is.null(x[[hellmann]])) {
+      # Hellmann constant
+      if (verbose) cat("")
+      x[[hellmann]] <- fHellmann(W10M = x[[W10M]], W50M = x[[W50M]], ...)
+    }
+    x[[mps]] <- fWSE(m = height, W10M = x[[W10M]], hellmann = x[[hellmann]])
+  }
+  # Applying wind power curve
+  x[[return_name]] <- WPC(mps = x[[mps]], ...)
+  return(x)
+}

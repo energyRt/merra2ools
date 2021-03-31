@@ -12,16 +12,20 @@ Authors@R:
           family = "Gao", 
           email = "gaoshuo@cet.net.cn", 
           role = c("aut")))
+Maintainer: Oleg Lugovoy <olugovoy@gmail.com>
 URL: https://energyRt.github.io/merra2ools/
 BugReports: https://github.com/energyRt/merra2ools/issues
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Description: A toolbox for evaluation of hourly availability of solar and wind 
+    energy potential globally, based on MERRA-2 satellite reanalysis data subset 
+    (requires the data download from: https://doi.org/10.5061/dryad.v41ns1rtt). 
 Depends: R (>= 4.0.0),
         data.table
-Imports: tidyverse, lubridate, mathjaxr, fst, httr
+Imports: tidyverse, lubridate, mathjaxr, fst, httr, rnaturalearth, sp, rgeos, sf, 
+          rgeos, rnaturalearth, rnaturalearthdata
 Suggests: 
     knitr,
-    rmarkdown
+    rmarkdown,
+    merra2sample
 License: AGLP-3.0
 Encoding: UTF-8
 LazyData: true
