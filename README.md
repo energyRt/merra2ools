@@ -74,11 +74,11 @@ The package reproduces basic algorithms of solar geometry, irradiance
 decomposition, and the Plane-Of-Array models for different types of
 solar PV trackers.
 
-<img src="images/ghi_40y_avr_24steps.png" width="2550" />
+<img src="docs/images/ghi_40y_avr_24steps.png" width="2550" />
 
 ## Wind power
 
-<img src="images/wind_50m_40y_avr_24steps.png" width="3150" />
+<img src="docs/images/wind_50m_40y_avr_24steps.png" width="3150" />
 
 ## Additional time-series
 
