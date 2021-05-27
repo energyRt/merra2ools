@@ -88,7 +88,8 @@ get_locid <- function(sp, method = "intersect", return_sp = FALSE, projString = 
   }
   if (is.null(projString)) projString <- grid@proj4string
   # sp::proj4string(sp) <- projString
-  raster::crs(sp) <- projString
+  # raster::crs(sp) <- projString
+  sp <- sp::spTransform(sp, CRSobj = projString)
   
   lon_range <- c(floor(sp@bbox[1,1]), ceiling(sp@bbox[1,2]))
   lat_range <- c(floor(sp@bbox[2,1]), ceiling(sp@bbox[2,2]))
@@ -97,7 +98,8 @@ get_locid <- function(sp, method = "intersect", return_sp = FALSE, projString = 
     grid_sp_points <- getGrid(lon = lon_range, lat = lat_range)
     if (!sp::identicalCRS(sp, grid_sp_points)) {
       # sp::proj4string(grid_sp_points) <- projString
-      raster::crs(grid_sp_points) <- projString
+      # raster::crs(grid_sp_points) <- projString
+      sp::spTransform(grid_sp_points, CRSobj = projString)
     }
     pp <- sp::over(grid_sp_points, sp, returnList = F)
     if (!return_sp) {
@@ -110,7 +112,7 @@ get_locid <- function(sp, method = "intersect", return_sp = FALSE, projString = 
     grid_sp_poly <- getGrid(lon = lon_range, lat = lat_range, type = "poly")
     if (!sp::identicalCRS(sp, grid_sp_poly)) {
       # sp::proj4string(grid_sp_points) <- projString
-      raster::crs(grid_sp_poly) <- projString
+      sp::spTransform(grid_sp_poly, CRSobj = projString)
     }
     # ri <- rgeos::gIntersection(sp, grid_sp_poly, byid = TRUE, )
     ri <- raster::intersect(grid_sp_poly, sp)

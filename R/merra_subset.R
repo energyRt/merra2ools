@@ -83,13 +83,18 @@ get_merra2_subset <- function(locid = 1:207936L,
   op <- getOption("dplyr.summarise.inform")
   options(dplyr.summarise.inform = F)
 
-  from <- lubridate::ymd_h(from, tz = tz)
+  to <- lubridate::ymd_h(to, tz = tmz) + lubridate::minutes(30L)
+  to <- lubridate::with_tz(to, tzone = "UTC")
+  if (minute(to) != 30L) {
+    warning("Inconsistent time averages due to fractual difference between the requested timezone and UTC")
+  }
+  to <- lubridate::round_date(to, unit = "hour") + lubridate::minutes(30L)
+  # lubridate::with_tz(to, tzone = tmz)
+
+  from <- lubridate::ymd_h(from, tz = tmz) + lubridate::minutes(30L)
   from <- lubridate::with_tz(from, tzone = "UTC") 
   from <- lubridate::round_date(from, unit = "hour") + lubridate::minutes(30L)
-  
-  to <- lubridate::ymd_h(to, tz = tz)
-  to <- lubridate::with_tz(to, tzone = "UTC") 
-  to <- lubridate::round_date(to, unit = "hour") + lubridate::minutes(30L)
+  # lubridate::with_tz(to, tzone = tmz)
   
   stopifnot(to >= from)
   

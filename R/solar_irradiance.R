@@ -69,7 +69,7 @@ ghi_decomposition <- function(x, yday = "yday", GHI = "SWGDN",
   stopifnot(!is.null(x[[yday]]))
   stopifnot(!is.null(x[[GHI]]))
   stopifnot(!is.null(x[[zenith]]))
-  if (verbose) cat("   DNI and DHI\n")
+  if (verbose) cat("   DNI and DHI decomposition\n")
   zz <- x[[zenith]] <= zenith_max # avoiding excessive values at horizon
   if (!is.null(x[[beam]])) zz <- zz & x[[beam]]
   # the solar constant

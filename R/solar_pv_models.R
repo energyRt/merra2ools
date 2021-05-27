@@ -507,7 +507,7 @@ poa_irradiance <- function(x, array.type = "fl", suffix = TRUE,
   return(x)
 }
 
-#' @param x 
+#' @param x data.table with `merra2ools` subset, required variables: `UTC` (or `yday` and `hour`), `locid` (or `lon` and `lat`), `GHI` (`SWGDN`), 
 #' @param array.type 
 #' @param suffix 
 #' @param UTC 
@@ -525,6 +525,7 @@ fPOA <- function(x, array.type = "all",
                  UTC = "UTC",
                  yday = "yday", hour = "hour", 
                  lon = "lon", lat = "lat",
+                 GHI = "SWGDN",
                  integral_steps = 1,
                  tilt.param = tilt.param.default(),
                  keep.all = FALSE, verbose = getOption("merra2.verbose")) {

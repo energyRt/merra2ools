@@ -31,6 +31,7 @@ fPOA(
   hour = "hour",
   lon = "lon",
   lat = "lat",
+  GHI = "SWGDN",
   integral_steps = 1,
   tilt.param = tilt.param.default(),
   keep.all = FALSE,
@@ -38,7 +39,7 @@ fPOA(
 )
 }
 \arguments{
-\item{x}{}
+\item{x}{data.table with `merra2ools` subset, required variables: `UTC` (or `yday` and `hour`), `locid` (or `lon` and `lat`), `GHI` (`SWGDN`),}
 
 \item{array.type}{}
 
