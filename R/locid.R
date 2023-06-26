@@ -16,10 +16,11 @@
 getGrid <- function(type = "points", class = "sp", 
                     locid = NULL,
                     lon = c(-180, 180), lat = c(-90, 90)) {
+  # browser()
   if (grepl("points", type, ignore.case = T)) {
     x <- merra2ools::locid[, c("locid", "lon", "lat")]
     if (!grepl("df|data.frame", class, ignore.case = T)) {
-      x$lon2 <- x$lon; x$lat2 <- x$lat
+      x@data$lon2 <- x$lon; x@data$lat2 <- x$lat
       sp::coordinates(x) <- ~ lon2 + lat2
       sp::proj4string(x) <- grid@proj4string
     }
@@ -28,16 +29,24 @@ getGrid <- function(type = "points", class = "sp",
   } else {
     stop("Unknown type = '", type, "'")
   }
+  x@data$lon2 <- x$lon 
+  if (any(lon > 180)) {
+    stopifnot(all(lon >= 0))
+    x <- sp::SpatialPolygonsDataFrame(sp::recenter(x), x@data)
+    ii <- x$lon2 < 0
+    x$lon2[ii] <- 360 + x$lon2[ii] 
+  }
+  
   # filter
-  ii <- x$lon >= lon[1] & x$lon <= lon[2] 
+  ii <- x$lon2 >= lon[1] & x$lon2 <= lon[2] 
   ii <- ii & x$lat >= lat[1] & x$lat <= lat[2]
   if (!is.null(locid)) ii <- ii & x$locid %in% locid
   x <- x[ii,]
   if (class == "sf") {
-    cat("Converting sp object to simple feature (sf) format")
+    # cat("Converting sp object to simple feature (sf) format")
     x <- sf::st_as_sf(x) 
   } else if (grepl("df|data.frame", class, ignore.case = T)) {
-    cat("Converting sp object to data.frame format")
+    # cat("Converting sp object to data.frame format")
     if (grepl("poly", type, ignore.case = T)) {
       x <- ggplot2::fortify(x)
     }
@@ -89,6 +98,7 @@ get_locid <- function(sp, method = "intersect", return_sp = FALSE, projString = 
   if (is.null(projString)) projString <- grid@proj4string
   # sp::proj4string(sp) <- projString
   # raster::crs(sp) <- projString
+  # browser()
   sp <- sp::spTransform(sp, CRSobj = projString)
   
   lon_range <- c(floor(sp@bbox[1,1]), ceiling(sp@bbox[1,2]))
@@ -110,9 +120,14 @@ get_locid <- function(sp, method = "intersect", return_sp = FALSE, projString = 
     
   } else if (method == "intersect") {
     grid_sp_poly <- getGrid(lon = lon_range, lat = lat_range, type = "poly")
+    # grid_sp_poly <- sp::spTransform(grid_sp_poly, CRS(projString))
     if (!sp::identicalCRS(sp, grid_sp_poly)) {
       # sp::proj4string(grid_sp_points) <- projString
       sp::spTransform(grid_sp_poly, CRSobj = projString)
+    }
+    if (any(bbox(sp)[1,] > 180)) {
+      stopifnot(all(bbox(sp)[1,] >= 0))
+      sp <- sp::recenter(sp)
     }
     # ri <- rgeos::gIntersection(sp, grid_sp_poly, byid = TRUE, )
     ri <- raster::intersect(grid_sp_poly, sp)
@@ -120,7 +135,6 @@ get_locid <- function(sp, method = "intersect", return_sp = FALSE, projString = 
     ids <- unique(ri$locid)
     return(ids)
   }
-  
 }
 
 if (F) {
@@ -183,4 +197,3 @@ closest_locid <- function(lon, lat, asList = FALSE) {
 coord2locid <- function() {}
 
 locid2coord <- function() {}
-

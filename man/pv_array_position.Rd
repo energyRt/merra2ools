@@ -32,9 +32,6 @@ pv_array_position(
 
 \item{tilt.param}{}
 }
-\value{
-
-}
 \description{
 Photovoltaic Solar Panel Orientation and Performance Models
 }

@@ -11,9 +11,6 @@ add_coord(x, force = FALSE)
 
 \item{force}{}
 }
-\value{
-
-}
 \description{
 Add longitude and latitude of 'locid'
 }

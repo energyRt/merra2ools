@@ -9,9 +9,6 @@ tilt.param.default(x = NULL)
 \arguments{
 \item{x}{}
 }
-\value{
-
-}
 \description{
 Default tilt-parameters of tracking systems
 }

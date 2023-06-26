@@ -11,9 +11,6 @@ yday2month(yday, leap_year = FALSE)
 
 \item{leap_year}{}
 }
-\value{
-
-}
 \description{
 Title
 }

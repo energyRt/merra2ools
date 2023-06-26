@@ -31,9 +31,6 @@ fetch_pvwatts(
 
 \item{api_key}{}
 }
-\value{
-
-}
 \description{
 Title
 }

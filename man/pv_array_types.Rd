@@ -6,9 +6,6 @@
 \usage{
 pv_array_types(array.type = "all", asFactor = FALSE)
 }
-\value{
-
-}
 \description{
 List tracking system types
 }

@@ -23,9 +23,6 @@ azimuth_N2Q(
 
 \item{lon}{}
 }
-\value{
-
-}
 \description{
 Title
 }

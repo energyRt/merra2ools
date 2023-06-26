@@ -50,9 +50,6 @@ fAOI(
 
 \item{...}{}
 }
-\value{
-
-}
 \description{
 Angle of Incidence (AOI)
 }

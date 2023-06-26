@@ -40,9 +40,6 @@ gif_merra(
 
 \item{...}{}
 }
-\value{
-
-}
 \description{
 Quick GIF plots
 }

@@ -21,7 +21,7 @@ fDate <- function(year, month, day, hour, tz = "UTC") {
   stopifnot(month >= 1 & month <= 12)
   f <- function(x) formatC(x, width = 2, flag = "0")
   if (day == "last" || is.numeric(day) > 31) {
-    day <- days_in_month(ymd(paste(year, f(month), f(1), sep = "-")))
+    day <- lubridate::days_in_month(ymd(paste(year, f(month), f(1), sep = "-")))
   }
   x <- paste(paste(year, f(month), f(day), sep = "-"), f(hour))
   if (tz != "UTC") {
@@ -62,14 +62,14 @@ if (F) {
 #' @examples
 #' NA
 get_merra2_subset <- function(locid = 1:207936L, 
-                              from = "1980-01-01 00", to = "2019-12-31 23", 
+                              from = "1980-01-01 00", to = "2020-12-31 23", 
                               tz = "UTC", 
                               cols = NULL,
                               quiet = FALSE,
                               rows_lim = 2*10^9,
                               as_integers = FALSE) {
   # browser()
-  if (!any(grepl("package:fst", search()))) library("fst")
+  # if (!any(grepl("package:fst", search()))) library("fst")
   
   raw_cols <- c("UTC",  "locid", "W10M.e1", "W50M.e1", "WDIR.e_1", "T10M.C", 
                 "SWGDN", "ALBEDO.e2", "PRECTOTCORR.g_m2_h.e1", "RHOA.e2")
@@ -79,22 +79,23 @@ get_merra2_subset <- function(locid = 1:207936L,
       cols <- raw_cols[cols]
     }
   }
-  
+  # browser()
   op <- getOption("dplyr.summarise.inform")
   options(dplyr.summarise.inform = F)
 
-  to <- lubridate::ymd_h(to, tz = tmz) + lubridate::minutes(30L)
+  from <- lubridate::ymd_h(from, tz = tz) #+ lubridate::minutes(30L)
+  from <- lubridate::round_date(from, unit = "hour") + lubridate::minutes(30L)
+  from <- lubridate::with_tz(from, tzone = "UTC") 
+  # lubridate::with_tz(to, tzone = tmz)
+  
+  to <- lubridate::ymd_h(to, tz = tz) #+ lubridate::minutes(30L)
+  to <- lubridate::round_date(to, unit = "hour") + lubridate::minutes(30L)
   to <- lubridate::with_tz(to, tzone = "UTC")
+  # lubridate::with_tz(to, tzone = tmz)
+  
   if (minute(to) != 30L) {
     warning("Inconsistent time averages due to fractual difference between the requested timezone and UTC")
   }
-  to <- lubridate::round_date(to, unit = "hour") + lubridate::minutes(30L)
-  # lubridate::with_tz(to, tzone = tmz)
-
-  from <- lubridate::ymd_h(from, tz = tmz) + lubridate::minutes(30L)
-  from <- lubridate::with_tz(from, tzone = "UTC") 
-  from <- lubridate::round_date(from, unit = "hour") + lubridate::minutes(30L)
-  # lubridate::with_tz(to, tzone = tmz)
   
   stopifnot(to >= from)
   
@@ -155,6 +156,11 @@ get_merra2_subset <- function(locid = 1:207936L,
   }
   return(sam)
 }
+
+if (F) {
+  m <- get_merra2_subset(1e5, fDate(2010, 1, 1, 00), to = fDate(2010, 1, 2, 23))
+}
+
 
 
 #' Reads one file from MERRA-2 subset for a given year and month

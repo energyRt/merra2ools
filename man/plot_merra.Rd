@@ -54,9 +54,6 @@ plot_merra(
 
 \item{...}{}
 }
-\value{
-
-}
 \description{
 Quick plots of wind speed and its dynamics
 }

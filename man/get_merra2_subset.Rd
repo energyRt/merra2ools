@@ -7,7 +7,7 @@
 get_merra2_subset(
   locid = 1:207936L,
   from = "1980-01-01 00",
-  to = "2019-12-31 23",
+  to = "2020-12-31 23",
   tz = "UTC",
   cols = NULL,
   quiet = FALSE,

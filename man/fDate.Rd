@@ -17,9 +17,6 @@ fDate(year, month, day, hour, tz = "UTC")
 
 \item{tz}{}
 }
-\value{
-
-}
 \description{
 Title
 }

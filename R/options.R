@@ -7,6 +7,7 @@
   }
   # options(merra2 = path.expand("data/merra2_subset"))
   options(merra2.verbose = TRUE)
+  options(xts_check_TZ = FALSE)
 }
 
 #' Get, Set, or Check content of the Directory with the MERRA2 database Subset
