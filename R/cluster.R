@@ -141,7 +141,7 @@ cluster_locid <- function(x, varname, locid = "locid", time = "UTC",
       
       d_i <- d %>%
         right_join(sf::st_drop_geometry(cl), by = locid) %>%
-        group_by_at(all_of(c(time, group, "cluster"))) %>%
+        group_by(across(all_of(c(time, group, "cluster")))) %>%
         rename(value = all_of(varname)) %>%
         summarise(
           value = datawizard::weighted_mean(value, as.numeric(w), remove_na = T),

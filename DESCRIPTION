@@ -1,7 +1,7 @@
 Package: merra2ools
 Type: Package
 Title: R-tools to process MERRA-2 data (NASA) with focus on renewable energy 
-Version: 0.1.01
+Version: 0.1.02
 Authors@R: 
   c(person(given = "Oleg", 
           family = "Lugovoy", 
@@ -25,7 +25,6 @@ Imports:
     lubridate,
     mathjaxr,
     httr,
-    sp,
     sf,
     terra,
     dplyr,

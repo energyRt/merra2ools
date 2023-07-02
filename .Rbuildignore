@@ -10,3 +10,4 @@
 ^dev$
 ^tmp$
 ^LICENSE\.md$
+^data-raw$

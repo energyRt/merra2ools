@@ -1,155 +1,124 @@
 #' Get MERRA-2 grid
 #'
 #' @param type type of grid-data to return, spatial points ("points") or polygons ("poly")
-#' @param lon range of longitude
-#' @param lat range of latitude
-#' @param class class of object to return, spatial ("sp"), simple feature ("sf"), or data.frame ("df")
+#' @param lon numeric vector (min and max) with the range of longitude coordinates of the grid to return. Default `c(-180, 180)`.
+#' @param lat numeric vector with the range of latitude coordinates of the grid to return. Default `c(-180, 180)`.
+#' @param locid (optional) integer vector of location identifiers for which the grid will be returned.
+#' @param crs target coordinate reference system: object of class 'sf::crs', or input string for `sf::st_crs`. Default `4326`.
+#' @param ... 
+#' @param add_lonlat logical, should merra-points coordinates (`lon`, `lat`) be added to the data. FALSE by default.
+#' @param add_poles_points logical, in the case of "polygons" grid, should points at poles be added to the data. TRUE by default.
 #'
-#' @return Returns object with MERRA-2 grid information
+#' @return Returns `sf` object with MERRA-2 grid, points or polygons. If polygons requested, grid of  will be returned where MERRA2 coordinates are considered as centers of every polygon, except cells with `lat = -90` or `lat = 90`. Spatial points will be returned for the cells near poles.
 #' @export
 #'
 #' @examples
-#' x <- getGrid()
+#' x <- get_merra_grid()
 #' head(x)
 #' getGrid("poly", "sf")
 #' getGrid(lon = c(-70, -60), lat = c(30, 40), class = "df")
-getGrid <- function(type = "points", class = "sp", 
-                    locid = NULL,
-                    lon = c(-180, 180), lat = c(-90, 90)) {
-  # browser()
-  if (grepl("points", type, ignore.case = T)) {
-    x <- merra2ools::locid[, c("locid", "lon", "lat")]
-    if (!grepl("df|data.frame", class, ignore.case = T)) {
-      x@data$lon2 <- x$lon; x@data$lat2 <- x$lat
-      sp::coordinates(x) <- ~ lon2 + lat2
-      sp::proj4string(x) <- grid@proj4string
-    }
-  } else if (grepl("poly", type, ignore.case = T)) {
-    x <- merra2ools::grid
+get_merra_grid <- function(type = "polygons", 
+                           locid = NULL,
+                           lon = c(-180, 180), 
+                           lat = c(-90, 90),
+                           crs = 4326,
+                           add_lonlat = FALSE,
+                           add_poles_points = TRUE,
+                           ...) {
+  if (grepl("poly", type)[1]) {
+    x <- merra2ools:::locid_poly_sf %>% as.data.table()
+  } else if (grepl("point", type)[1]) {
+    x <- merra2ools:::locid_points_sf %>% as.data.table()
   } else {
-    stop("Unknown type = '", type, "'")
+    stop("Unknown type ", type)
   }
-  x@data$lon2 <- x$lon 
-  if (any(lon > 180)) {
-    stopifnot(all(lon >= 0))
-    x <- sp::SpatialPolygonsDataFrame(sp::recenter(x), x@data)
-    ii <- x$lon2 < 0
-    x$lon2[ii] <- 360 + x$lon2[ii] 
+  x <- st_as_sf(x)
+  
+  if (!is.null(locid)) {x <- x[locid,]}
+  if (!add_poles_points & type == "polygons") {
+    # cc <- sapply(x$geometry, class)
+    # dim(cc)
+    # summary(as.factor(cc[2,]))
+    # ii <- cc[2,] == "POINT"; summary(ii)
+    # which(ii[1:1e3]) %>% range()
+    # which(ii) %>% range()
+    # ii <- c(1:576, 207361:207936)
+    ii <- 577:207360
+    x <- x[ii,]; rm(ii)
   }
   
-  # filter
-  ii <- x$lon2 >= lon[1] & x$lon2 <= lon[2] 
-  ii <- ii & x$lat >= lat[1] & x$lat <= lat[2]
-  if (!is.null(locid)) ii <- ii & x$locid %in% locid
-  x <- x[ii,]
-  if (class == "sf") {
-    # cat("Converting sp object to simple feature (sf) format")
-    x <- sf::st_as_sf(x) 
-  } else if (grepl("df|data.frame", class, ignore.case = T)) {
-    # cat("Converting sp object to data.frame format")
-    if (grepl("poly", type, ignore.case = T)) {
-      x <- ggplot2::fortify(x)
-    }
-  } else if (class != "sp") {
-    stop("Unknown data format requested: class = '", class, "'")
+  if (!is.null(lon) && any(lon != c(-180, 180))) {
+    ii <- x$lon >= lon[1] & x$lon <= lon[2]
+    x <- x[ii,]
   }
+  if (!is.null(lat) && any(lat != c(-90, 90))) {
+    ii <- x$lat >= lat[1] & x$lat <= lat[2]
+    x <- x[ii,]
+  }
+  if (!add_lonlat) {x$lon <- NULL; x$lat <- NULL}
+  # if (!add_lonlat) x[, c("lon", "lat") := NULL]
+  x <- st_as_sf(x)
+  if (sf::st_crs(x) != sf::st_crs(crs)) x <- sf::st_transform(x, crs)
   return(x)
 }
 
 if (F) {
-  x <- getGrid()
-  head(x)
-  getGrid("poly", "sf")
-  getGrid(class = "sf")
-  getGrid(lon = c(-70, -60), lat = c(30, 40), class = "df")
-  getGrid("poly", lon = c(-70, -60), lat = c(30, 40), class = "df")
-  getGrid(lon = c(-70, -60), lat = c(30, 40), class = "sf")
-  getGrid("poly", lon = c(-70, -60), lat = c(30, 40), class = "sf")
+  x <- get_merra_grid()
+  x <- get_merra_grid(add_poles_points = F)
+  x; class(x)
+  x <- get_merra_grid(lon = c(-170, 170))
+  x <- get_merra_grid(lon = c(-20, 10), lat = c(-10, 10), add_lonlat = F)
+  x <- get_merra_grid(locid = sample(locid$locid, 100))
+  st_bbox(x); class(x)
+  plot(x)
 }
 
-
-#' Get MERRA-2 grid IDs that overlay or intersect with given spatial object
+#' Get MERRA-2 grid IDs which overlaps with the given spatial object
 #'
-#' @param sp a map-object of class SpatialPolygons or SpatialPolygonsDataFrame
-#' @param method character, "points" or "intersect", matching spatial points with polygons or intersection of polygons respectively
-#' @param return_sp logical, if TRUE, Spatial object will be returned
-#' @param projString projection string for return object (in the case of return_sp = TRUE)
+#' @param x spatial (`sf`) object.
+#' @param method 
+#' @param ... ignored
 #'
-#' @return when return_sp = FALSE, an integer vector with location IDs (locid) is returned
+#' @return
 #' @export
 #'
 #' @examples
-#' iceland_sp <- rnaturalearth::ne_states(country = "iceland")
-#' lid2_sp <- get_locid(iceland_sp, method = "intersect", return_sp = TRUE)
-#' sp::plot(lid2_sp, col = "wheat", axes = TRUE, main = "Iceland")
-#' lid1 <- get_locid(iceland_sp, method = "points")
-#' lid2 <- get_locid(iceland_sp, method = "intersect", )
-#' lid1_df <- getGrid(locid = lid1, class = "df")
-#' lid2_df <- getGrid(locid = lid2, class = "df")
-#' points(lid2_df$lon, lid2_df$lat, col = "red")
-#' points(lid1_df$lon, lid1_df$lat, col = "red", pch = 16)
-#' 
-get_locid <- function(sp, method = "intersect", return_sp = FALSE, projString = NULL) {
-  if (class(sp) == "SpatialPolygonsDataFrame") {
-    sp <- sp::SpatialPolygons(sp@polygons, proj4string = sp@proj4string)
-  } else if (class(sp) != "SpatialPolygons") {
-    stop("'sp' object should be 'SpatialPolygons' or 'SpatialPolygonsDataFrame'")
-  }
-  if (is.null(projString)) projString <- grid@proj4string
-  # sp::proj4string(sp) <- projString
-  # raster::crs(sp) <- projString
+get_locid <- function(x, method = "polygons", add_poles_points = F, 
+                      return_grid = FALSE, ...) {
   # browser()
-  sp <- sp::spTransform(sp, CRSobj = projString)
-  
-  lon_range <- c(floor(sp@bbox[1,1]), ceiling(sp@bbox[1,2]))
-  lat_range <- c(floor(sp@bbox[2,1]), ceiling(sp@bbox[2,2]))
-  
-  if (method == "points") {
-    grid_sp_points <- getGrid(lon = lon_range, lat = lat_range)
-    if (!sp::identicalCRS(sp, grid_sp_points)) {
-      # sp::proj4string(grid_sp_points) <- projString
-      # raster::crs(grid_sp_points) <- projString
-      sp::spTransform(grid_sp_points, CRSobj = projString)
-    }
-    pp <- sp::over(grid_sp_points, sp, returnList = F)
-    if (!return_sp) {
-      pp <- pp[!is.na(pp)]
-      pp <- as.integer(names(pp))
-    }
-    return(pp)
+  x <- sf::st_make_valid(x) %>% sf::st_union()
+  if (grepl("poly", method, ignore.case = T)) {
     
-  } else if (method == "intersect") {
-    grid_sp_poly <- getGrid(lon = lon_range, lat = lat_range, type = "poly")
-    # grid_sp_poly <- sp::spTransform(grid_sp_poly, CRS(projString))
-    if (!sp::identicalCRS(sp, grid_sp_poly)) {
-      # sp::proj4string(grid_sp_points) <- projString
-      sp::spTransform(grid_sp_poly, CRSobj = projString)
-    }
-    if (any(bbox(sp)[1,] > 180)) {
-      stopifnot(all(bbox(sp)[1,] >= 0))
-      sp <- sp::recenter(sp)
-    }
-    # ri <- rgeos::gIntersection(sp, grid_sp_poly, byid = TRUE, )
-    ri <- raster::intersect(grid_sp_poly, sp)
-    if (return_sp) return(ri)
-    ids <- unique(ri$locid)
-    return(ids)
+  } else if (grepl("point", method, ignore.case = T)) {
+    
+  } else {
+    stop("Unknown method: ", method)
   }
+  
+  g <- get_merra_grid(type = method, add_poles_points = add_poles_points)
+  
+  if (sf::st_crs(x) != sf::st_crs(g)) g <- sf::st_set_crs(g, sf::st_crs(x))
+  suppressWarnings({
+    # complains about bbox - checked
+    a <- sf::st_intersects(g, x)
+  })
+  nn <- sapply(a, is_empty)
+  if (return_grid) return(g[!nn,])
+  return(g$locid[!nn])
 }
-
+    
 if (F) {
-  iceland_sp <- rnaturalearth::ne_states(country = "iceland")
-  lid2_sp <- get_locid(iceland_sp, method = "intersect", return_sp = TRUE)
-  sp::plot(lid2_sp, col = "wheat", axes = TRUE, main = "Iceland")
-  lid1 <- get_locid(iceland_sp, method = "points")
-  lid2 <- get_locid(iceland_sp, method = "intersect", )
-  lid1_df <- getGrid(locid = lid1, class = "df")
-  lid2_df <- getGrid(locid = lid2, class = "df")
-  points(lid2_df$lon, lid2_df$lat, col = "red")
-  points(lid1_df$lon, lid1_df$lat, col = "red", pch = 16)
+  y <- get_locid(gis_sf, return_grid = T)
+  length(y); head(y)
+  
+  yp <- get_locid(gis_sf, method = "points", return_grid = T)
+  length(y); head(y)
+  
+  plot(gis_sf$geometry, reset = F, col = "wheat")
+  plot(y, add = T, col = NA, border = "blue")
+  plot(yp, add = T, col = "red", pch = 16, cex = .25)
   
 }
-
 
 #' Get MERRA-2 grid IDs closest to the given coordinates
 #'
@@ -193,7 +162,3 @@ closest_locid <- function(lon, lat, asList = FALSE) {
   }
   return(id)
 }
-
-coord2locid <- function() {}
-
-locid2coord <- function() {}
