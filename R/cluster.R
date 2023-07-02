@@ -144,7 +144,7 @@ cluster_locid <- function(x, varname, locid = "locid", time = "UTC",
       cl <- tibble(
         group = r,
         k = i,
-        N = K,
+        N = ncol(dd), # number of locations (max possible k)
         locid = as(str_replace(names(dd), "^id_", ""), id_class),
         cluster = k_i
       ) %>%
