@@ -16,6 +16,7 @@ cluster_locid(
   max_loss = 0.05,
   verbose = TRUE,
   distance = "cor",
+  cores = 1,
   ...
 )
 }
@@ -41,6 +42,8 @@ cluster_locid(
 \item{verbose}{logical, should the clustering process be reported, TRUE by default.}
 
 \item{distance}{character name of a selected distance measure to use `TSdist::KMedoids`. Default metrics is `cor` - Pearson's correlation between the time series variable in different locations. Alternative, allowed methasures: `"euclidean", "manhattan", "minkowski", "infnorm", "ccor", "sts", "dtw", "keogh_lb", "edr", "erp", "lcss", "fourier", "tquest", "dissimfull", "dissimapprox", "acf", "pacf", "ar.lpc.ceps", "ar.mah", "ar.mah.statistic", "ar.mah.pvalue", "ar.pic", "cdm", "cid", "cor", "cort", "wav", "int.per", "per", "mindist.sax", "ncd", "pred", "spec.glk", "spec.isd", "spec.llr", "pdc", "frechet"`.}
+
+\item{cores}{integer number of processor cores to use, currently ignored.}
 
 \item{...}{additional parameters to pass to `TSdist::KMedoids`, might be required for some distance measures.}
 }
