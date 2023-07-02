@@ -26,7 +26,6 @@ Imports:
     mathjaxr,
     httr,
     sf,
-    terra,
     dplyr,
     ggplot2,
     data.table,
@@ -39,6 +38,7 @@ Suggests:
     merra2sample,
     rnaturalearth,
     rnaturalearthdata,
+    terra
 License: AGPL (>= 3)
 Encoding: UTF-8
 LazyData: true

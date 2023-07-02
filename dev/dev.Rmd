@@ -19,11 +19,12 @@ usethis::use_agpl3_license()
 usethis::use_package("data.table", type = "imports")
 usethis::use_package("fst", type = "imports")
 usethis::use_package("fstcore", type = "depends")
-usethis::use_package("terra")
+usethis::use_package("terra", type = "Suggests")
 usethis::use_package("sf")
 # usethis::use_package("sp") # removing 2023-07-01
 usethis::use_package("lubridate")
 usethis::use_package("dplyr")
+# usethis::use_package("tibble")
 usethis::use_package("ggplot2")
 usethis::use_package("TSdist", type = "imports") #
 usethis::use_package("datawizard")

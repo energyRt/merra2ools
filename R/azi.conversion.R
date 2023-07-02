@@ -69,7 +69,7 @@ azimuth_Q2N <- function(x,
 if (F) {
   x <- expand.grid(azimuth = seq(0, 360, by = 5),
                    lat = seq(-90, 90, by = 5))
-  x <- azimuth_N2Q(x) %>% as_tibble()
+  x <- azimuth_N2Q(x) #%>% as_tibble()
   x <- azimuth_Q2N(x)
   ii <- x$lat < 0 
   plot(x$azimuth[ii], x$azimuth_Q[ii], col = "blue", pch = 16, cex = 2, 
