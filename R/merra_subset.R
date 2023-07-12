@@ -1,16 +1,24 @@
-#' Title
+#' Create date-time character string from year, month, hour, and timezone.
 #'
-#' @param year 
-#' @param month 
-#' @param day 
-#' @param hour 
-#' @param tz 
+#' @details
+#' A utility function to create input in format used `get_merra2_subset`.
+#' 
+#' @param year integer, year
+#' @param month integer, month (1-12)
+#' @param day integer (1-31) or character ("last"), day of the month.
+#' @param hour integer, hour (0-23)
+#' @param tz Olson timezone code (`OlsonNames()`), "UTC" by default.
 #'
 #' @return
 #' @export
 #'
 #' @examples
-#' NA
+#' fDate(2010, 12, "last", 23)
+#' fDate(2010, 1, 1, 0)
+#' OlsonNames()
+#' fDate(2010, 1, 1, 0, tz = "America/New_York")
+#' fDate(2010, 1, 1, 0, tz = "Pacific/Auckland")
+#' fDate(2010, 1, 1, 0, tz = "Asia/Kolkata")
 fDate <- function(year, month, day, hour, tz = "UTC") {
   # browser()
   if (is.numeric(year)) year <- as.integer(year)
@@ -79,24 +87,20 @@ get_merra2_subset <- function(locid = 1:207936L,
       cols <- raw_cols[cols]
     }
   }
-  # browser()
-  op <- getOption("dplyr.summarise.inform")
-  options(dplyr.summarise.inform = F)
 
-  from <- lubridate::ymd_h(from, tz = tz) #+ lubridate::minutes(30L)
-  from <- lubridate::round_date(from, unit = "hour") + lubridate::minutes(30L)
+  from <- lubridate::ymd_h(from, tz = tz) 
   from <- lubridate::with_tz(from, tzone = "UTC") 
-  # lubridate::with_tz(to, tzone = tmz)
-  
-  to <- lubridate::ymd_h(to, tz = tz) #+ lubridate::minutes(30L)
-  to <- lubridate::round_date(to, unit = "hour") + lubridate::minutes(30L)
-  to <- lubridate::with_tz(to, tzone = "UTC")
-  # lubridate::with_tz(to, tzone = tmz)
-  
-  if (minute(to) != 30L) {
-    warning("Inconsistent time averages due to fractual difference between the requested timezone and UTC")
+  if (minute(from) != 0L) {
+    warning(
+      "Inconsistent time averages due to fractual difference between the requested timezone and UTC"
+    )
   }
-  
+  from <- lubridate::floor_date(from, unit = "hour") + lubridate::minutes(30L)
+
+  to <- lubridate::ymd_h(to, tz = tz) #+ lubridate::minutes(30L)
+  to <- lubridate::with_tz(to, tzone = "UTC")
+  to <- lubridate::floor_date(to, unit = "hour") + lubridate::minutes(30L)
+
   stopifnot(to >= from)
   
   from_to_h <- seq(from, to, by = "hour")
@@ -128,16 +132,19 @@ get_merra2_subset <- function(locid = 1:207936L,
       raw_cols <- unique(c("UTC", "locid", raw_cols))
       sam_i <- sam_i[, ..raw_cols]    
     }
-    ii <- sam_i$locid %in% locid 
-    sam_i <- sam_i[ii,]
-    ii <- sam_i$UTC %in% from_to_h
-    sam_i <- sam_i[ii,]
+    # ii <- sam_i$locid %in% locid
+    # sam_i <- sam_i[ii,]
+    # ii <- sam_i$UTC %in% from_to_h
+    # sam_i <- sam_i[ii,]
+    LOCID <- locid
+    sam_i <- sam_i[locid %in% LOCID][UTC %in% from_to_h]
     # browser()
 
     if (is.null(sam)) {
       sam <- sam_i
     } else {
-      sam <- dplyr::bind_rows(sam, sam_i)
+      # sam <- dplyr::bind_rows(sam, sam_i)
+      sam <- rbind(sam, sam_i)
     }
     if (!quiet) {
       cat(", ", format(object.size(sam), units = "auto"), 
@@ -146,19 +153,21 @@ get_merra2_subset <- function(locid = 1:207936L,
           "\n", sep = "")
     }
   }
-  options(dplyr.summarise.inform = op)
+  # options(dplyr.summarise.inform = op)
   # browser()
   if (!as_integers) {
     # if (!is.null(sam[["W10M"]])) sam[["W10M"]] <- sam[["W10M"]]/10
     # if (!is.null(sam[["W50M"]])) sam[["W50M"]] <- sam[["W50M"]]/10
     # if (!is.null(sam[["ALBEDO"]])) sam[["ALBEDO"]] <- sam[["ALBEDO"]]/100
-    sam <- convert_units(sam)
+    sam <- merra2ools:::convert_units(sam)
   }
   return(sam)
 }
 
 if (F) {
   m <- get_merra2_subset(1e5, fDate(2010, 1, 1, 00), to = fDate(2010, 1, 2, 23))
+  m <- get_merra2_subset(1e5, fDate(2010, 1, 1, 00), to = fDate(2010, 1, 2, 23), 
+                         tz = "Asia/Kolkata")
 }
 
 
@@ -253,35 +262,65 @@ if (F) {
 
 #' Add longitude and latitude of 'locid'
 #'
-#' @param x 
-#' @param force 
+#' @param x data.frame with `locid` column.
+#' @param replace logical, if TRUE, existing `lon` and `lat` columns in `x` will be replaced.
 #'
-#' @return
+#' @return `x` with added/replaced `lon` and `lat` for each `locid`
 #' @export
 #'
 #' @examples
 #' NA
-add_coord <- function(x, force = FALSE) {
-  if (is.null(x$locid)) stop("'x' should have 'locid' column")
-  if (!is.null(x$lon) || !is.null(x$lat)) {
-    if (force) {
+add_coord <- function(x, replace = FALSE) {
+  # browser()
+  if (is.null(x[["locid"]])) stop("'x' should have 'locid' column")
+  if (!is.null(x[["lon"]]) || !is.null(x[["lat"]])) {
+    if (replace) {
       x$lon <- NULL
       x$lat <- NULL
     } else {
-      stop("'x' already has 'lon' and/or 'lat' coordinates, use 'force = TRUE' to overwrite")
+      stop("'x' already has 'lon' and/or 'lat' coordinates, use 'replace = TRUE' to overwrite")
     }
   }
   # x <- dplyr::left_join(x, locid[,1:3], by = "locid")
   # y <- data.table::as.data.table(locid[,1:3])
   
   x <- merge(x, locid[,1:3], by = "locid", 
-                         all.x = TRUE, all.y = FALSE, sort = FALSE)
+             all.x = TRUE, all.y = FALSE, sort = FALSE)
   return(x)
 }
 
 if (F) {
   add_coord(merra2_apr)
 }
+
+
+#' Adds MERRA2 grid (polygons) to the data
+#'
+#' @param x data.frame with `locid` column
+#'
+#' @return `x` as `sf` object, with added geometry (polygons)
+#' @export
+#'
+#' @examples
+add_merra2_grid <- function(x) {
+  merra2ools:::locid_poly_sf[, c("locid", "geometry")] %>%
+    dplyr::right_join(x, by = "locid")
+}
+
+#' Adds MERRA2 grid (points) to the data
+#'
+#' @param x data.frame with `locid` column
+#'
+#' @return `x` as `sf` object, with added geometry (points)
+#' @export
+#'
+#' @examples
+add_merra2_points <- function(x) {
+  merra2ools:::locid_points_sf[, c("locid", "geometry")] %>%
+    dplyr::right_join(x, by = "locid")
+}
+
+
 
 add_locid <- function(x) {
   

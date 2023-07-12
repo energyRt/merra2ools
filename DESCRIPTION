@@ -23,15 +23,16 @@ Depends:
     R (>= 4.0.0),
 Imports: 
     lubridate,
-    mathjaxr,
-    httr,
     sf,
     dplyr,
     ggplot2,
+    rlang,
     data.table,
     fst,
     datawizard,
-    TSdist
+    TSdist,
+    mathjaxr,
+    httr
 Suggests: 
     knitr,
     rmarkdown,

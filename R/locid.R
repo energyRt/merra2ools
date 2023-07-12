@@ -13,11 +13,11 @@
 #' @export
 #'
 #' @examples
-#' x <- get_merra_grid()
+#' x <- get_merra2_grid()
 #' head(x)
 #' getGrid("poly", "sf")
 #' getGrid(lon = c(-70, -60), lat = c(30, 40), class = "df")
-get_merra_grid <- function(type = "polygons", 
+get_merra2_grid <- function(type = "polygons", 
                            locid = NULL,
                            lon = c(-180, 180), 
                            lat = c(-90, 90),
@@ -36,14 +36,7 @@ get_merra_grid <- function(type = "polygons",
   
   if (!is.null(locid)) {x <- x[locid,]}
   if (!add_poles_points & type == "polygons") {
-    # cc <- sapply(x$geometry, class)
-    # dim(cc)
-    # summary(as.factor(cc[2,]))
-    # ii <- cc[2,] == "POINT"; summary(ii)
-    # which(ii[1:1e3]) %>% range()
-    # which(ii) %>% range()
-    # ii <- c(1:576, 207361:207936)
-    ii <- 577:207360
+    ii <- 577:207360 # drop points on the N & S poles
     x <- x[ii,]; rm(ii)
   }
   
@@ -63,20 +56,20 @@ get_merra_grid <- function(type = "polygons",
 }
 
 if (F) {
-  x <- get_merra_grid()
-  x <- get_merra_grid(add_poles_points = F)
+  x <- get_merra2_grid()
+  x <- get_merra2_grid(add_poles_points = F)
   x; class(x)
-  x <- get_merra_grid(lon = c(-170, 170))
-  x <- get_merra_grid(lon = c(-20, 10), lat = c(-10, 10), add_lonlat = F)
-  x <- get_merra_grid(locid = sample(locid$locid, 100))
+  x <- get_merra2_grid(lon = c(-170, 170))
+  x <- get_merra2_grid(lon = c(-20, 10), lat = c(-10, 10), add_lonlat = F)
+  x <- get_merra2_grid(locid = sample(locid$locid, 100))
   st_bbox(x); class(x)
   plot(x)
 }
 
 #' Get MERRA-2 grid IDs which overlaps with the given spatial object
 #'
-#' @param x spatial (`sf`) object.
-#' @param method 
+#' @param x spatial (`sf`) object. Expected CRS is `EPSG:4326`, if different, it will be attempted to transform the grid to CRS of `x`, though intersection algorithms may not work well for some projections. Use `sf::st_transform(x, "EPSG:4326")` and `sf::st_make_valid(x)` to transform and correct geometries.
+#' @param method character, "polygons" (default) or "points" grid to use in `sf::st_intersects` method. 
 #' @param ... ignored
 #'
 #' @return
@@ -95,14 +88,14 @@ get_locid <- function(x, method = "polygons", add_poles_points = F,
     stop("Unknown method: ", method)
   }
   
-  g <- get_merra_grid(type = method, add_poles_points = add_poles_points)
+  g <- get_merra2_grid(type = method, add_poles_points = add_poles_points)
   
-  if (sf::st_crs(x) != sf::st_crs(g)) g <- sf::st_set_crs(g, sf::st_crs(x))
+  if (sf::st_crs(x) != sf::st_crs(g)) g <- sf::st_transform(g, sf::st_crs(x))
   suppressWarnings({
     # complains about bbox - checked
     a <- sf::st_intersects(g, x)
   })
-  nn <- sapply(a, is_empty)
+  nn <- sapply(a, rlang::is_empty)
   if (return_grid) return(g[!nn,])
   return(g$locid[!nn])
 }

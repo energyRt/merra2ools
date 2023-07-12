@@ -13,9 +13,9 @@ get_locid(
 )
 }
 \arguments{
-\item{x}{spatial (`sf`) object.}
+\item{x}{spatial (`sf`) object. Expected CRS is `EPSG:4326`, if different, it will be attempted to transform the grid to CRS of `x`, though intersection algorithms may not work well for some projections. Use `sf::st_transform(x, "EPSG:4326")` and `sf::st_make_valid(x)` to transform and correct geometries.}
 
-\item{method}{}
+\item{method}{character, "polygons" (default) or "points" grid to use in `sf::st_intersects` method.}
 
 \item{...}{ignored}
 }

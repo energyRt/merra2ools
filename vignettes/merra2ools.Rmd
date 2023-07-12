@@ -43,7 +43,6 @@ Loading packages used in the vignette.
 ```{r setup, eval=T, results=FALSE, warning=F, message=FALSE}
 library(tidyverse)
 library(merra2ools)
-library(sp)
 library(sf)
 library(cowplot)
 ```
@@ -119,13 +118,10 @@ lo <- unique(c(seq(-180, max(lon), by = 30), max(lon))) %>% sort()
 la <- seq(-90, 90, by = 15)
 
 locid_sample <- filter(locid, lon %in% lo, lat %in% la)
-world_map <- rnaturalearth::ne_countries(scale = "small", returnclass = "sp")
-world_map <- fortify(world_map) %>% as_tibble()
+world_map <- rnaturalearth::ne_countries(scale = "small", returnclass = "sf")
 
 fig.locid <- ggplot() + 
-  geom_map(data = world_map, map = world_map, 
-           aes(x = long, y = lat, map_id = id), 
-           fill = "wheat", alpha = .75, colour = NA, size = 0.25) +
+  geom_sf(fill = "wheat", alpha = .75, colour = NA, size = 0.25, data = world_map) +
   theme_bw() +
   geom_rect(aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax),
     data = data.frame(xmin = -180, xmax = 180, ymin = -90, ymax = 90),
@@ -138,11 +134,12 @@ fig.locid <- ggplot() +
   scale_x_continuous(breaks = ceiling(lo), minor_breaks = ceiling(lo)) +
   scale_y_continuous(breaks = round(la), minor_breaks = ceiling(la)) + 
   labs(x = "lon") +
+  coord_sf(xlim = c(-190, 190), ylim = c(-95, 95)) +
   # labs(x = "lon", title = "Location ID (`locid`) layout of MERRA-2 subset") +
-  theme(plot.title = element_text(hjust = 0.5)) + 
-  coord_fixed(1.)
+  theme(plot.title = element_text(hjust = 0.5),
+        axis.text = element_text(family = 'arial'))
 
-ggsave("images/locid_map.png", fig.locid, width = 9, height = 5.)
+ggsave("images/locid_map2.png", fig.locid, width = 9, height = 5.)
 
 ```
 </details>
@@ -164,27 +161,26 @@ Three examples below compare subsetting with the two methods for three different
 ### Example 1. Florida, USA   
 ```{r, results=F, eval=FALSE}
 # US-map
-usa_sp <- rnaturalearth::ne_states(iso_a2 = "us")
+usa_sf <- rnaturalearth::ne_states(iso_a2 = "us", returnclass = "sf")
 
-# Subset Florida map (keep two formats - `spdf` and `sf`)
-florida_sp <- usa_sp[usa_sp$name_en == "Florida",]
-florida_sf <- st_as_sf(florida_sp[, "name"])
+# Subset Florida map
+florida_sf <- usa_sf[usa_sf$name_en == "Florida",]
 
 # location IDs, two methods
-locid_fl_p <- get_locid(florida_sp, method = "points")
-locid_fl_i <- get_locid(florida_sp, method = "intersect")
+locid_fl_p <- get_locid(florida_sf, method = "points")
+locid_fl_i <- get_locid(florida_sf, method = "polygons")
 
 # MERRA-2 grid for the selected `locid's`
-locid_fl_grid <- getGrid("poly", locid = locid_fl_i)
-# locid_fl_sp <- get_locid(florida_sp, return_sp = T)
+locid_fl_grid <- get_merra2_grid("poly", locid = locid_fl_i)
 
-# Plots
-png("images/example1_florida_locids.png", width = 5, height = 5, units = "in", res = 200)
-sp::plot(florida_sp, axes = T, col = "wheat")
-sp::plot(locid_fl_grid, add = T, border = "darkgrey")
-points(locid$lon[locid_fl_p], locid$lat[locid_fl_p], col = "red", pch = 16)
-points(locid$lon[locid_fl_i], locid$lat[locid_fl_i], col = "red", pch = 1)
-dev.off()
+# Plot
+a <- ggplot() +
+  geom_sf(data = florida_sf, fill = "wheat") +
+  geom_sf(data = locid_fl_grid, color = "darkgrey", fill = NA) +
+  geom_point(aes(lon, lat), data = locid[locid_fl_p,], color = "red", shape = 16) +
+  geom_point(aes(lon, lat), data = locid[locid_fl_i,], color = "red", shape = 1) +
+  theme_bw() + labs(x = "", y = "")
+ggsave("images/example1_florida_locids.png", a, width = 5, height = 5)
 ```
 
 ```{r fig_florida_locid, fig.cap="MERRA-2 locations for Florida", echo=FALSE}
@@ -198,25 +194,24 @@ if (file.exists(fig_file)) include_graphics(fig_file)
 <details><summary>code</summary>
 ```{r, results=F, eval=FALSE}
 # Map
-# iceland_sp <- rnaturalearth::ne_states(country = "iceland")
-iceland_sp <- rnaturalearth::ne_countries(country = "iceland", scale = "large")
-iceland_sf <- st_as_sf(iceland_sp[, "name"])
+iceland_sf <- rnaturalearth::ne_countries(country = "iceland", scale = "large",
+                                          returnclass = "sf")
 
-str(iceland_sp@data)
 # location IDs, two methods
-locid_isl_p <- get_locid(iceland_sp, method = "points")
-locid_isl_i <- get_locid(iceland_sp, method = "intersect")
+locid_isl_p <- get_locid(iceland_sf, method = "points")
+locid_isl_i <- get_locid(iceland_sf, method = "poly")
 
 # MERRA-2 grid for the selected `locid's`
-locid_isl_grid <- getGrid("poly", locid = locid_isl_i)
+locid_isl_grid <- get_merra2_grid("poly", locid = locid_isl_i)
 
 # Plots
-png("images/example2_iceland_locids.png", width = 5, height = 5, units = "in", res = 200)
-sp::plot(iceland_sp, axes = T, col = "wheat")
-sp::plot(locid_isl_grid, add = T, border = "darkgrey")
-points(locid$lon[locid_isl_p], locid$lat[locid_isl_p], col = "red", pch = 16)
-points(locid$lon[locid_isl_i], locid$lat[locid_isl_i], col = "red", pch = 1)
-dev.off()
+a <- ggplot() +
+  geom_sf(data = iceland_sf, fill = "wheat") +
+  geom_sf(data = locid_isl_grid, color = "darkgrey", fill = NA) +
+  geom_point(aes(lon, lat), data = locid[locid_isl_p,], color = "red", shape = 16) +
+  geom_point(aes(lon, lat), data = locid[locid_isl_i,], color = "red", shape = 1) +
+  theme_bw() + labs(x = "", y = "")
+ggsave("images/example2_iceland_locids.png", a, width = 5, height = 5)
 ```
 </details>
 
@@ -231,24 +226,23 @@ if (file.exists(fig_file)) include_graphics(fig_file)
 <details><summary>code</summary>
 ```{r, results=F, eval=FALSE}
 # Map
-# kenya_sp <- rnaturalearth::ne_states(country = "kenya")
-kenya_sp <- rnaturalearth::ne_countries(country = "kenya", scale = "large")
-kenya_sf <- st_as_sf(kenya_sp[, "name"])
+kenya_sf <- rnaturalearth::ne_countries(country = "kenya", returnclass = "sf")
 
 # location IDs, two methods
-locid_ken_p <- get_locid(kenya_sp, method = "points")
-locid_ken_i <- get_locid(kenya_sp, method = "intersect")
+locid_ken_p <- get_locid(kenya_sf, method = "points")
+locid_ken_i <- get_locid(kenya_sf, method = "poly")
 
 # MERRA-2 grid for the selected `locid's`
-locid_ken_grid <- getGrid("poly", locid = locid_ken_i)
+locid_ken_grid <- get_merra2_grid("poly", locid = locid_ken_i)
 
-# Plots
-png("images/example3_kenya_locids.png", width = 5, height = 5, units = "in", res = 200)
-sp::plot(kenya_sp, axes = T, col = "wheat", main = "Kenya")
-sp::plot(locid_ken_grid, add = T, border = "darkgrey")
-points(locid$lon[locid_ken_p], locid$lat[locid_ken_p], col = "red", pch = 16, cex = .75)
-points(locid$lon[locid_ken_i], locid$lat[locid_ken_i], col = "red", pch = 1, cex = .75)
-dev.off()
+# Plot
+a <- ggplot() +
+  geom_sf(data = kenya_sf, fill = "wheat") +
+  geom_sf(data = locid_ken_grid, color = "darkgrey", fill = NA) +
+  geom_point(aes(lon, lat), data = locid[locid_ken_p,], color = "red", shape = 16) +
+  geom_point(aes(lon, lat), data = locid[locid_ken_i,], color = "red", shape = 1) +
+  theme_bw() + labs(x = "", y = "")
+ggsave("images/example3_kenya_locids.png", a, width = 5, height = 5)
 ```
 </details>
 
@@ -283,7 +277,7 @@ merra_fl <- fWindCF(merra_fl, height = 150)
 win_fl_y <- merra_fl %>% # annual averages
   group_by(locid) %>%
   summarise(win150af = mean(win150af, na.rm = T)) %>%
-  add_coord()
+  add_merra2_grid() 
 ```
 
 Do the same for other examples - Iceland and Kenya.  
@@ -297,7 +291,7 @@ merra_isl <- fWindCF(merra_isl, height = 150)
 win_isl_y <- merra_isl %>% # annual averages
   group_by(locid) %>%
   summarise(win150af = mean(win150af, na.rm = T)) %>%
-  add_coord()
+  add_merra2_grid() 
 ```
 
 **Kenya**
@@ -309,7 +303,7 @@ merra_ken <- fWindCF(merra_ken, height = 150)
 win_ken_y <- merra_ken %>% 
   group_by(locid) %>%
   summarise(win150af = mean(win150af, na.rm = T)) %>%
-  add_coord()
+  add_merra2_grid() 
 ```
 </details>
 
@@ -323,8 +317,7 @@ merra_fl <- merra_fl %>% fPOA(array.type = "fl")
 poa_fl_y <- merra_fl %>%
   group_by(locid) %>%
   summarise(POA.fl = sum(POA.fl, na.rm = T)/365/1e3) %>%
-  add_coord() %>%
-  as_tibble()
+  add_merra2_grid() 
 ```
 
 Repeat for other examples.  
@@ -338,8 +331,7 @@ merra_isl <- merra_isl %>% fPOA(array.type = "fl")
 poa_isl_y <- merra_isl %>%
   group_by(locid) %>%
   summarise(POA.fl = sum(POA.fl, na.rm = T)/365/1e3) %>%
-  add_coord() %>%
-  as_tibble()
+  add_merra2_grid() 
 ```
 
 **Kenya**
@@ -351,8 +343,7 @@ merra_ken <- merra_ken %>% fPOA(array.type = "fl")
 poa_ken_y <- merra_ken %>%
   group_by(locid) %>%
   summarise(POA.fl = sum(POA.fl, na.rm = T)/365/1e3) %>%
-  add_coord() %>%
-  as_tibble()
+  add_merra2_grid() 
 ```
 
 **Comparative figure**   
@@ -375,15 +366,28 @@ cf_plot <- function(
   labels = brakes, limits = range(brakes), legend_name = var_name,
   viridis_palette = "viridis", border_colour = alpha("white", .5),
   legend_position = "none") {
+  
   ggplot() +
-    geom_tile(aes_string("lon", "lat", fill = var_name), data = data) +
-    scale_fill_viridis_c(
-      breaks = brakes, labels = labels, limits = limits, name = legend_name,
-      option = viridis_palette) +
-    geom_sf(data = gis_sf, fill = NA, colour = border_colour) +
-    theme_bw() + theme(legend.position = legend_position) +
-    theme(plot.margin = margin(0.5, 0.0, 0.0, 0.0, "cm")) +
-    labs(x = "", y = "")
+  geom_sf(aes(fill = .data[[var_name]]), data = data) +
+  geom_sf(data = gis_sf, fill = NA, colour = border_colour) +
+  scale_fill_viridis_c(
+    breaks = brakes, labels = labels, limits = limits, name = legend_name,
+    option = viridis_palette) +
+  theme_bw() + 
+    theme(legend.position = legend_position) +
+  theme(plot.margin = margin(0.5, 0.0, 0.0, 0.0, "cm")) +
+  labs(x = "", y = "")
+
+  # browser()
+  # ggplot() +
+  #   geom_tile(aes("lon", "lat", fill = .data[[var_name]]), data = data) +
+  #   scale_fill_viridis_c(
+  #     breaks = brakes, labels = labels, limits = limits, name = legend_name,
+  #     option = viridis_palette) +
+  #   geom_sf(data = gis_sf, fill = NA, colour = border_colour) +
+  #   theme_bw() + theme(legend.position = legend_position) +
+  #   theme(plot.margin = margin(0.5, 0.0, 0.0, 0.0, "cm")) +
+  #   labs(x = "", y = "")
 }
 
 # Combine plots into one
@@ -398,7 +402,7 @@ plot_grid(
   cf_plot(poa_ken_y, kenya_sf, "POA.fl", poa_breaks, viridis_palette = "plasma",
           legend_position = "right", legend_name = "POA\nkW/day"),
   # rel_heights = c(1, -.3, 1),
-  ncol = 3, rel_widths = c(1, 1.25, 1.23),
+  ncol = 3, rel_widths = c(1, 1.3, 1.17),
   labels = c("Florida", "Iceland", "Kenya"), hjust = c(-1.6, -1.9, -1.6)
 )
 ggsave2("images/cf_group.png", width = 8, height = 5, dpi = 200)
@@ -424,9 +428,10 @@ prec_ken_m <- merra_ken %>%
   group_by(locid, year, month, month_name) %>%
   summarise(
     PRECTOTCORR = sum(PRECTOTCORR, na.rm = T),
-    T10M = mean(T10M)) %>%
-  add_coord() %>%
-  as_tibble()
+    T10M = mean(T10M),
+    .groups = "drop"
+    ) %>%
+  add_merra2_grid()
 ```
 
 <details><summary>code</summary>
@@ -440,20 +445,20 @@ cf_plot(prec_ken_m, kenya_sf, "PRECTOTCORR", brakes = pre_breaks, legend_positio
   facet_wrap(.~month)
 
 ggplot(prec_ken_m) +
-  geom_tile(aes(lon, lat, fill = PRECTOTCORR)) + 
+  geom_sf(aes(fill = PRECTOTCORR)) + 
   scale_fill_distiller(palette = "YlGnBu", direction = 1, name = "mm /\nmonth") +
   facet_wrap(.~month_name) + 
   geom_sf(data = kenya_sf, fill = NA, colour = alpha("black", .5)) +
   theme_bw() + labs(x = "", y = "")
-ggsave("images/precipitation_m_kenya.png", scale = 1.5)
+ggsave("images/precipitation_m_kenya.png", scale = 1.5, width = 5, height = 5)
 
 ggplot(prec_ken_m) +
-  geom_tile(aes(lon, lat, fill = T10M)) + 
+  geom_sf(aes(fill = T10M)) + 
   scale_fill_distiller(palette = "Spectral", direction = -1, name = "\u00B0C") +
   facet_wrap(.~month_name) + 
   geom_sf(data = kenya_sf, fill = NA, colour = alpha("black", .5)) +
   theme_bw()
-ggsave("images/temperature_m_kenya.png", scale = 1.5)
+ggsave("images/temperature_m_kenya.png", scale = 1.5, width = 5, height = 5)
 ```
 </details>
 

@@ -16,7 +16,6 @@ usethis::use_agpl3_license()
 # usethis::use_package("data.table", type = "depends")
 # usethis::use_package("fst", type = "depends")
 
-usethis::use_package("data.table", type = "imports")
 usethis::use_package("fst", type = "imports")
 usethis::use_package("fstcore", type = "depends")
 usethis::use_package("terra", type = "Suggests")
@@ -27,6 +26,7 @@ usethis::use_package("dplyr")
 # usethis::use_package("tibble")
 usethis::use_package("ggplot2")
 usethis::use_package("TSdist", type = "imports") #
+usethis::use_package("rlang", type = "imports") #
 usethis::use_package("datawizard")
 usethis::use_data_raw()
 
@@ -34,10 +34,13 @@ usethis::use_pipe()
 
 usethis::use_import_from("lubridate", c("ymd", "days_in_month"))
 
+# usethis::use_package("data.table", type = "imports")
+usethis::use_data_table()
 usethis::use_import_from("data.table", 
                          c("second", "minute", "hour", 
                            "yday", "wday", "mday", "week", 
-                           "as.xts.data.table", "as.data.table", "rbindlist",
+                           "data.table","as.data.table", "rbindlist",
+                           "as.xts.data.table", 
                            "isoweek", "month", "quarter", "year")
                          )
 
@@ -68,7 +71,7 @@ cluster_locid(m, "W50M")
 
 **June 2023**  
 - starting `dev.rmd` & using `usethis` tools   
-- use `terra` and `sf` instead of `rgdal` and `raster`   
-- drop dependencies: `magrittr`, `rgdal`, `raster`, `rgeos`   
+- use `terra` and `sf` instead of `r-gdal` and `r-aster`   
+- drop dependencies: `magrittr`, `r-gdal`, `r-aster`, `r-geos`   
 
 
