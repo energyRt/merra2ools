@@ -41,7 +41,7 @@ gif_merra(
 \item{...}{}
 }
 \description{
-Quick GIF plots
+The function is in progress, will be included in the package release.
 }
 \examples{
 NA

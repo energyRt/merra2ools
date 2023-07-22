@@ -1,5 +1,8 @@
 #' Quick plots of wind speed and its dynamics
-#'
+#' 
+#' @description
+#' The function is in progress, will be included in the package release.
+#' 
 #' @param x 
 #' @param name 
 #' @param scale 
@@ -41,6 +44,9 @@ plot_merra <- function(x,
                       # gif.width = 1920/3, gif.height = 1080/3
                       ...
                       ) {
+  # browser()
+  message("The function is in progress, will be included in the package release.")
+  return(NULL)
   if (!is.data.frame(x)) stop("'x' must be a data.frame with MERRA-2 subset")
   if (is.null(x[[name]])) stop("Column '", name, "' is not found")
   if (is.null(x[["lon"]]) | is.null(x[["lat"]])) {
@@ -153,7 +159,10 @@ if (F) {
 
 
 #' Quick GIF plots
-#'
+#' 
+#' @description
+#' The function is in progress, will be included in the package release.
+#' 
 #' @param x 
 #' @param filename 
 #' @param nmax 
@@ -183,6 +192,8 @@ gif_merra <- function(x,
                       ...) {
   # dirname <- dirname(filename)
   # browser()
+  message("The function is in progress, will be included in the package release.")
+  return(NULL)
   x <- as.data.table(x)
   arg <- list(...)
   arg[["timestamp.variable"]] <- timestamp.variable

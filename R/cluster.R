@@ -14,11 +14,22 @@
 #' @param ... additional parameters to pass to `TSdist::KMedoids`, might be required for some distance measures.
 #' @param cores integer number of processor cores to use, currently ignored.
 #'
-#' @return `data.frame` of spatial identifiers (`locid`, `groups` if set) and estimated `clusters`.
+#' @return `data.frame` with alternative number of clusters with columns:
+#' \describe{
+#'   \item{k}{Number of clusters}
+#'   \item{N}{Total number of time series}
+#'   \item{locid}{location identifier in `merra2ools` datasets}
+#'   \item{"group"}{(if provided) column with locid-groups}
+#'   \item{cluster}{cluster number in every `k`-group}
+#'   \item{weight}{weight of the cluster in the `k`-group}
+#'   \item{sd_N}{standard deviation of the whole sample of (N) time-series}
+#'   \item{sd_k}{standard deviation of clustered time series with `k` clusters}
+#'   \item{sd_loss}{loss of standard deviation as result of clusterisation, for each `k`}
+#'  } 
 #' @export
 #'
 #' @examples
-#' 
+#' # see "Cluster locations" in "Get started" 
 #' 
 cluster_locid <- function(x, varname, locid = "locid", time = "UTC",
                           locid_info = NULL, weight = NULL, group = NULL,
@@ -117,13 +128,13 @@ cluster_locid <- function(x, varname, locid = "locid", time = "UTC",
     }
     
     # browser()
-    sd_init <- d %>%
+    sd_N <- d %>%
       right_join(sf::st_drop_geometry(w), by = locid)
-    # nobs <- sd_init[[varname]] * sd_init$w
-    sd_init <- datawizard::weighted_sd(sd_init[[varname]], sd_init$w,
+    # nobs <- sd_N[[varname]] * sd_N$w
+    sd_N <- datawizard::weighted_sd(sd_N[[varname]], sd_N$w,
                                        remove_na = T
     )
-    if (is.na(sd_init)) {
+    if (is.na(sd_N)) {
       if (verbose) cat("The data with applied weight has zero observations\n")
       next
     }
@@ -134,7 +145,7 @@ cluster_locid <- function(x, varname, locid = "locid", time = "UTC",
     
     for (i in K) {
       # browser()
-      if (verbose) cat("N clusters: ", i, " (", max(K), ")", sep = "")
+      if (verbose) cat("k-clusters (k-max): ", i, " (", max(K), ")", sep = "")
       if (i < ncol(dd)) {
         k_i <- TSdist::KMedoids(dd, i, distance = distance, ...)
       } else {
@@ -171,25 +182,25 @@ cluster_locid <- function(x, varname, locid = "locid", time = "UTC",
       sd_i <- datawizard::weighted_sd(d_i[["value"]], as.numeric(d_i[["w"]]),
                                       remove_na = T
       )
-      # cat(", sd:", sd_init, sd_i, nrow(d_i), 1 - sd_i/sd_init, "\n")
+      # cat(", sd_k:", sd_N, sd_i, nrow(d_i), 1 - sd_i/sd_N, "\n")
       if (verbose) {
-        cat(", sd: ", sd_i, ", sd_loss: ",
-            100 * round(1 - sd_i / sd_init, 5), "%\n",
+        cat(", sd_k: ", sd_i, ", sd_loss: ",
+            100 * round(1 - sd_i / sd_N, 5), "%\n",
             sep = ""
         )
       }
       # browser()
       # cc[[i]] <- list(
       #   cl = cl,
-      #   sd = sd_i,
-      #   sd_loss = 1 - sd_i / sd_init
+      #   sd_k = sd_i,
+      #   sd_loss = 1 - sd_i / sd_N
       # )
       
-      cl[, sd_init := sd_init][, sd := sd_i][, sd_loss := 1 - sd_i / sd_init]
+      cl[, sd_N := sd_N][, sd_k := sd_i][, sd_loss := 1 - sd_i / sd_N]
       # cl[, max_loss := max_loss]
       cc[[i]] <- cl; rm(cl)
       
-      if (1 - sd_i / sd_init <= max_loss) {
+      if (1 - sd_i / sd_N <= max_loss) {
         break
       }
     } # K (cluster) loop
@@ -216,8 +227,8 @@ cluster_locid <- function(x, varname, locid = "locid", time = "UTC",
     ll[[r]] <- as.data.table(cc)
     # ll[[r]] <- list(
     #   cl = cc,
-    #   sd_init = sd_init,
-    #   sd_min = min(sapply(cc, function(x) x$sd), na.rm = T),
+    #   sd_N = sd_N,
+    #   sd_min = min(sapply(cc, function(x) x$sd_k), na.rm = T),
     #   max_loss = max_loss
     # )
   } # .regs loop
@@ -323,12 +334,12 @@ cluster_locid <- function(x, varname, locid = "locid", time = "UTC",
 #     }
 #     
 #     # browser()
-#     sd_init <- d %>%
+#     sd_N <- d %>%
 #       right_join(sf::st_drop_geometry(w), by = locid)
-#     # nobs <- sd_init[[varname]] * sd_init$w
-#     sd_init <- datawizard::weighted_sd(sd_init[[varname]], sd_init$w, 
+#     # nobs <- sd_N[[varname]] * sd_N$w
+#     sd_N <- datawizard::weighted_sd(sd_N[[varname]], sd_N$w, 
 #                                        remove_na = T)
-#     if (is.na(sd_init)) {
+#     if (is.na(sd_N)) {
 #       if (verbose) cat("The data with applied weight has zero observations\n")
 #       next
 #     }
@@ -370,11 +381,11 @@ cluster_locid <- function(x, varname, locid = "locid", time = "UTC",
 #         )
 #       sd_i <- datawizard::weighted_sd(d_i[["value"]], as.numeric(d_i[["w"]]),
 #                                       remove_na = T)
-#       # cat(", sd:", sd_init, sd_i, nrow(d_i), 1 - sd_i/sd_init, "\n")
-#       if (verbose) cat(", sd: ", sd_i, ", sd_loss: " , 
-#                        100 * round(1 - sd_i/sd_init, 5), "%\n", sep = "")
+#       # cat(", sd_k:", sd_N, sd_i, nrow(d_i), 1 - sd_i/sd_N, "\n")
+#       if (verbose) cat(", sd_k: ", sd_i, ", sd_loss: " , 
+#                        100 * round(1 - sd_i/sd_N, 5), "%\n", sep = "")
 #       # browser()
-#       if (1 - sd_i/sd_init <= max_loss) {break}
+#       if (1 - sd_i/sd_N <= max_loss) {break}
 #       
 #     }
 #     # browser()

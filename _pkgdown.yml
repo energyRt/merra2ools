@@ -5,4 +5,7 @@ template:
     bootswatch: flatly
     ganalytics: G-00GHMPMM37
 
+figures:
+  dev: grDevices::png
+  fig.ext: [png, gif]  
   

@@ -19,7 +19,7 @@ library(knitr)
 ```
 
 ## Installation
-**merra2ools** is package for [R](https://www.r-project.org/) and a dataset. It is assumed that R version >=4.0 is pre-installed. ([`Rtools`](https://cran.r-project.org/bin/windows/Rtools/) is also required on Windows to build this and several other packages from source or GitHub). It is also recommended (though it is not required) to use [RStudio](https://www.rstudio.com/products/rstudio/download/) or other IDE for R. `merra2ools` depends on several R-packages which (if not yet available on your system) will be installed along with the `merra2ools` installation (see the package [DESCRIPTION](https://github.com/energyRt/merra2ools/blob/master/DESCRIPTION) for details). The package also requires its dataset to be downloaded separately from the installation of the package (see below). Though `merra2ools` package can operate without the dataset (for estimation capacity factors, solar geometry, etc.), the supplied data should be formatted in the same way as it is expected by the package functions.   
+**merra2ools** is an [R](https://www.r-project.org/) library and a dataset. It is assumed that R version >=4.0 is pre-installed. ([`Rtools`](https://cran.r-project.org/bin/windows/Rtools/) is also required on Windows to build this and several other packages from source or GitHub). It is also recommended (though it is not required) to use [RStudio](https://www.rstudio.com/products/rstudio/download/) or other IDE for R. `merra2ools` depends on several R-packages which (if not yet available on your system) will be installed along with the `merra2ools` installation (see the package [DESCRIPTION](https://github.com/energyRt/merra2ools/blob/master/DESCRIPTION) for details). The package also requires its dataset to be downloaded separately from the installation of the package (see below). Though `merra2ools` package can operate without the dataset (for estimation capacity factors, solar geometry, etc.), the supplied data should be formatted in the same way as it is expected by the package functions.   
 \    
 **merra2sample** is 12-days example of the the `merra2ools` subset (41 years), 21st-day of each month of 2010. It can installed directly from GitHub, and used for quick checks of the data and its format; it is also used to build vignettes (articles) of `merra2ools` package. Since the example dataset has considerable size for R-packages (~0.5Gb) and mostly repeats the main dataset, it is saved as a separate package.  
 
@@ -34,6 +34,7 @@ if (!("rnaturalearthhires" %in% pkg()))
   devtools::install_github("ropensci/rnaturalearthhires")
 if (!("scales" %in% pkg())) install.packages("scales")
 if (!("cowplot" %in% pkg())) install.packages("cowplot")
+if (!("kableExtra" %in% pkg())) install.packages("kableExtra")
 ```
 
 **`merra2ools` dataset** (~270Gb) can be downloaded from [https://doi.org/10.5061/dryad.v41ns1rtt](https://doi.org/10.5061/dryad.v41ns1rtt), unziped in a dedicated directory on an internal or external hard-drive, and configured as described below.  
@@ -45,6 +46,7 @@ library(tidyverse)
 library(merra2ools)
 library(sf)
 library(cowplot)
+library(kableExtra)
 ```
 
 Checking if the dataset is connected.
@@ -54,8 +56,8 @@ check_merra2()
 
 Connecting the dataset (if not yet connected)
 ```{r, eval=FALSE}
-check_merra2("RAPLACE WITH PATH TO THE DOWNLOADED DATA") # check if the data in the directory
-set_merra2_options(merra2.dir = "RAPLACE WITH PATH TO THE DOWNLOADED DATA") # safe the path
+check_merra2("PATH TO THE DOWNLOADED DATA") # check if the data in the directory
+set_merra2_options(merra2.dir = "PATH TO THE DOWNLOADED DATA") # safe the path
 get_merra2_dir()  # check if the path is saved
 check_merra2(detailed = T)
 ```
@@ -68,8 +70,6 @@ x <- read_merra_file("202012", as_integers = TRUE)
 ```
 
 ```{r, echo=FALSE}
-if (!("kableExtra" %in% pkg())) install.packages("kableExtra")
-library(kableExtra)
 kable(x[1:5,], caption = "Subset of raw data (as integers)") %>%
   kable_styling(font_size = 8, full_width = T) %>%
   column_spec(1, width_min = "11em", background = "lightgrey") %>%
@@ -105,7 +105,7 @@ kable(rbind(locid[1:3,], locid[207934:207936,]),
 ```
 
 <details><summary>code</summary>
-```{r, eval=FALSE}
+```{r, eval=FALSE, warning=FALSE, message=FALSE}
 lon <- unique(locid$lon)
 head(lon, 10)
 length(lon)
@@ -145,8 +145,9 @@ ggsave("images/locid_map2.png", fig.locid, width = 9, height = 5.)
 </details>
 
 ```{r fig_MERRA_locid, fig.cap="locid_map", echo=FALSE}
-fig_file <- "../images/locid_map.png"
-if (file.exists(fig_file)) include_graphics(fig_file)
+fig_file <- "images/locid_map.png"
+# if (file.exists(fig_file)) 
+include_graphics(fig_file)
 ```
 
 ## Matching `locid` with a map  
@@ -184,7 +185,7 @@ ggsave("images/example1_florida_locids.png", a, width = 5, height = 5)
 ```
 
 ```{r fig_florida_locid, fig.cap="MERRA-2 locations for Florida", echo=FALSE}
-fig_file <- "../images/example1_florida_locids.png"
+fig_file <- "images/example1_florida_locids.png"
 if (file.exists(fig_file)) include_graphics(fig_file)
 ```
 
@@ -216,7 +217,7 @@ ggsave("images/example2_iceland_locids.png", a, width = 5, height = 5)
 </details>
 
 ```{r fig_iceland_locid, fig.cap="MERRA-2 locations for Iceland", echo=FALSE}
-fig_file <- "../images/example2_iceland_locids.png"
+fig_file <- "images/example2_iceland_locids.png"
 if (file.exists(fig_file)) include_graphics(fig_file)
 ```
 
@@ -248,7 +249,7 @@ ggsave("images/example3_kenya_locids.png", a, width = 5, height = 5)
 
 
 ```{r fig_kenya_locid, fig.cap="MERRA-2 locations for Kenya", echo=FALSE}
-fig_file <- "../images/example3_kenya_locids.png"
+fig_file <- "images/example3_kenya_locids.png"
 if (file.exists(fig_file)) include_graphics(fig_file)
 ```
 
@@ -278,7 +279,91 @@ win_fl_y <- merra_fl %>% # annual averages
   group_by(locid) %>%
   summarise(win150af = mean(win150af, na.rm = T)) %>%
   add_merra2_grid() 
+
 ```
+
+### Cluster locations
+We can also cluster locations based on correlation of certain timeseries across locations. 
+```{r, eval=FALSE}
+# Cluster locations based on correlation
+win_fl_cl <- cluster_locid(
+  merra_fl, 
+  varname = "win150af",
+  locid_info = locid_fl_grid, 
+  max_loss = .05,
+  verbose = T)
+
+
+tol_level <- .10 # 10%
+# tol_level <- .05 # 5%
+
+# Select clusters with {tol_level}% tolerance (loss of standard deviation) 
+win_fl_cl_k <- win_fl_cl %>% 
+    filter(sd_loss <= tol_level) %>% 
+    mutate(k_min = (k == min(k))) %>% ungroup() %>% 
+    filter(k_min) %>% select(-k_min) 
+```
+
+<details><summary>code</summary>
+```{r, eval=FALSE}
+# Cluster-loss figure
+win_fl_cl_kk <- win_fl_cl %>%
+  group_by(k) %>%
+  summarise(sd_loss = max(sd_loss), N = max(N), .groups = "drop")
+
+locid_win_cl_k_i <- win_fl_cl_k %>%
+  group_by(k) %>%
+  summarise(sd_loss = max(sd_loss), N = max(N), .groups = "drop")
+
+a <- ggplot(win_fl_cl_kk) +
+  geom_line(aes(k, sd_loss), color = "dodgerblue", linewidth = 1.5) +
+  geom_point(aes(k, sd_loss), color = "red", data = locid_win_cl_k_i) +
+  geom_hline(yintercept = tol_level, color = "red", linetype = 2) +
+  scale_y_continuous(labels = scales::percent, limits = c(0, NA)) +
+  # scale_x_continuous(breaks = rev_integer_breaks(5)) +
+  labs(x = "Number of clusters (k)", y = "loss, % of s.d.") +
+  theme_bw()
+ggsave("images/example1_florida_wind_clusters.png", a, width = 4.5, 
+       height = 3)
+```
+</details>
+
+
+```{r fig_fl_win_cl, fig.cap="Loss of information as a function of number of clusters", echo=FALSE}
+fig_file <- "images/example1_florida_wind_clusters.png"
+if (file.exists(fig_file)) include_graphics(fig_file)
+```
+
+<details><summary>code</summary>
+```{r, eval=FALSE}
+win_fl_cl_sf <- locid_fl_grid %>%
+  st_make_valid() %>%
+  left_join(
+    select(win_fl_cl_k, any_of(c("locid", "cluster")))
+    ) %>%
+  filter(!is.na(cluster)) %>%
+  mutate(cluster = factor(cluster))
+
+a <- ggplot(win_fl_cl_sf) +
+  geom_sf(fill = "lightgrey", data = florida_sf) +
+  geom_sf(aes(fill = cluster), color = NA) +
+  geom_sf(color = alpha("black", 1), fill = NA, data = florida_sf) +
+  scale_fill_viridis_d(option = "H", direction = 1, name = "Cluster") +
+  labs(title = paste0("Clustered wind sites by region",
+                      ", sd_loss <= ", tol_level * 100, "%")) +
+  theme_bw()
+a
+ggsave("images/example1_florida_wind_clusters_map.png", a, 
+       width = 5, height = 5)
+```
+</details>
+
+Based on the clustering of the hourly time series, combining 73 wind capacity factors into 7 clusters will result in loss of standard deviation less than 10%.
+```{r fig_fl_win_cl_map, fig.cap="Clustered location based on correlation of wind capacity factors", echo=FALSE}
+fig_file <- "images/example1_florida_wind_clusters_map.png"
+if (file.exists(fig_file)) include_graphics(fig_file)
+```
+
 
 Do the same for other examples - Iceland and Kenya.  
 <details><summary>code</summary>
@@ -378,16 +463,6 @@ cf_plot <- function(
   theme(plot.margin = margin(0.5, 0.0, 0.0, 0.0, "cm")) +
   labs(x = "", y = "")
 
-  # browser()
-  # ggplot() +
-  #   geom_tile(aes("lon", "lat", fill = .data[[var_name]]), data = data) +
-  #   scale_fill_viridis_c(
-  #     breaks = brakes, labels = labels, limits = limits, name = legend_name,
-  #     option = viridis_palette) +
-  #   geom_sf(data = gis_sf, fill = NA, colour = border_colour) +
-  #   theme_bw() + theme(legend.position = legend_position) +
-  #   theme(plot.margin = margin(0.5, 0.0, 0.0, 0.0, "cm")) +
-  #   labs(x = "", y = "")
 }
 
 # Combine plots into one
@@ -412,7 +487,7 @@ ggsave2("images/cf_group.png", width = 8, height = 5, dpi = 200)
 
 
 ```{r fig_cf_group, fig.cap="Wind power capacity factors (CF) and Solar irradiance on Plane of Array (POA) by regions", echo=FALSE}
-fig_file <- "../images/cf_group.png"
+fig_file <- "images/cf_group.png"
 if (file.exists(fig_file)) include_graphics(fig_file)
 ```
 
@@ -463,14 +538,14 @@ ggsave("images/temperature_m_kenya.png", scale = 1.5, width = 5, height = 5)
 </details>
 
 ```{r fig_prec_ken, fig.cap="Precipitation by month in Kenya (2019), millimeters / hour (kg/m^2/hour)", echo=FALSE}
-fig_file <- "../images/precipitation_m_kenya.png"
+fig_file <- "images/precipitation_m_kenya.png"
 if (file.exists(fig_file)) include_graphics(fig_file)
 ```
 
 ## Air temperature by months   
 
 ```{r fig_temp_ken, fig.cap="Average monthly temperature in Kenya (2019), \u00B0C)", echo=FALSE}
-fig_file <- "../images/temperature_m_kenya.png"
+fig_file <- "images/temperature_m_kenya.png"
 if (file.exists(fig_file)) include_graphics(fig_file)
 ```
 

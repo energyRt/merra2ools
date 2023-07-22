@@ -7,9 +7,13 @@ vignette: >
   %\VignetteIndexEntry{Solar Power}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+resource_files:
+  - images/POA_map_720x544_5fps.gif
+
 ---
 
 ```{r, include = FALSE}
+options(rmarkdown.html_vignette.check_title = FALSE)
 library(knitr)
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -119,7 +123,7 @@ gif_merra(x[ii,], FUN = "fig.POA.grid", dirname = "images", fps = 5,
 </details>
 
 ```{r fig_POA_all, fig.cap="Plane of Array (POA) Irradiance estimates for alternative tracking systems", echo=FALSE}
-gif_file <- "../images/POA_map_720x544_5fps.gif"
+gif_file <- "images/POA_map_720x544_5fps.gif"
 if (file.exists(gif_file)) include_graphics(gif_file)
 
 ```
@@ -236,7 +240,7 @@ gif_merra(x, FUN = "fig.solar_postion", dirname = "images", fps = 5,
 
 
 ```{r fig_sol_pos, fig.cap="Solar position variables", echo=FALSE}
-gif_file <- "../images/fig.solar_postion_720x544_5fps.gif"
+gif_file <- "images/fig.solar_postion_720x544_5fps.gif"
 if (file.exists(gif_file)) include_graphics(gif_file)
 
 ```
@@ -319,7 +323,7 @@ gif_merra(x, FUN = "fig.ghi_decomposition", dirname = "images", fps = 5,
 
 
 ```{r fig_DHI, fig.cap="Global Horizontal Irradiance decomposition", echo=FALSE}
-gif_file <- "../images/fig.ghi_decomposition_720x544_5fps.gif"
+gif_file <- "images/fig.ghi_decomposition_720x544_5fps.gif"
 if (file.exists(gif_file)) include_graphics(gif_file)
 
 ```
@@ -456,21 +460,21 @@ gif_merra(x, FUN = "fig.array.azimuth.grid",
 
 
 ```{r fig_array_tilt, fig.cap="PV-array tilt for alternative tracking systems", echo=FALSE}
-gif_file <- "../images/fig.array.tilt.grid_720x544_5fps.gif"
+gif_file <- "images/fig.array.tilt.grid_720x544_5fps.gif"
 if (file.exists(gif_file)) include_graphics(gif_file)
 
 ```
 
 
 ```{r fig_array_azimuth_N, fig.cap="PV-array azimuth_N (facing North) by tracking systems", echo=FALSE}
-gif_file <- "../images/fig.array.azimuth_N.grid_720x544_5fps.gif"
+gif_file <- "images/fig.array.azimuth_N.grid_720x544_5fps.gif"
 if (file.exists(gif_file)) include_graphics(gif_file)
 
 ```
 
 
 ```{r fig_array_azimuth_Q, fig.cap="PV-array azimuth_Q (facing Equator) by tracking systems", echo=FALSE, include=FALSE}
-gif_file <- "../images/fig.array.azimuth_Q.grid_720x544_5fps.gif"
+gif_file <- "images/fig.array.azimuth_Q.grid_720x544_5fps.gif"
 if (file.exists(gif_file)) include_graphics(gif_file)
 
 ```
@@ -545,7 +549,7 @@ gif_merra(x, FUN = "fig.AOI.grid", dirname = "images", fps = 5,
 
 
 ```{r fig_AOI, fig.cap="PV-array position for alternative tracking systems", echo=FALSE}
-gif_file <- "../images/fig.AOI.grid_720x544_5fps.gif"
+gif_file <- "images/fig.AOI.grid_720x544_5fps.gif"
 if (file.exists(gif_file)) include_graphics(gif_file)
 
 ```
@@ -786,14 +790,30 @@ for (i in lids) {
 ```
 </details>
 
-```{r, fig.height=8.5, fig.width=6, fig.cap="Comparison of POA estimates (merra2ools vs. PVWatts 6) for different types of PV arrays", echo=FALSE}
-library("EBImage")
-fld <- "../images/poa_pvwatts_merra"
+<!-- ```{r} -->
+<!-- getwd() -->
+<!-- ``` -->
 
-# imgs <- paste0("../images/poa_pvwatts_merra/", sample(list.files(fld), 5))
-imgs <- paste0("../images/poa_pvwatts_merra/", list.files(fld))
+```{r, echo=FALSE}
+fig_file <- "images/poa_pvwatts_merra/poa_pvwatts_vs_merra2_locid_054669.png"
+include_graphics(fig_file)
+```
+
+<details>
+  <summary>code</summary>
+See <https://github.com/energyRt/merra2ools/tree/master/vignettes/images/poa_pvwatts_merra> for comparison in other locations.
+```{r, fig.height=8.5, fig.width=6, fig.cap="Comparison of POA estimates (merra2ools vs. PVWatts 6) for different types of PV arrays", echo=FALSE}
+# remotes::install_bioc("EBImage")
+library("EBImage")
+fld <- "images/poa_pvwatts_merra"
+
+# imgs <- paste0("images/poa_pvwatts_merra/", sample(list.files(fld), 5))
+imgs <- paste0("images/poa_pvwatts_merra/", list.files(fld))
 display(readImage(imgs), method = "browser")
 ```
+</details>
+
+
 
 ## Refferences
 ...

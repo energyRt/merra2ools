@@ -9,6 +9,17 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+## Rebuild website
+```{r}
+# library(knitr)
+# library(rmarkdown)
+# options(rmarkdown.html_vignette.check_title = FALSE)
+# getOption("rmarkdown.html_vignette.check_title")
+pkgdown::build_site()
+
+```
+
+
 ## Developing log (do not run)
 ```{r, eval=FALSE}
 usethis::use_agpl3_license()

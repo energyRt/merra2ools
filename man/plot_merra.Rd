@@ -55,7 +55,7 @@ plot_merra(
 \item{...}{}
 }
 \description{
-Quick plots of wind speed and its dynamics
+The function is in progress, will be included in the package release.
 }
 \examples{
 NA

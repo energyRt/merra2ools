@@ -48,8 +48,23 @@ cluster_locid(
 \item{...}{additional parameters to pass to `TSdist::KMedoids`, might be required for some distance measures.}
 }
 \value{
-`data.frame` of spatial identifiers (`locid`, `groups` if set) and estimated `clusters`.
+`data.frame` with alternative number of clusters with columns:
+\describe{
+  \item{k}{Number of clusters}
+  \item{N}{Total number of time series}
+  \item{locid}{location identifier in `merra2ools` datasets}
+  \item{"group"}{(if provided) column with locid-groups}
+  \item{cluster}{cluster number in every `k`-group}
+  \item{weight}{weight of the cluster in the `k`-group}
+  \item{sd_N}{standard deviation of the whole sample of (N) time-series}
+  \item{sd_k}{standard deviation of clustered time series with `k` clusters}
+  \item{sd_loss}{loss of standard deviation as result of clusterisation, for each `k`}
+ }
 }
 \description{
 Spatial clustering based on correlation or other metrics.
+}
+\examples{
+# see "Cluster locations" in "Get started" 
+
 }

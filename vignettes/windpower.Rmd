@@ -9,6 +9,7 @@ vignette: >
 ---
 
 ```{r, include = FALSE}
+options(rmarkdown.html_vignette.check_title = FALSE)
 library(knitr)
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -20,10 +21,8 @@ knitr::opts_chunk$set(fig.width = 6, fig.height = 4, fig.align = "center")
 ```{r setup, echo=TRUE, warning=FALSE, message=FALSE}
 library(merra2ools)
 library(merra2sample)
-# library(merra2sample)
 library(tidyverse)
 library(data.table)
-# library(kableExtra)
 ```
 
 ## Wind speed extrapolation
@@ -41,7 +40,8 @@ summary(dat$h) # check basic statistics
 
 ```{r, echo=FALSE}
 kableExtra::kbl(
-  head(dat), caption = "MERRA-2 subset with estimated Hellmann exponent (h)") %>% 
+  head(dat), 
+  caption = "MERRA-2 subset with estimated Hellmann exponent (h)") %>% 
   kableExtra::kable_styling(position = "center")
 
 ```
@@ -50,8 +50,8 @@ kableExtra::kbl(
 <details>
   <summary>Figure code</summary>
 ```{r}
-(h_mean <- mean(dat$h))
-(h_median <- median(dat$h))
+(h_mean = mean(dat$h))
+(h_median = median(dat$h))
 
 # .GeomVline_draw_key <- GeomVline$draw_key
 GeomVline$draw_key <- GeomHline$draw_key # adjusting legend
@@ -141,14 +141,14 @@ dat2 <- select(dat, UTC, locid, w10, w50, w100, w200) %>%
 
 <details>
   <summary>Figure code</summary>
-```{r, eval=FALSE}
-gif_merra(dat2, "w50", 1, fps = 12, filename = "merra_wind_50m_12fps.gif")
+```{r, eval=FALSE, include=FALSE, echo=FALSE}
+gif_merra(dat2, name = "w50", 1, fps = 12, filename = "merra_wind_50m_12fps.gif", dirname = "tmp")
 
 ```
 </details>
 
 ```{r, fig.cap="Wind speed at 50 meters height, m/s", echo=FALSE}
-gif1 <- "../images/merra_wind_50m_12fps.gif"
+gif1 <- "images/merra_wind_50m_12fps.gif"
 if (file.exists(gif1)) include_graphics(gif1)
 
 ```
@@ -210,7 +210,7 @@ gif_merra(dat2, "af50", 1, limits = c(0, 1), fps = 12,
 
 
 ```{r, fig.cap="Hourly capacity factor for a generic wind turbine with 50 meters hub height.", echo=FALSE}
-gif2 <- "../images/merra_wind_af50_12fps.gif"
+gif2 <- "images/merra_wind_af50_12fps.gif"
 if (file.exists(gif2)) include_graphics(gif2)
 
 ```

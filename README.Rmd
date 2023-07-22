@@ -14,11 +14,27 @@ knitr::opts_chunk$set(
 
 # merra2ools
 
-
 (UNDER CONSTRUCTION)
 
 manuals: <https://energyRt.github.io/merra2ools/>   
 dataset: <https://doi.org/10.5061/dryad.v41ns1rtt>   
+
+## Installation
+```{r, eval=FALSE}
+remotes::install_github("energyRt/merra2ools")
+remotes::install_github("energyRt/merra2sample") # optional - example dataset
+```
+
+Download datasets from <https://doi.org/10.5061/dryad.v41ns1rtt> to a local folder. It is not required to download all the data, but it is suggested to download at least for one full year (12 months). 
+
+```{r, eval=FALSE}
+library(merra2ools)
+# link the package with the downloaded data
+set_merra2_options(merra2.dir = "PATH TO THE DOWNLOADED DATA")
+get_merra2_dir()  # check if the path is saved
+check_merra2(detailed = T)
+```
+See <https://energyrt.github.io/merra2ools/articles/merra2ools.html> or `vignette("merra2ools", "merra2ools") for details.  
 
 ## Overview
 
@@ -58,20 +74,21 @@ The *merra2ools* package includes:
   - long term summary statistics of the provided time series for purpose of clustering and aggregation in further modeling and analytics.  
 
 ## Solar Power
-The package reproduces basic algorithms of solar geometry, irradiance decomposition, and the Plane-Of-Array models for different types of solar PV trackers.  
+The package reproduces basic algorithms of solar geometry, irradiance decomposition, and the Plane-Of-Array models for different types of solar PV trackers. See <https://energyrt.github.io/merra2ools/articles/solarpower.html> or `vignette("solarpower", package = "merra2ools")` for details.  
 
 ```{r, fig.cap="", echo=FALSE}
-fig_file <- "images/ghi_40y_avr_24steps.png"
+fig_file <- "man/figures/ghi_40y_avr_24steps.png"
 include_graphics(fig_file)
 ```
 
 ## Wind power  
-
+See <https://energyrt.github.io/merra2ools/articles/windpower.html> or `vignette("windpower", package = "merra2ools")` for details.  
 ```{r, fig.cap="", echo=FALSE}
-fig_file <- "images/wind_50m_40y_avr_24steps.png"
+fig_file <- "man/figures/wind_50m_40y_avr_24steps.png"
 include_graphics(fig_file)
 ```
 
-## Additional time-series
+See <https://energyrt.github.io/merra2ools/articles/merra2.html> or `vignette("merra2", package = "merra2ools")` for all included timeseries.  
 
-## References
+
+
