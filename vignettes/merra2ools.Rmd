@@ -19,7 +19,7 @@ library(knitr)
 ```
 
 ## Installation
-**merra2ools** is package for [R](https://www.r-project.org/) and a dataset. It is assumed that R version >=4.0 is pre-installed. ([`Rtools`](https://cran.r-project.org/bin/windows/Rtools/) is also required on Windows to build this and several other packages from source or GitHub). It is also recommended (though it is not required) to use [RStudio](https://www.rstudio.com/products/rstudio/download/) or other IDE for R. `merra2ools` depends on several R-packages which (if not yet available on your system) will be installed along with the `merra2ools` installation (see the package [DESCRIPTION](https://github.com/energyRt/merra2ools/blob/master/DESCRIPTION) for details). The package also requires its dataset to be downloaded separately from the installation of the package (see below). Though `merra2ools` package can operate without the dataset (for estimation capacity factors, solar geometry, etc.), the supplied data should be formatted in the same way as it is expected by the package functions.   
+**merra2ools** is an [R](https://www.r-project.org/) library and a dataset. It is assumed that R version >=4.0 is pre-installed. ([`Rtools`](https://cran.r-project.org/bin/windows/Rtools/) is also required on Windows to build this and several other packages from source or GitHub). It is also recommended (though it is not required) to use [RStudio](https://www.rstudio.com/products/rstudio/download/) or other IDE for R. `merra2ools` depends on several R-packages which (if not yet available on your system) will be installed along with the `merra2ools` installation (see the package [DESCRIPTION](https://github.com/energyRt/merra2ools/blob/master/DESCRIPTION) for details). The package also requires its dataset to be downloaded separately from the installation of the package (see below). Though `merra2ools` package can operate without the dataset (for estimation capacity factors, solar geometry, etc.), the supplied data should be formatted in the same way as it is expected by the package functions.   
 \    
 **merra2sample** is 12-days example of the the `merra2ools` subset (41 years), 21st-day of each month of 2010. It can installed directly from GitHub, and used for quick checks of the data and its format; it is also used to build vignettes (articles) of `merra2ools` package. Since the example dataset has considerable size for R-packages (~0.5Gb) and mostly repeats the main dataset, it is saved as a separate package.  
 
@@ -34,6 +34,7 @@ if (!("rnaturalearthhires" %in% pkg()))
   devtools::install_github("ropensci/rnaturalearthhires")
 if (!("scales" %in% pkg())) install.packages("scales")
 if (!("cowplot" %in% pkg())) install.packages("cowplot")
+if (!("kableExtra" %in% pkg())) install.packages("kableExtra")
 ```
 
 **`merra2ools` dataset** (~270Gb) can be downloaded from [https://doi.org/10.5061/dryad.v41ns1rtt](https://doi.org/10.5061/dryad.v41ns1rtt), unziped in a dedicated directory on an internal or external hard-drive, and configured as described below.  
@@ -43,9 +44,9 @@ Loading packages used in the vignette.
 ```{r setup, eval=T, results=FALSE, warning=F, message=FALSE}
 library(tidyverse)
 library(merra2ools)
-library(sp)
 library(sf)
 library(cowplot)
+library(kableExtra)
 ```
 
 Checking if the dataset is connected.
@@ -55,8 +56,8 @@ check_merra2()
 
 Connecting the dataset (if not yet connected)
 ```{r, eval=FALSE}
-check_merra2("RAPLACE WITH PATH TO THE DOWNLOADED DATA") # check if the data in the directory
-set_merra2_options(merra2.dir = "RAPLACE WITH PATH TO THE DOWNLOADED DATA") # safe the path
+check_merra2("PATH TO THE DOWNLOADED DATA") # check if the data in the directory
+set_merra2_options(merra2.dir = "PATH TO THE DOWNLOADED DATA") # safe the path
 get_merra2_dir()  # check if the path is saved
 check_merra2(detailed = T)
 ```
@@ -69,8 +70,6 @@ x <- read_merra_file("202012", as_integers = TRUE)
 ```
 
 ```{r, echo=FALSE}
-if (!("kableExtra" %in% pkg())) install.packages("kableExtra")
-library(kableExtra)
 kable(x[1:5,], caption = "Subset of raw data (as integers)") %>%
   kable_styling(font_size = 8, full_width = T) %>%
   column_spec(1, width_min = "11em", background = "lightgrey") %>%
@@ -106,7 +105,7 @@ kable(rbind(locid[1:3,], locid[207934:207936,]),
 ```
 
 <details><summary>code</summary>
-```{r, eval=FALSE}
+```{r, eval=FALSE, warning=FALSE, message=FALSE}
 lon <- unique(locid$lon)
 head(lon, 10)
 length(lon)
@@ -119,13 +118,10 @@ lo <- unique(c(seq(-180, max(lon), by = 30), max(lon))) %>% sort()
 la <- seq(-90, 90, by = 15)
 
 locid_sample <- filter(locid, lon %in% lo, lat %in% la)
-world_map <- rnaturalearth::ne_countries(scale = "small", returnclass = "sp")
-world_map <- fortify(world_map) %>% as_tibble()
+world_map <- rnaturalearth::ne_countries(scale = "small", returnclass = "sf")
 
 fig.locid <- ggplot() + 
-  geom_map(data = world_map, map = world_map, 
-           aes(x = long, y = lat, map_id = id), 
-           fill = "wheat", alpha = .75, colour = NA, size = 0.25) +
+  geom_sf(fill = "wheat", alpha = .75, colour = NA, size = 0.25, data = world_map) +
   theme_bw() +
   geom_rect(aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax),
     data = data.frame(xmin = -180, xmax = 180, ymin = -90, ymax = 90),
@@ -138,18 +134,20 @@ fig.locid <- ggplot() +
   scale_x_continuous(breaks = ceiling(lo), minor_breaks = ceiling(lo)) +
   scale_y_continuous(breaks = round(la), minor_breaks = ceiling(la)) + 
   labs(x = "lon") +
+  coord_sf(xlim = c(-190, 190), ylim = c(-95, 95)) +
   # labs(x = "lon", title = "Location ID (`locid`) layout of MERRA-2 subset") +
-  theme(plot.title = element_text(hjust = 0.5)) + 
-  coord_fixed(1.)
+  theme(plot.title = element_text(hjust = 0.5),
+        axis.text = element_text(family = 'arial'))
 
-ggsave("images/locid_map.png", fig.locid, width = 9, height = 5.)
+ggsave("images/locid_map2.png", fig.locid, width = 9, height = 5.)
 
 ```
 </details>
 
 ```{r fig_MERRA_locid, fig.cap="locid_map", echo=FALSE}
-fig_file <- "../images/locid_map.png"
-if (file.exists(fig_file)) include_graphics(fig_file)
+fig_file <- "images/locid_map.png"
+# if (file.exists(fig_file)) 
+include_graphics(fig_file)
 ```
 
 ## Matching `locid` with a map  
@@ -164,31 +162,30 @@ Three examples below compare subsetting with the two methods for three different
 ### Example 1. Florida, USA   
 ```{r, results=F, eval=FALSE}
 # US-map
-usa_sp <- rnaturalearth::ne_states(iso_a2 = "us")
+usa_sf <- rnaturalearth::ne_states(iso_a2 = "us", returnclass = "sf")
 
-# Subset Florida map (keep two formats - `spdf` and `sf`)
-florida_sp <- usa_sp[usa_sp$name_en == "Florida",]
-florida_sf <- st_as_sf(florida_sp[, "name"])
+# Subset Florida map
+florida_sf <- usa_sf[usa_sf$name_en == "Florida",]
 
 # location IDs, two methods
-locid_fl_p <- get_locid(florida_sp, method = "points")
-locid_fl_i <- get_locid(florida_sp, method = "intersect")
+locid_fl_p <- get_locid(florida_sf, method = "points")
+locid_fl_i <- get_locid(florida_sf, method = "polygons")
 
 # MERRA-2 grid for the selected `locid's`
-locid_fl_grid <- getGrid("poly", locid = locid_fl_i)
-# locid_fl_sp <- get_locid(florida_sp, return_sp = T)
+locid_fl_grid <- get_merra2_grid("poly", locid = locid_fl_i)
 
-# Plots
-png("images/example1_florida_locids.png", width = 5, height = 5, units = "in", res = 200)
-sp::plot(florida_sp, axes = T, col = "wheat")
-sp::plot(locid_fl_grid, add = T, border = "darkgrey")
-points(locid$lon[locid_fl_p], locid$lat[locid_fl_p], col = "red", pch = 16)
-points(locid$lon[locid_fl_i], locid$lat[locid_fl_i], col = "red", pch = 1)
-dev.off()
+# Plot
+a <- ggplot() +
+  geom_sf(data = florida_sf, fill = "wheat") +
+  geom_sf(data = locid_fl_grid, color = "darkgrey", fill = NA) +
+  geom_point(aes(lon, lat), data = locid[locid_fl_p,], color = "red", shape = 16) +
+  geom_point(aes(lon, lat), data = locid[locid_fl_i,], color = "red", shape = 1) +
+  theme_bw() + labs(x = "", y = "")
+ggsave("images/example1_florida_locids.png", a, width = 5, height = 5)
 ```
 
 ```{r fig_florida_locid, fig.cap="MERRA-2 locations for Florida", echo=FALSE}
-fig_file <- "../images/example1_florida_locids.png"
+fig_file <- "images/example1_florida_locids.png"
 if (file.exists(fig_file)) include_graphics(fig_file)
 ```
 
@@ -198,30 +195,29 @@ if (file.exists(fig_file)) include_graphics(fig_file)
 <details><summary>code</summary>
 ```{r, results=F, eval=FALSE}
 # Map
-# iceland_sp <- rnaturalearth::ne_states(country = "iceland")
-iceland_sp <- rnaturalearth::ne_countries(country = "iceland", scale = "large")
-iceland_sf <- st_as_sf(iceland_sp[, "name"])
+iceland_sf <- rnaturalearth::ne_countries(country = "iceland", scale = "large",
+                                          returnclass = "sf")
 
-str(iceland_sp@data)
 # location IDs, two methods
-locid_isl_p <- get_locid(iceland_sp, method = "points")
-locid_isl_i <- get_locid(iceland_sp, method = "intersect")
+locid_isl_p <- get_locid(iceland_sf, method = "points")
+locid_isl_i <- get_locid(iceland_sf, method = "poly")
 
 # MERRA-2 grid for the selected `locid's`
-locid_isl_grid <- getGrid("poly", locid = locid_isl_i)
+locid_isl_grid <- get_merra2_grid("poly", locid = locid_isl_i)
 
 # Plots
-png("images/example2_iceland_locids.png", width = 5, height = 5, units = "in", res = 200)
-sp::plot(iceland_sp, axes = T, col = "wheat")
-sp::plot(locid_isl_grid, add = T, border = "darkgrey")
-points(locid$lon[locid_isl_p], locid$lat[locid_isl_p], col = "red", pch = 16)
-points(locid$lon[locid_isl_i], locid$lat[locid_isl_i], col = "red", pch = 1)
-dev.off()
+a <- ggplot() +
+  geom_sf(data = iceland_sf, fill = "wheat") +
+  geom_sf(data = locid_isl_grid, color = "darkgrey", fill = NA) +
+  geom_point(aes(lon, lat), data = locid[locid_isl_p,], color = "red", shape = 16) +
+  geom_point(aes(lon, lat), data = locid[locid_isl_i,], color = "red", shape = 1) +
+  theme_bw() + labs(x = "", y = "")
+ggsave("images/example2_iceland_locids.png", a, width = 5, height = 5)
 ```
 </details>
 
 ```{r fig_iceland_locid, fig.cap="MERRA-2 locations for Iceland", echo=FALSE}
-fig_file <- "../images/example2_iceland_locids.png"
+fig_file <- "images/example2_iceland_locids.png"
 if (file.exists(fig_file)) include_graphics(fig_file)
 ```
 
@@ -231,30 +227,29 @@ if (file.exists(fig_file)) include_graphics(fig_file)
 <details><summary>code</summary>
 ```{r, results=F, eval=FALSE}
 # Map
-# kenya_sp <- rnaturalearth::ne_states(country = "kenya")
-kenya_sp <- rnaturalearth::ne_countries(country = "kenya", scale = "large")
-kenya_sf <- st_as_sf(kenya_sp[, "name"])
+kenya_sf <- rnaturalearth::ne_countries(country = "kenya", returnclass = "sf")
 
 # location IDs, two methods
-locid_ken_p <- get_locid(kenya_sp, method = "points")
-locid_ken_i <- get_locid(kenya_sp, method = "intersect")
+locid_ken_p <- get_locid(kenya_sf, method = "points")
+locid_ken_i <- get_locid(kenya_sf, method = "poly")
 
 # MERRA-2 grid for the selected `locid's`
-locid_ken_grid <- getGrid("poly", locid = locid_ken_i)
+locid_ken_grid <- get_merra2_grid("poly", locid = locid_ken_i)
 
-# Plots
-png("images/example3_kenya_locids.png", width = 5, height = 5, units = "in", res = 200)
-sp::plot(kenya_sp, axes = T, col = "wheat", main = "Kenya")
-sp::plot(locid_ken_grid, add = T, border = "darkgrey")
-points(locid$lon[locid_ken_p], locid$lat[locid_ken_p], col = "red", pch = 16, cex = .75)
-points(locid$lon[locid_ken_i], locid$lat[locid_ken_i], col = "red", pch = 1, cex = .75)
-dev.off()
+# Plot
+a <- ggplot() +
+  geom_sf(data = kenya_sf, fill = "wheat") +
+  geom_sf(data = locid_ken_grid, color = "darkgrey", fill = NA) +
+  geom_point(aes(lon, lat), data = locid[locid_ken_p,], color = "red", shape = 16) +
+  geom_point(aes(lon, lat), data = locid[locid_ken_i,], color = "red", shape = 1) +
+  theme_bw() + labs(x = "", y = "")
+ggsave("images/example3_kenya_locids.png", a, width = 5, height = 5)
 ```
 </details>
 
 
 ```{r fig_kenya_locid, fig.cap="MERRA-2 locations for Kenya", echo=FALSE}
-fig_file <- "../images/example3_kenya_locids.png"
+fig_file <- "images/example3_kenya_locids.png"
 if (file.exists(fig_file)) include_graphics(fig_file)
 ```
 
@@ -283,8 +278,92 @@ merra_fl <- fWindCF(merra_fl, height = 150)
 win_fl_y <- merra_fl %>% # annual averages
   group_by(locid) %>%
   summarise(win150af = mean(win150af, na.rm = T)) %>%
-  add_coord()
+  add_merra2_grid() 
+
 ```
+
+### Cluster locations
+We can also cluster locations based on correlation of certain timeseries across locations. 
+```{r, eval=FALSE}
+# Cluster locations based on correlation
+win_fl_cl <- cluster_locid(
+  merra_fl, 
+  varname = "win150af",
+  locid_info = locid_fl_grid, 
+  max_loss = .05,
+  verbose = T)
+
+
+tol_level <- .10 # 10%
+# tol_level <- .05 # 5%
+
+# Select clusters with {tol_level}% tolerance (loss of standard deviation) 
+win_fl_cl_k <- win_fl_cl %>% 
+    filter(sd_loss <= tol_level) %>% 
+    mutate(k_min = (k == min(k))) %>% ungroup() %>% 
+    filter(k_min) %>% select(-k_min) 
+```
+
+<details><summary>code</summary>
+```{r, eval=FALSE}
+# Cluster-loss figure
+win_fl_cl_kk <- win_fl_cl %>%
+  group_by(k) %>%
+  summarise(sd_loss = max(sd_loss), N = max(N), .groups = "drop")
+
+locid_win_cl_k_i <- win_fl_cl_k %>%
+  group_by(k) %>%
+  summarise(sd_loss = max(sd_loss), N = max(N), .groups = "drop")
+
+a <- ggplot(win_fl_cl_kk) +
+  geom_line(aes(k, sd_loss), color = "dodgerblue", linewidth = 1.5) +
+  geom_point(aes(k, sd_loss), color = "red", data = locid_win_cl_k_i) +
+  geom_hline(yintercept = tol_level, color = "red", linetype = 2) +
+  scale_y_continuous(labels = scales::percent, limits = c(0, NA)) +
+  # scale_x_continuous(breaks = rev_integer_breaks(5)) +
+  labs(x = "Number of clusters (k)", y = "loss, % of s.d.") +
+  theme_bw()
+ggsave("images/example1_florida_wind_clusters.png", a, width = 4.5, 
+       height = 3)
+```
+</details>
+
+
+```{r fig_fl_win_cl, fig.cap="Loss of information as a function of number of clusters", echo=FALSE}
+fig_file <- "images/example1_florida_wind_clusters.png"
+if (file.exists(fig_file)) include_graphics(fig_file)
+```
+
+<details><summary>code</summary>
+```{r, eval=FALSE}
+win_fl_cl_sf <- locid_fl_grid %>%
+  st_make_valid() %>%
+  left_join(
+    select(win_fl_cl_k, any_of(c("locid", "cluster")))
+    ) %>%
+  filter(!is.na(cluster)) %>%
+  mutate(cluster = factor(cluster))
+
+a <- ggplot(win_fl_cl_sf) +
+  geom_sf(fill = "lightgrey", data = florida_sf) +
+  geom_sf(aes(fill = cluster), color = NA) +
+  geom_sf(color = alpha("black", 1), fill = NA, data = florida_sf) +
+  scale_fill_viridis_d(option = "H", direction = 1, name = "Cluster") +
+  labs(title = paste0("Clustered wind sites by region",
+                      ", sd_loss <= ", tol_level * 100, "%")) +
+  theme_bw()
+a
+ggsave("images/example1_florida_wind_clusters_map.png", a, 
+       width = 5, height = 5)
+```
+</details>
+
+Based on the clustering of the hourly time series, combining 73 wind capacity factors into 7 clusters will result in loss of standard deviation less than 10%.
+```{r fig_fl_win_cl_map, fig.cap="Clustered location based on correlation of wind capacity factors", echo=FALSE}
+fig_file <- "images/example1_florida_wind_clusters_map.png"
+if (file.exists(fig_file)) include_graphics(fig_file)
+```
+
 
 Do the same for other examples - Iceland and Kenya.  
 <details><summary>code</summary>
@@ -297,7 +376,7 @@ merra_isl <- fWindCF(merra_isl, height = 150)
 win_isl_y <- merra_isl %>% # annual averages
   group_by(locid) %>%
   summarise(win150af = mean(win150af, na.rm = T)) %>%
-  add_coord()
+  add_merra2_grid() 
 ```
 
 **Kenya**
@@ -309,7 +388,7 @@ merra_ken <- fWindCF(merra_ken, height = 150)
 win_ken_y <- merra_ken %>% 
   group_by(locid) %>%
   summarise(win150af = mean(win150af, na.rm = T)) %>%
-  add_coord()
+  add_merra2_grid() 
 ```
 </details>
 
@@ -323,8 +402,7 @@ merra_fl <- merra_fl %>% fPOA(array.type = "fl")
 poa_fl_y <- merra_fl %>%
   group_by(locid) %>%
   summarise(POA.fl = sum(POA.fl, na.rm = T)/365/1e3) %>%
-  add_coord() %>%
-  as_tibble()
+  add_merra2_grid() 
 ```
 
 Repeat for other examples.  
@@ -338,8 +416,7 @@ merra_isl <- merra_isl %>% fPOA(array.type = "fl")
 poa_isl_y <- merra_isl %>%
   group_by(locid) %>%
   summarise(POA.fl = sum(POA.fl, na.rm = T)/365/1e3) %>%
-  add_coord() %>%
-  as_tibble()
+  add_merra2_grid() 
 ```
 
 **Kenya**
@@ -351,8 +428,7 @@ merra_ken <- merra_ken %>% fPOA(array.type = "fl")
 poa_ken_y <- merra_ken %>%
   group_by(locid) %>%
   summarise(POA.fl = sum(POA.fl, na.rm = T)/365/1e3) %>%
-  add_coord() %>%
-  as_tibble()
+  add_merra2_grid() 
 ```
 
 **Comparative figure**   
@@ -375,15 +451,18 @@ cf_plot <- function(
   labels = brakes, limits = range(brakes), legend_name = var_name,
   viridis_palette = "viridis", border_colour = alpha("white", .5),
   legend_position = "none") {
+  
   ggplot() +
-    geom_tile(aes_string("lon", "lat", fill = var_name), data = data) +
-    scale_fill_viridis_c(
-      breaks = brakes, labels = labels, limits = limits, name = legend_name,
-      option = viridis_palette) +
-    geom_sf(data = gis_sf, fill = NA, colour = border_colour) +
-    theme_bw() + theme(legend.position = legend_position) +
-    theme(plot.margin = margin(0.5, 0.0, 0.0, 0.0, "cm")) +
-    labs(x = "", y = "")
+  geom_sf(aes(fill = .data[[var_name]]), data = data) +
+  geom_sf(data = gis_sf, fill = NA, colour = border_colour) +
+  scale_fill_viridis_c(
+    breaks = brakes, labels = labels, limits = limits, name = legend_name,
+    option = viridis_palette) +
+  theme_bw() + 
+    theme(legend.position = legend_position) +
+  theme(plot.margin = margin(0.5, 0.0, 0.0, 0.0, "cm")) +
+  labs(x = "", y = "")
+
 }
 
 # Combine plots into one
@@ -398,7 +477,7 @@ plot_grid(
   cf_plot(poa_ken_y, kenya_sf, "POA.fl", poa_breaks, viridis_palette = "plasma",
           legend_position = "right", legend_name = "POA\nkW/day"),
   # rel_heights = c(1, -.3, 1),
-  ncol = 3, rel_widths = c(1, 1.25, 1.23),
+  ncol = 3, rel_widths = c(1, 1.3, 1.17),
   labels = c("Florida", "Iceland", "Kenya"), hjust = c(-1.6, -1.9, -1.6)
 )
 ggsave2("images/cf_group.png", width = 8, height = 5, dpi = 200)
@@ -408,7 +487,7 @@ ggsave2("images/cf_group.png", width = 8, height = 5, dpi = 200)
 
 
 ```{r fig_cf_group, fig.cap="Wind power capacity factors (CF) and Solar irradiance on Plane of Array (POA) by regions", echo=FALSE}
-fig_file <- "../images/cf_group.png"
+fig_file <- "images/cf_group.png"
 if (file.exists(fig_file)) include_graphics(fig_file)
 ```
 
@@ -424,9 +503,10 @@ prec_ken_m <- merra_ken %>%
   group_by(locid, year, month, month_name) %>%
   summarise(
     PRECTOTCORR = sum(PRECTOTCORR, na.rm = T),
-    T10M = mean(T10M)) %>%
-  add_coord() %>%
-  as_tibble()
+    T10M = mean(T10M),
+    .groups = "drop"
+    ) %>%
+  add_merra2_grid()
 ```
 
 <details><summary>code</summary>
@@ -440,32 +520,32 @@ cf_plot(prec_ken_m, kenya_sf, "PRECTOTCORR", brakes = pre_breaks, legend_positio
   facet_wrap(.~month)
 
 ggplot(prec_ken_m) +
-  geom_tile(aes(lon, lat, fill = PRECTOTCORR)) + 
+  geom_sf(aes(fill = PRECTOTCORR)) + 
   scale_fill_distiller(palette = "YlGnBu", direction = 1, name = "mm /\nmonth") +
   facet_wrap(.~month_name) + 
   geom_sf(data = kenya_sf, fill = NA, colour = alpha("black", .5)) +
   theme_bw() + labs(x = "", y = "")
-ggsave("images/precipitation_m_kenya.png", scale = 1.5)
+ggsave("images/precipitation_m_kenya.png", scale = 1.5, width = 5, height = 5)
 
 ggplot(prec_ken_m) +
-  geom_tile(aes(lon, lat, fill = T10M)) + 
+  geom_sf(aes(fill = T10M)) + 
   scale_fill_distiller(palette = "Spectral", direction = -1, name = "\u00B0C") +
   facet_wrap(.~month_name) + 
   geom_sf(data = kenya_sf, fill = NA, colour = alpha("black", .5)) +
   theme_bw()
-ggsave("images/temperature_m_kenya.png", scale = 1.5)
+ggsave("images/temperature_m_kenya.png", scale = 1.5, width = 5, height = 5)
 ```
 </details>
 
 ```{r fig_prec_ken, fig.cap="Precipitation by month in Kenya (2019), millimeters / hour (kg/m^2/hour)", echo=FALSE}
-fig_file <- "../images/precipitation_m_kenya.png"
+fig_file <- "images/precipitation_m_kenya.png"
 if (file.exists(fig_file)) include_graphics(fig_file)
 ```
 
 ## Air temperature by months   
 
 ```{r fig_temp_ken, fig.cap="Average monthly temperature in Kenya (2019), \u00B0C)", echo=FALSE}
-fig_file <- "../images/temperature_m_kenya.png"
+fig_file <- "images/temperature_m_kenya.png"
 if (file.exists(fig_file)) include_graphics(fig_file)
 ```
 

@@ -35,9 +35,6 @@ ghi_decomposition(
 
 \item{verbose}{}
 }
-\value{
-
-}
 \description{
 Irradiance decomposition
 }

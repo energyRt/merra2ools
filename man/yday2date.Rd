@@ -13,9 +13,6 @@ yday2date(yday, year = 2010, tz = "UTC")
 
 \item{tz}{character time zone name}
 }
-\value{
-
-}
 \description{
 Convert the day of the year to
 }

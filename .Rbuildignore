@@ -7,3 +7,7 @@
 ^doc$
 ^Meta$
 ^\.httr-oauth$
+^dev$
+^tmp$
+^LICENSE\.md$
+^data-raw$

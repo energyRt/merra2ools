@@ -2,34 +2,23 @@
 % Please edit documentation in R/locid.R
 \name{get_locid}
 \alias{get_locid}
-\title{Get MERRA-2 grid IDs that overlay or intersect with given spatial object}
+\title{Get MERRA-2 grid IDs which overlaps with the given spatial object}
 \usage{
-get_locid(sp, method = "intersect", return_sp = FALSE, projString = NULL)
+get_locid(
+  x,
+  method = "polygons",
+  add_poles_points = F,
+  return_grid = FALSE,
+  ...
+)
 }
 \arguments{
-\item{sp}{a map-object of class SpatialPolygons or SpatialPolygonsDataFrame}
+\item{x}{spatial (`sf`) object. Expected CRS is `EPSG:4326`, if different, it will be attempted to transform the grid to CRS of `x`, though intersection algorithms may not work well for some projections. Use `sf::st_transform(x, "EPSG:4326")` and `sf::st_make_valid(x)` to transform and correct geometries.}
 
-\item{method}{character, "points" or "intersect", matching spatial points with polygons or intersection of polygons respectively}
+\item{method}{character, "polygons" (default) or "points" grid to use in `sf::st_intersects` method.}
 
-\item{return_sp}{logical, if TRUE, Spatial object will be returned}
-
-\item{projString}{projection string for return object (in the case of return_sp = TRUE)}
-}
-\value{
-when return_sp = FALSE, an integer vector with location IDs (locid) is returned
+\item{...}{ignored}
 }
 \description{
-Get MERRA-2 grid IDs that overlay or intersect with given spatial object
-}
-\examples{
-iceland_sp <- rnaturalearth::ne_states(country = "iceland")
-lid2_sp <- get_locid(iceland_sp, method = "intersect", return_sp = TRUE)
-sp::plot(lid2_sp, col = "wheat", axes = TRUE, main = "Iceland")
-lid1 <- get_locid(iceland_sp, method = "points")
-lid2 <- get_locid(iceland_sp, method = "intersect", )
-lid1_df <- getGrid(locid = lid1, class = "df")
-lid2_df <- getGrid(locid = lid2, class = "df")
-points(lid2_df$lon, lid2_df$lat, col = "red")
-points(lid1_df$lon, lid1_df$lat, col = "red", pch = 16)
-
+Get MERRA-2 grid IDs which overlaps with the given spatial object
 }

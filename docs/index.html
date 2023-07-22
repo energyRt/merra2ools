@@ -27,6 +27,8 @@
 </script>
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -39,7 +41,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">merra2ools</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.03</span>
       </span>
     </div>
 
@@ -52,7 +54,7 @@
   <a href="reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -72,7 +74,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/energyRt/merra2ools/">
+  <a href="https://github.com/energyRt/merra2ools/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -89,123 +91,119 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="merra2ools" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#merra2ools" class="anchor"></a>merra2ools</h1></div>
+<div class="section level1">
+<div class="page-header"><h1 id="merra2ools">merra2ools<a class="anchor" aria-label="anchor" href="#merra2ools"></a>
+</h1></div>
 <p>(UNDER CONSTRUCTION)</p>
 <p>manuals: <a href="https://energyRt.github.io/merra2ools/" class="uri">https://energyRt.github.io/merra2ools/</a><br>
-dataset: <a href="https://doi.org/10.5061/dryad.v41ns1rtt" class="uri">https://doi.org/10.5061/dryad.v41ns1rtt</a></p>
-<div id="overview" class="section level2">
-<h2 class="hasAnchor">
-<a href="#overview" class="anchor"></a>Overview</h2>
-<p><em>merra2ools</em> package offers a set of tools and MERRA-2 data subset to evaluate hourly output potential of solar and wind energy sources, as well as precipitations for weather-dependent hydro power output. The goal of the project is to provide both - the dataset and algorithms to estimate potential output and so-called capacity factors for variable energy sources, used as an input data in energy system modeling and broader application. To keep the size of the database lower than 300Gb for online publication, the original subset of MERRA-2 time series have been minimally processed, rounded, and saved as scaled integers in highly compressed format provided by <a href="https://www.fstpackage.org/index.html"><code>fst</code></a> package.<br>
-The <em>merra2ools</em> dataset has 41 years (1980-2000) of the hourly time-series:</p>
-<ul>
-<li>
-<strong>UTC</strong> - date and time (key) in Coordinated Universal Time (UTC) timezone;<br>
-</li>
-<li>
-<strong>locid</strong> - location IDs (key), an index of locations in MERRA-2 dataset, from 1 to 207936;<br>
-</li>
-<li>
-<strong>W10M</strong> - 10-meter wind speed (calculated <code><a href="https://rdrr.io/r/base/MathFun.html">sqrt(V10M^2 + U10M^2)</a></code> where <code>V10M</code> and <code>U10M</code> are northward and eastward wind at 10-meter, m/s, rounded to the first decimal place);<br>
-</li>
-<li>
-<strong>W50M</strong> - 50-meter wind speed (calculated <code><a href="https://rdrr.io/r/base/MathFun.html">sqrt(V50M^2 + U50M^2)</a></code> where <code>V50M</code> and <code>U50M</code> are northward and eastward wind at 50-meter, m/s, rounded to the first decimal place);<br>
-</li>
-<li>
-<strong>WDIR</strong> - Direction of wind at 50-meter height (calculated <code><a href="https://rdrr.io/r/base/Trig.html">atan2(V50M/U50M)</a></code>, rounded to tens);<br>
-</li>
-<li>
-<strong>T10M</strong> - 10-meter air temperature (Celsius, rounded to the nearest integer);<br>
-</li>
-<li>
-<strong>SWGDN</strong> - Incident shortwave land (W/m^2, rounded to the nearest integer);<br>
-</li>
-<li>
-<strong>ALBEDO</strong> - Surface albedo (index <span class="math display">0, 1</span>, rounded to second decimal place);<br>
-</li>
-<li>
-<strong>PRECTOTCORR</strong> - Bias corrected total precipitation (kg/m^2/hour, rounded to the first decimal place);<br>
-</li>
-<li>
-<strong>RHOA</strong> - Air density at surface (kg/m^2, rounded to second decimal place).</li>
-</ul>
+dataset: <a href="https://doi.org/10.5061/dryad.v41ns1rtt" class="external-link uri">https://doi.org/10.5061/dryad.v41ns1rtt</a></p>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"energyRt/merra2ools"</span><span class="op">)</span></span>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"energyRt/merra2sample"</span><span class="op">)</span> <span class="co"># optional - example dataset</span></span></code></pre></div>
+<p>Download datasets from <a href="https://doi.org/10.5061/dryad.v41ns1rtt" class="external-link uri">https://doi.org/10.5061/dryad.v41ns1rtt</a> to a local folder. It is not required to download all the data, but it is suggested to download at least for one full year (12 months).</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://energyRt.github.io/merra2ools/">merra2ools</a></span><span class="op">)</span></span>
+<span><span class="co"># link the package with the downloaded data</span></span>
+<span><span class="fu"><a href="reference/merra2.html">set_merra2_options</a></span><span class="op">(</span>merra2.dir <span class="op">=</span> <span class="st">"PATH TO THE DOWNLOADED DATA"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/merra2.html">get_merra2_dir</a></span><span class="op">(</span><span class="op">)</span>  <span class="co"># check if the path is saved</span></span>
+<span><span class="fu"><a href="reference/merra2.html">check_merra2</a></span><span class="op">(</span>detailed <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span></code></pre></div>
+<p>See <a href="https://energyrt.github.io/merra2ools/articles/merra2ools.html" class="external-link uri">https://energyrt.github.io/merra2ools/articles/merra2ools.html</a> or `vignette(“merra2ools”, “merra2ools”) for details.</p>
+</div>
+<div class="section level2">
+<h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
+</h2>
+<p><em>merra2ools</em> is a dataset and R-package for evaluation of potential output of variable energy sources (VER) wind and solar energy globally, based on 40+ years of hourly MERRA-2 data. The primary purpose of the <code>merra2ools</code> R package is to provide a quick access to the MERRA-2 subset to energy modelers and analysts, sufficient for evaluation VER hourly potential. The database of relevant MERRA-2 indicators has been assembled and published on</p>
+<p>that offers data and tools to estimate</p>
+<p>long-term subset of</p>
+<p>that provides</p>
+<p>package offers a set of tools and MERRA-2 data subset to evaluate hourly output potential of solar and wind energy sources, as well as precipitations for weather-dependent hydro power output. The goal of the project is to provide both - the dataset and algorithms to estimate potential output and so-called capacity factors for variable energy sources, used as an input data in energy system modeling and broader application. To keep the size of the database lower than 300Gb for online publication, the original subset of MERRA-2 time series have been minimally processed, rounded, and saved as scaled integers in highly compressed format provided by <a href="https://www.fstpackage.org/index.html" class="external-link"><code>fst</code></a> package.<br>
+The <em>merra2ools</em> dataset has 41 years (1980-2000) of the hourly time-series:<br>
+- <strong>UTC</strong> - date and time (key) in Coordinated Universal Time (UTC) timezone;<br>
+- <strong>locid</strong> - location IDs (key), an index of locations in MERRA-2 dataset, from 1 to 207936;<br>
+- <strong>W10M</strong> - 10-meter wind speed (calculated <code>sqrt(V10M^2 + U10M^2)</code> where <code>V10M</code> and <code>U10M</code> are northward and eastward wind at 10-meter, m/s, rounded to the first decimal place);<br>
+- <strong>W50M</strong> - 50-meter wind speed (calculated <code>sqrt(V50M^2 + U50M^2)</code> where <code>V50M</code> and <code>U50M</code> are northward and eastward wind at 50-meter, m/s, rounded to the first decimal place);<br>
+- <strong>WDIR</strong> - Direction of wind at 50-meter height (calculated <code>atan2(V50M/U50M)</code>, rounded to tens);<br>
+- <strong>T10M</strong> - 10-meter air temperature (Celsius, rounded to the nearest integer);<br>
+- <strong>SWGDN</strong> - Incident shortwave land (W/m^2, rounded to the nearest integer);<br>
+- <strong>ALBEDO</strong> - Surface albedo (index [0,1], rounded to second decimal place);<br>
+- <strong>PRECTOTCORR</strong> - Bias corrected total precipitation (kg/m^2/hour, rounded to the first decimal place);<br>
+- <strong>RHOA</strong> - Air density at surface (kg/m^2, rounded to second decimal place).</p>
 <p>Representation of wind with three variables (<code>W10M</code>, <code>W50M</code>, <code>WDIR</code>) is the main difference from the original MERRA-2 data (<code>V10M</code>, <code>U10M</code>, <code>V50M</code>, <code>U50M</code>). This conversion reduces the size of the database and further computational burden of wind power capacity factors.</p>
 <p>All variables are hourly averages, UTC-time is given for a middle of every hour.</p>
-<p>The <em>merra2ools</em> package includes:</p>
-<ul>
-<li>MERRA-2 grid information and functions to match geo-locations with MERRA-2 grid;<br>
-</li>
-<li>functions to read and subset data from the compressed files (<code>fst</code> format);<br>
-</li>
-<li>functions and methods to evaluate solar photovoltaics hourly output/capacity factors;<br>
-</li>
-<li>functions and methods wind speed extrapolation for higher altitudes (50-200+ meters) and estimate wind power capacity factors;<br>
-</li>
-<li>functions to fetch data from NREL’s PVWatts model and the dataset by locations (with a goal of validation the POA model and the data);<br>
-</li>
-<li>functions and methods for “quick” figures and animated gif figures for instant evaluation of the data and the used methodology;<br>
-</li>
-<li>long term summary statistics of the provided time series for purpose of clustering and aggregation in further modeling and analytics.</li>
-</ul>
+<p>The <em>merra2ools</em> package includes:<br>
+- MERRA-2 grid information and functions to match geo-locations with MERRA-2 grid;<br>
+- functions to read and subset data from the compressed files (<code>fst</code> format);<br>
+- functions and methods to evaluate solar photovoltaics hourly output/capacity factors;<br>
+- functions and methods wind speed extrapolation for higher altitudes (50-200+ meters) and estimate wind power capacity factors;<br>
+- functions to fetch data from NREL’s PVWatts model and the dataset by locations (with a goal of validation the POA model and the data);<br>
+- functions and methods for “quick” figures and animated gif figures for instant evaluation of the data and the used methodology;<br>
+- long term summary statistics of the provided time series for purpose of clustering and aggregation in further modeling and analytics.</p>
 </div>
-<div id="solar-power" class="section level2">
-<h2 class="hasAnchor">
-<a href="#solar-power" class="anchor"></a>Solar Power</h2>
-<p>The package reproduces basic algorithms of solar geometry, irradiance decomposition, and the Plane-Of-Array models for different types of solar PV trackers.</p>
-<p><img src="images/ghi_40y_avr_24steps.png" width="2550"></p>
+<div class="section level2">
+<h2 id="solar-power">Solar Power<a class="anchor" aria-label="anchor" href="#solar-power"></a>
+</h2>
+<p>The package reproduces basic algorithms of solar geometry, irradiance decomposition, and the Plane-Of-Array models for different types of solar PV trackers. See <a href="https://energyrt.github.io/merra2ools/articles/solarpower.html" class="external-link uri">https://energyrt.github.io/merra2ools/articles/solarpower.html</a> or <code><a href="articles/solarpower.html">vignette("solarpower", package = "merra2ools")</a></code> for details.</p>
+<p><img src="reference/figures/ghi_40y_avr_24steps.png" width="2550"></p>
 </div>
-<div id="wind-power" class="section level2">
-<h2 class="hasAnchor">
-<a href="#wind-power" class="anchor"></a>Wind power</h2>
-<p><img src="images/wind_50m_40y_avr_24steps.png" width="3150"></p>
-</div>
-<div id="additional-time-series" class="section level2">
-<h2 class="hasAnchor">
-<a href="#additional-time-series" class="anchor"></a>Additional time-series</h2>
-</div>
-<div id="references" class="section level2">
-<h2 class="hasAnchor">
-<a href="#references" class="anchor"></a>References</h2>
+<div class="section level2">
+<h2 id="wind-power">Wind power<a class="anchor" aria-label="anchor" href="#wind-power"></a>
+</h2>
+<p>See <a href="https://energyrt.github.io/merra2ools/articles/windpower.html" class="external-link uri">https://energyrt.github.io/merra2ools/articles/windpower.html</a> or <code><a href="articles/windpower.html">vignette("windpower", package = "merra2ools")</a></code> for details.<br><img src="reference/figures/wind_50m_40y_avr_24steps.png" width="3150"></p>
+<p>See <a href="https://energyrt.github.io/merra2ools/articles/merra2.html" class="external-link uri">https://energyrt.github.io/merra2ools/articles/merra2.html</a> or <code><a href="articles/merra2.html">vignette("merra2", package = "merra2ools")</a></code> for all included timeseries.</p>
 </div>
 </div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li>Browse source code at <br><a href="https://github.com/energyRt/merra2ools/">https://​github.com/​energyRt/​merra2ools/​</a>
-</li>
-<li>Report a bug at <br><a href="https://github.com/energyRt/merra2ools/issues">https://​github.com/​energyRt/​merra2ools/​issues</a>
-</li>
+<li><a href="https://github.com/energyRt/merra2ools/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/energyRt/merra2ools/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
+
 <div class="license">
-<h2>License</h2>
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
-<li>AGLP-3.0</li>
+<li><a href="LICENSE.html">Full license</a></li>
+<li><small>AGPL (&gt;= 3)</small></li>
 </ul>
 </div>
+
+
+<div class="citation">
+<h2 data-toc-skip>Citation</h2>
+<ul class="list-unstyled">
+<li><a href="authors.html#citation">Citing merra2ools</a></li>
+</ul>
+</div>
+
 <div class="developers">
-<h2>Developers</h2>
+<h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
 <li>Oleg Lugovoy <br><small class="roles"> Author, maintainer </small>  </li>
 <li>Shuo Gao <br><small class="roles"> Author </small>  </li>
 </ul>
 </div>
 
+
+
   </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by Oleg Lugovoy, Shuo Gao.</p>
+  <p></p>
+<p>Developed by Oleg Lugovoy, Shuo Gao.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>
@@ -213,6 +211,8 @@ The <em>merra2ools</em> dataset has 41 years (1980-2000) of the hourly time-seri
 
   
 
+
+  
 
   </body>
 </html>

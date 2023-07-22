@@ -1,0 +1,88 @@
+---
+title: "Developer functions & log of key changes"
+author: '@olugovoy'
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Rebuild website
+```{r}
+# library(knitr)
+# library(rmarkdown)
+# options(rmarkdown.html_vignette.check_title = FALSE)
+# getOption("rmarkdown.html_vignette.check_title")
+pkgdown::build_site()
+
+```
+
+
+## Developing log (do not run)
+```{r, eval=FALSE}
+usethis::use_agpl3_license()
+
+# usethis::use_package("data.table", type = "depends")
+# usethis::use_package("fst", type = "depends")
+
+usethis::use_package("fst", type = "imports")
+usethis::use_package("fstcore", type = "depends")
+usethis::use_package("terra", type = "Suggests")
+usethis::use_package("sf")
+# usethis::use_package("sp") # removing 2023-07-01
+usethis::use_package("lubridate")
+usethis::use_package("dplyr")
+# usethis::use_package("tibble")
+usethis::use_package("ggplot2")
+usethis::use_package("TSdist", type = "imports") #
+usethis::use_package("rlang", type = "imports") #
+usethis::use_package("datawizard")
+usethis::use_data_raw()
+
+usethis::use_pipe()
+
+usethis::use_import_from("lubridate", c("ymd", "days_in_month"))
+
+# usethis::use_package("data.table", type = "imports")
+usethis::use_data_table()
+usethis::use_import_from("data.table", 
+                         c("second", "minute", "hour", 
+                           "yday", "wday", "mday", "week", 
+                           "data.table","as.data.table", "rbindlist",
+                           "as.xts.data.table", 
+                           "isoweek", "month", "quarter", "year")
+                         )
+
+# usethis::use_import_from("TSdist", c("CCorDistance", "CorDistance", "KMedoids",
+#                                      "TSDistances"))
+
+usethis::use_r("cluster")
+usethis::use_r("data")
+usethis::use_r("locid")
+
+```
+
+```{r}
+library(tidyverse)
+m <- merra2sample::merra2_apr %>% filter(locid %in% 1:25)
+cluster_locid(m, "W50M")
+
+```
+
+
+## Log
+**July 2023**
+- adding grids to data (see `data-raw/DATASETS.R`, `rebuild_locid_grids` part)  
+- documenting `data` (see `data.r`)
+```{r, eval=FALSE}
+# #!!! 
+```
+
+**June 2023**  
+- starting `dev.rmd` & using `usethis` tools   
+- use `terra` and `sf` instead of `r-gdal` and `r-aster`   
+- drop dependencies: `magrittr`, `r-gdal`, `r-aster`, `r-geos`   
+
+

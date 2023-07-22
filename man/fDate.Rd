@@ -2,27 +2,32 @@
 % Please edit documentation in R/merra_subset.R
 \name{fDate}
 \alias{fDate}
-\title{Title}
+\title{Create date-time character string from year, month, hour, and timezone.}
 \usage{
 fDate(year, month, day, hour, tz = "UTC")
 }
 \arguments{
-\item{year}{}
+\item{year}{integer, year}
 
-\item{month}{}
+\item{month}{integer, month (1-12)}
 
-\item{day}{}
+\item{day}{integer (1-31) or character ("last"), day of the month.}
 
-\item{hour}{}
+\item{hour}{integer, hour (0-23)}
 
-\item{tz}{}
-}
-\value{
-
+\item{tz}{Olson timezone code (`OlsonNames()`), "UTC" by default.}
 }
 \description{
-Title
+Create date-time character string from year, month, hour, and timezone.
+}
+\details{
+A utility function to create input in format used `get_merra2_subset`.
 }
 \examples{
-NA
+fDate(2010, 12, "last", 23)
+fDate(2010, 1, 1, 0)
+OlsonNames()
+fDate(2010, 1, 1, 0, tz = "America/New_York")
+fDate(2010, 1, 1, 0, tz = "Pacific/Auckland")
+fDate(2010, 1, 1, 0, tz = "Asia/Kolkata")
 }

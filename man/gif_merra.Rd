@@ -40,11 +40,8 @@ gif_merra(
 
 \item{...}{}
 }
-\value{
-
-}
 \description{
-Quick GIF plots
+The function is in progress, will be included in the package release.
 }
 \examples{
 NA

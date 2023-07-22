@@ -1,7 +1,7 @@
 Package: merra2ools
 Type: Package
 Title: R-tools to process MERRA-2 data (NASA) with focus on renewable energy 
-Version: 0.1.0
+Version: 0.1.03
 Authors@R: 
   c(person(given = "Oleg", 
           family = "Lugovoy", 
@@ -18,17 +18,31 @@ BugReports: https://github.com/energyRt/merra2ools/issues
 Description: A toolbox for evaluation of hourly availability of solar and wind 
     energy potential globally, based on MERRA-2 satellite reanalysis data subset 
     (requires the data download from: https://doi.org/10.5061/dryad.v41ns1rtt). 
-Depends: R (>= 4.0.0),
-        data.table
-Imports: tidyverse, lubridate, mathjaxr, fst, httr, rnaturalearth, sp, rgeos, sf, 
-          rgeos, rnaturalearth, rnaturalearthdata
+Depends: 
+    fstcore,
+    R (>= 4.0.0),
+Imports: 
+    lubridate,
+    sf,
+    dplyr,
+    ggplot2,
+    rlang,
+    data.table,
+    fst,
+    datawizard,
+    TSdist,
+    mathjaxr,
+    httr
 Suggests: 
     knitr,
     rmarkdown,
-    merra2sample
-License: AGLP-3.0
+    merra2sample,
+    rnaturalearth,
+    rnaturalearthdata,
+    terra
+License: AGPL (>= 3)
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.1.1
+RoxygenNote: 7.2.3
 RdMacros: mathjaxr
 VignetteBuilder: knitr

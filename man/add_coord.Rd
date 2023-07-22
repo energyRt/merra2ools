@@ -4,15 +4,15 @@
 \alias{add_coord}
 \title{Add longitude and latitude of 'locid'}
 \usage{
-add_coord(x, force = FALSE)
+add_coord(x, replace = FALSE)
 }
 \arguments{
-\item{x}{}
+\item{x}{data.frame with `locid` column.}
 
-\item{force}{}
+\item{replace}{logical, if TRUE, existing `lon` and `lat` columns in `x` will be replaced.}
 }
 \value{
-
+`x` with added/replaced `lon` and `lat` for each `locid`
 }
 \description{
 Add longitude and latitude of 'locid'

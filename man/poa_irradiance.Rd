@@ -71,9 +71,6 @@ fPOA(
 
 \item{albedo}{ground-reflected portion of the POA irradiance (\mjseqn{W/m^2})}
 }
-\value{
-
-}
 \description{
 Plane-Of-Array (POA) isotropic irradiance model
 }

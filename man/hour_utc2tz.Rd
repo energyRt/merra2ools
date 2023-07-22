@@ -15,9 +15,6 @@ hour_utc2tz(hour_utc, lon = NULL, lat = NULL, tz_offset = NULL)
 
 \item{tz_offset}{}
 }
-\value{
-
-}
 \description{
 Title
 }

@@ -36,9 +36,6 @@ solar_position(
 
 \item{verbose}{}
 }
-\value{
-
-}
 \description{
 Solar position
 }

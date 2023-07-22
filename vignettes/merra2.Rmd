@@ -1,27 +1,29 @@
 ---
 title: "MERRA-2 subset"
 output: rmarkdown::html_vignette
+header-includes:
+   - \usepackage{amsmath}
 vignette: >
-  %\VignetteIndexEntry{MERRA-2 subset}
+  %\VignetteIndexEntry{merra2}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+resource_files:
+  - images/merra_T10M_576x360_10fps.gif
+  - images/merra_W50M_576x360_12fps.gif
+  - images/ghi_40y_avr_24steps.png
+  - images/merra_ALBEDO_576x360_5fps.gif
+  - images/merra_PS_hPa_576x360_24fps.gif
+  - images/merra_dPS_576x360_10fps.gif
 ---
 
 ```{r, include = FALSE}
+options(rmarkdown.html_vignette.check_title = FALSE)
+library(knitr)
 knitr::opts_chunk$set(
   collapse = TRUE, 
   out.height = "75%", out.width = "75%", fig.align = "center",
   comment = "#>"
 )
-library(knitr)
-```
-
-## Variables
-
-```{r fig_all, fig.cap="MERRA-2 variables in merra2ools database", echo=FALSE}
-gif_file <- "../images/merra_576x540_10fps.gif"
-if (file.exists(gif_file)) include_graphics(gif_file)
-
 ```
 
 
@@ -34,6 +36,19 @@ data_month <- 1:12
 x <- merra2_sample(data_month, add.coord = T)
 x
 
+```
+
+## Included variables
+
+```{r fig_all, fig.cap="MERRA-2 variables in merra2ools database", echo=FALSE}
+
+gif_file <- "images/merra_576x540_10fps.gif"
+# if (file.exists(gif_file)) 
+include_graphics(gif_file)
+
+# gif_file <- "images/POA_map_720x544_5fps.gif"
+# if (file.exists(gif_file)) include_graphics(gif_file)
+  
 ```
 
 
@@ -61,7 +76,7 @@ gif_merra(x, name = "T10M", dirname = "images", fps = 10,
 
 
 ```{r fig_T10M, fig.cap="Temperature at 10 meters hight, Celsius", echo=FALSE}
-gif_file <- "../images/merra_T10M_576x360_10fps.gif"
+gif_file <- "images/merra_T10M_576x360_10fps.gif"
 if (file.exists(gif_file)) include_graphics(gif_file)
 
 ```
@@ -98,13 +113,13 @@ gif_merra(x, name = "W10M", dirname = "images", fps = 12,
 </details>
 
 ```{r fig_W10M, fig.cap="Wind speed at 10 meters hight", echo=FALSE, include=FALSE}
-gif_file <- "../images/merra_W10M_576x360_12fps.gif"
+gif_file <- "images/merra_W10M_576x360_12fps.gif"
 if (file.exists(gif_file)) include_graphics(gif_file)
 
 ```
 
 ```{r fig_W50M, fig.cap="Wind speed at 50 meters hight", echo=FALSE}
-gif_file <- "../images/merra_W50M_576x360_12fps.gif"
+gif_file <- "images/merra_W50M_576x360_12fps.gif"
 if (file.exists(gif_file)) include_graphics(gif_file)
 
 ```
@@ -136,27 +151,27 @@ gif_merra(x, name = "SWGDN", dirname = "images", fps = 5,
 
 
 ```{r fig_SWGDN, fig.cap="Global Horizontal Irradiance", echo=FALSE}
-gif_file <- "../images/merra_SWGDN_576x360_5fps.gif"
+gif_file <- "images/merra_SWGDN_576x360_5fps.gif"
 if (file.exists(gif_file)) include_graphics(gif_file)
 
 ```
 
-#### 41-years average
-```{r, echo=FALSE}
+<!-- #### 41-years average -->
+<!-- ```{r, echo=FALSE} -->
 
-fig_file <- "../images/ghi_40y_avr_24steps.png"
-if (file.exists(fig_file)) include_graphics(fig_file)
+<!-- fig_file <- "images/ghi_40y_avr_24steps.png" -->
+<!-- if (file.exists(fig_file)) include_graphics(fig_file) -->
 
-```
+<!-- ``` -->
 
 
-#### Annual standard deviation
-```{r, echo=FALSE}
+<!-- #### Annual standard deviation -->
+<!-- ```{r, echo=FALSE} -->
 
-fig_file <- "../images/ghi_40y_avr_24steps.png"
-if (file.exists(fig_file)) include_graphics(fig_file)
+<!-- fig_file <- "images/ghi_40y_avr_24steps.png" -->
+<!-- if (file.exists(fig_file)) include_graphics(fig_file) -->
 
-```
+<!-- ``` -->
 
 
 ### Albedo (ALBEDO), index [0..1]
@@ -180,7 +195,7 @@ gif_merra(x, name = "ALBEDO", dirname = "images", fps = 5,
 </details>
 
 ```{r fig_ALBEDO, fig.cap="Surface albedo", echo=FALSE}
-gif_file <- "../images/merra_ALBEDO_576x360_5fps.gif"
+gif_file <- "images/merra_ALBEDO_576x360_5fps.gif"
 if (file.exists(gif_file)) include_graphics(gif_file)
 
 ```
@@ -206,7 +221,7 @@ gif_merra(x, name = "PS_hPa", dirname = "images", fps = 24,
 </details>
 
 ```{r fig_PS, fig.cap="Surface pressure", echo=FALSE}
-gif_file <- "../images/merra_PS_hPa_576x360_24fps.gif"
+gif_file <- "images/merra_PS_hPa_576x360_24fps.gif"
 if (file.exists(gif_file)) include_graphics(gif_file)
 
 ```
@@ -238,15 +253,14 @@ gif_merra(x, name = "dPS", dirname = "images", fps = 5,
 </details>
 
 ```{r fig_dPS, fig.cap="Surface pressure difference from mean value", echo=FALSE}
-gif_file <- "../images/merra_dPS_576x360_10fps.gif"
+gif_file <- "images/merra_dPS_576x360_10fps.gif"
 if (file.exists(gif_file)) include_graphics(gif_file)
 
 ```
 
 
-### Combined figures
 <details>
-  <summary>Figure code</summary>
+  <summary>Combined figures code</summary>
 ```{r fig_functions, eval=FALSE}
 
 fig.T10M <- function(x) {

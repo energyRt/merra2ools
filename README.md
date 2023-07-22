@@ -6,18 +6,54 @@
 manuals: <https://energyRt.github.io/merra2ools/>  
 dataset: <https://doi.org/10.5061/dryad.v41ns1rtt>
 
+## Installation
+
+``` r
+remotes::install_github("energyRt/merra2ools")
+remotes::install_github("energyRt/merra2sample") # optional - example dataset
+```
+
+Download datasets from <https://doi.org/10.5061/dryad.v41ns1rtt> to a
+local folder. It is not required to download all the data, but it is
+suggested to download at least for one full year (12 months).
+
+``` r
+library(merra2ools)
+# link the package with the downloaded data
+set_merra2_options(merra2.dir = "PATH TO THE DOWNLOADED DATA")
+get_merra2_dir()  # check if the path is saved
+check_merra2(detailed = T)
+```
+
+See <https://energyrt.github.io/merra2ools/articles/merra2ools.html> or
+\`vignette(“merra2ools”, “merra2ools”) for details.
+
 ## Overview
 
-*merra2ools* package offers a set of tools and MERRA-2 data subset to
-evaluate hourly output potential of solar and wind energy sources, as
-well as precipitations for weather-dependent hydro power output. The
-goal of the project is to provide both - the dataset and algorithms to
-estimate potential output and so-called capacity factors for variable
-energy sources, used as an input data in energy system modeling and
-broader application. To keep the size of the database lower than 300Gb
-for online publication, the original subset of MERRA-2 time series have
-been minimally processed, rounded, and saved as scaled integers in
-highly compressed format provided by
+*merra2ools* is a dataset and R-package for evaluation of potential
+output of variable energy sources (VER) wind and solar energy globally,
+based on 40+ years of hourly MERRA-2 data. The primary purpose of the
+`merra2ools` R package is to provide a quick access to the MERRA-2
+subset to energy modelers and analysts, sufficient for evaluation VER
+hourly potential. The database of relevant MERRA-2 indicators has been
+assembled and published on
+
+that offers data and tools to estimate
+
+long-term subset of
+
+that provides
+
+package offers a set of tools and MERRA-2 data subset to evaluate hourly
+output potential of solar and wind energy sources, as well as
+precipitations for weather-dependent hydro power output. The goal of the
+project is to provide both - the dataset and algorithms to estimate
+potential output and so-called capacity factors for variable energy
+sources, used as an input data in energy system modeling and broader
+application. To keep the size of the database lower than 300Gb for
+online publication, the original subset of MERRA-2 time series have been
+minimally processed, rounded, and saved as scaled integers in highly
+compressed format provided by
 [`fst`](https://www.fstpackage.org/index.html) package.  
 The *merra2ools* dataset has 41 years (1980-2000) of the hourly
 time-series:  
@@ -72,14 +108,18 @@ of clustering and aggregation in further modeling and analytics.
 
 The package reproduces basic algorithms of solar geometry, irradiance
 decomposition, and the Plane-Of-Array models for different types of
-solar PV trackers.
+solar PV trackers. See
+<https://energyrt.github.io/merra2ools/articles/solarpower.html> or
+`vignette("solarpower", package = "merra2ools")` for details.
 
-<img src="docs/images/ghi_40y_avr_24steps.png" width="2550" />
+<img src="man/figures/ghi_40y_avr_24steps.png" width="2550" />
 
 ## Wind power
 
-<img src="docs/images/wind_50m_40y_avr_24steps.png" width="3150" />
+See <https://energyrt.github.io/merra2ools/articles/windpower.html> or
+`vignette("windpower", package = "merra2ools")` for details.  
+<img src="man/figures/wind_50m_40y_avr_24steps.png" width="3150" />
 
-## Additional time-series
-
-## References
+See <https://energyrt.github.io/merra2ools/articles/merra2.html> or
+`vignette("merra2", package = "merra2ools")` for all included
+timeseries.

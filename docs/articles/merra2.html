@@ -25,6 +25,8 @@
 </script>
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -37,7 +39,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">merra2ools</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.03</span>
       </span>
     </div>
 
@@ -50,7 +52,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -70,7 +72,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/energyRt/merra2ools/">
+  <a href="https://github.com/energyRt/merra2ools/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -85,307 +87,334 @@
 
       
 
-      </header><script src="merra2_files/header-attrs-2.7/header-attrs.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>MERRA-2 subset</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/energyRt/merra2ools/blob/master/vignettes/merra2.Rmd"><code>vignettes/merra2.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/energyRt/merra2ools/blob/HEAD/vignettes/merra2.Rmd" class="external-link"><code>vignettes/merra2.Rmd</code></a></small>
       <div class="hidden name"><code>merra2.Rmd</code></div>
 
     </div>
 
     
     
-<div id="variables" class="section level2">
-<h2 class="hasAnchor">
-<a href="#variables" class="anchor"></a>Variables</h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://energyRt.github.io/merra2ools/">merra2ools</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span>
-<span class="co"># data_month &lt;- 1</span>
-<span class="va">data_month</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">12</span>
-<span class="co"># get example of the data for all locations</span>
-<span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/merra2_sample.html">merra2_sample</a></span><span class="op">(</span><span class="va">data_month</span>, add.coord <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>
-<span class="va">x</span></code></pre></div>
-<div id="temperature-at-10-meters-hight-t10m-kelvin-degrees" class="section level3">
-<h3 class="hasAnchor">
-<a href="#temperature-at-10-meters-hight-t10m-kelvin-degrees" class="anchor"></a>Temperature at 10 meters hight (T10M), Kelvin degrees</h3>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://energyRt.github.io/merra2ools/">merra2ools</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span></span>
+<span><span class="co"># data_month &lt;- 1</span></span>
+<span><span class="va">data_month</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">12</span></span>
+<span><span class="co"># get example of the data for all locations</span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/merra2_sample.html">merra2_sample</a></span><span class="op">(</span><span class="va">data_month</span>, add.coord <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
+<span><span class="va">x</span></span></code></pre></div>
+<div class="section level2">
+<h2 id="included-variables">Included variables<a class="anchor" aria-label="anchor" href="#included-variables"></a>
+</h2>
+<div class="figure" style="text-align: center">
+<img src="images/merra_576x540_10fps.gif" alt="MERRA-2 variables in merra2ools database" width="75%" height="75%"><p class="caption">
+MERRA-2 variables in merra2ools database
+</p>
+</div>
+<div class="section level3">
+<h3 id="temperature-at-10-meters-hight-t10m-kelvin-degrees">Temperature at 10 meters hight (T10M), Kelvin degrees<a class="anchor" aria-label="anchor" href="#temperature-at-10-meters-hight-t10m-kelvin-degrees"></a>
+</h3>
 <details><summary>
 Figure code
 </summary><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">T10M</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">T10M</span> <span class="op">-</span> <span class="fl">272</span><span class="op">)</span> <span class="co"># Kelvin -&gt; Celsius</span>
-
-<span class="fu"><a href="../reference/plot_merra.html">plot_merra</a></span><span class="op">(</span><span class="va">x</span>, name <span class="op">=</span> <span class="st">"T10M"</span>, 
-           scale <span class="op">=</span> <span class="fl">1</span>, intercept <span class="op">=</span> <span class="op">-</span><span class="fl">272</span>, <span class="co"># Kelvin -&gt; Celsius</span>
-           limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">50</span>, <span class="fl">50</span><span class="op">)</span>, 
-           legend.name <span class="op">=</span> <span class="st">"\u00B0C"</span>,
-           datetime.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">144</span>, <span class="fl">87</span><span class="op">)</span><span class="op">)</span>
-
-<span class="fu"><a href="../reference/gif_merra.html">gif_merra</a></span><span class="op">(</span><span class="va">x</span>, name <span class="op">=</span> <span class="st">"T10M"</span>, dirname <span class="op">=</span> <span class="st">"images"</span>, fps <span class="op">=</span> <span class="fl">10</span>,
-          limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">50</span>, <span class="fl">50</span><span class="op">)</span>, intercept <span class="op">=</span> <span class="op">-</span><span class="fl">272</span>, 
-          legend.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.9</span>, <span class="fl">0.05</span><span class="op">)</span>, 
-          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span><span class="st">"\u00B0C"</span><span class="op">)</span>,
-          datetime.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">144</span>, <span class="fl">87</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-</details>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">T10M</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">T10M</span> <span class="op">-</span> <span class="fl">272</span><span class="op">)</span> <span class="co"># Kelvin -&gt; Celsius</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/plot_merra.html">plot_merra</a></span><span class="op">(</span><span class="va">x</span>, name <span class="op">=</span> <span class="st">"T10M"</span>, </span>
+<span>           scale <span class="op">=</span> <span class="fl">1</span>, intercept <span class="op">=</span> <span class="op">-</span><span class="fl">272</span>, <span class="co"># Kelvin -&gt; Celsius</span></span>
+<span>           limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">50</span>, <span class="fl">50</span><span class="op">)</span>, </span>
+<span>           legend.name <span class="op">=</span> <span class="st">"\u00B0C"</span>,</span>
+<span>           datetime.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">144</span>, <span class="fl">87</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/gif_merra.html">gif_merra</a></span><span class="op">(</span><span class="va">x</span>, name <span class="op">=</span> <span class="st">"T10M"</span>, dirname <span class="op">=</span> <span class="st">"images"</span>, fps <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>          limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">50</span>, <span class="fl">50</span><span class="op">)</span>, intercept <span class="op">=</span> <span class="op">-</span><span class="fl">272</span>, </span>
+<span>          legend.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.9</span>, <span class="fl">0.05</span><span class="op">)</span>, </span>
+<span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html" class="external-link">expression</a></span><span class="op">(</span><span class="st">"\u00B0C"</span><span class="op">)</span>,</span>
+<span>          datetime.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">144</span>, <span class="fl">87</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+</details><div class="figure" style="text-align: center">
+<img src="images/merra_T10M_576x360_10fps.gif" alt="Temperature at 10 meters hight, Celsius" width="75%" height="75%"><p class="caption">
+Temperature at 10 meters hight, Celsius
+</p>
 </div>
-<div id="wind-speed-at-10-and-50-meters-hights-w10m-and-w50m-ms" class="section level3">
-<h3 class="hasAnchor">
-<a href="#wind-speed-at-10-and-50-meters-hights-w10m-and-w50m-ms" class="anchor"></a>Wind speed at 10 and 50 meters hights (W10M and W50M), m/s</h3>
+</div>
+<div class="section level3">
+<h3 id="wind-speed-at-10-and-50-meters-hights-w10m-and-w50m-ms">Wind speed at 10 and 50 meters hights (W10M and W50M), m/s<a class="anchor" aria-label="anchor" href="#wind-speed-at-10-and-50-meters-hights-w10m-and-w50m-ms"></a>
+</h3>
 <details><summary>
 Figure code
 </summary><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">W50M</span><span class="op">)</span>
-<span class="co"># fig.W50M &lt;- </span>
-<span class="fu"><a href="../reference/plot_merra.html">plot_merra</a></span><span class="op">(</span><span class="va">x</span>, name <span class="op">=</span> <span class="st">"W50M"</span>, limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">30</span><span class="op">)</span>, 
-           legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span><span class="st">"m/s"</span><span class="op">)</span>,
-           datetime.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">144</span>, <span class="fl">87</span><span class="op">)</span><span class="op">)</span>
-
-<span class="co"># fig.W10M &lt;- </span>
-<span class="fu"><a href="../reference/plot_merra.html">plot_merra</a></span><span class="op">(</span><span class="va">x</span>, name <span class="op">=</span> <span class="st">"W10M"</span>, limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">30</span><span class="op">)</span>,
-           legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span><span class="st">"m/s"</span><span class="op">)</span>,
-           datetime.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">144</span>, <span class="fl">87</span><span class="op">)</span><span class="op">)</span>
-
-<span class="fu"><a href="../reference/gif_merra.html">gif_merra</a></span><span class="op">(</span><span class="va">x</span>, name <span class="op">=</span> <span class="st">"W50M"</span>, dirname <span class="op">=</span> <span class="st">"images"</span>, fps <span class="op">=</span> <span class="fl">12</span>,
-          limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">30</span><span class="op">)</span>, 
-          legend.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.9</span>, <span class="fl">0.05</span><span class="op">)</span>, 
-          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span><span class="st">"m/s"</span><span class="op">)</span>,
-          datetime.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">144</span>, <span class="fl">87</span><span class="op">)</span><span class="op">)</span>
-
-
-<span class="fu"><a href="../reference/gif_merra.html">gif_merra</a></span><span class="op">(</span><span class="va">x</span>, name <span class="op">=</span> <span class="st">"W10M"</span>, dirname <span class="op">=</span> <span class="st">"images"</span>, fps <span class="op">=</span> <span class="fl">12</span>,
-          limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">30</span><span class="op">)</span>, 
-          legend.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.9</span>, <span class="fl">0.05</span><span class="op">)</span>, 
-          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span><span class="st">"m/s"</span><span class="op">)</span>,
-          datetime.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">144</span>, <span class="fl">87</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-</details>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">W50M</span><span class="op">)</span></span>
+<span><span class="co"># fig.W50M &lt;- </span></span>
+<span><span class="fu"><a href="../reference/plot_merra.html">plot_merra</a></span><span class="op">(</span><span class="va">x</span>, name <span class="op">=</span> <span class="st">"W50M"</span>, limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">30</span><span class="op">)</span>, </span>
+<span>           legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html" class="external-link">expression</a></span><span class="op">(</span><span class="st">"m/s"</span><span class="op">)</span>,</span>
+<span>           datetime.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">144</span>, <span class="fl">87</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># fig.W10M &lt;- </span></span>
+<span><span class="fu"><a href="../reference/plot_merra.html">plot_merra</a></span><span class="op">(</span><span class="va">x</span>, name <span class="op">=</span> <span class="st">"W10M"</span>, limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">30</span><span class="op">)</span>,</span>
+<span>           legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html" class="external-link">expression</a></span><span class="op">(</span><span class="st">"m/s"</span><span class="op">)</span>,</span>
+<span>           datetime.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">144</span>, <span class="fl">87</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/gif_merra.html">gif_merra</a></span><span class="op">(</span><span class="va">x</span>, name <span class="op">=</span> <span class="st">"W50M"</span>, dirname <span class="op">=</span> <span class="st">"images"</span>, fps <span class="op">=</span> <span class="fl">12</span>,</span>
+<span>          limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">30</span><span class="op">)</span>, </span>
+<span>          legend.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.9</span>, <span class="fl">0.05</span><span class="op">)</span>, </span>
+<span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html" class="external-link">expression</a></span><span class="op">(</span><span class="st">"m/s"</span><span class="op">)</span>,</span>
+<span>          datetime.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">144</span>, <span class="fl">87</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/gif_merra.html">gif_merra</a></span><span class="op">(</span><span class="va">x</span>, name <span class="op">=</span> <span class="st">"W10M"</span>, dirname <span class="op">=</span> <span class="st">"images"</span>, fps <span class="op">=</span> <span class="fl">12</span>,</span>
+<span>          limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">30</span><span class="op">)</span>, </span>
+<span>          legend.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.9</span>, <span class="fl">0.05</span><span class="op">)</span>, </span>
+<span>          legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html" class="external-link">expression</a></span><span class="op">(</span><span class="st">"m/s"</span><span class="op">)</span>,</span>
+<span>          datetime.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">144</span>, <span class="fl">87</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+</details><div class="figure" style="text-align: center">
+<img src="images/merra_W50M_576x360_12fps.gif" alt="Wind speed at 50 meters hight" width="75%" height="75%"><p class="caption">
+Wind speed at 50 meters hight
+</p>
 </div>
-<div id="global-horizontal-irradiance-swgdn-wattm2" class="section level3">
-<h3 class="hasAnchor">
-<a href="#global-horizontal-irradiance-swgdn-wattm2" class="anchor"></a>Global Horizontal Irradiance (SWGDN), Watt/m2</h3>
+</div>
+<div class="section level3">
+<h3 id="global-horizontal-irradiance-swgdn-wattm2">Global Horizontal Irradiance (SWGDN), Watt/m2<a class="anchor" aria-label="anchor" href="#global-horizontal-irradiance-swgdn-wattm2"></a>
+</h3>
 <details><summary>
 Figure code
 </summary><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">SWGDN</span><span class="op">)</span>
-
-<span class="fu"><a href="../reference/plot_merra.html">plot_merra</a></span><span class="op">(</span><span class="va">x</span>, name <span class="op">=</span> <span class="st">"SWGDN"</span>, limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1200</span><span class="op">)</span>, 
-           legend.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.88</span>, <span class="fl">0.05</span><span class="op">)</span>, 
-           legend.name <span class="op">=</span> <span class="op">(</span><span class="st">"W/\u33A1"</span><span class="op">)</span>,
-           datetime.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">144</span>, <span class="fl">87</span><span class="op">)</span><span class="op">)</span>
-
-<span class="fu"><a href="../reference/plot_merra.html">plot_merra</a></span><span class="op">(</span><span class="va">x</span>, name <span class="op">=</span> <span class="st">"SWGDN"</span>, dirname <span class="op">=</span> <span class="st">"images"</span>, fps <span class="op">=</span> <span class="fl">5</span>,
-          limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, scale <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="fl">1000</span>,
-          legend.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.88</span>, <span class="fl">0.05</span><span class="op">)</span>, 
-          legend.name <span class="op">=</span> <span class="op">(</span><span class="st">"kW/\u33A1"</span><span class="op">)</span>,
-          datetime.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">144</span>, <span class="fl">87</span><span class="op">)</span><span class="op">)</span>
-
-<span class="fu"><a href="../reference/gif_merra.html">gif_merra</a></span><span class="op">(</span><span class="va">x</span>, name <span class="op">=</span> <span class="st">"SWGDN"</span>, dirname <span class="op">=</span> <span class="st">"images"</span>, fps <span class="op">=</span> <span class="fl">5</span>,
-          limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1200</span><span class="op">)</span>, scale <span class="op">=</span> <span class="fl">1</span>,
-          legend.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.88</span>, <span class="fl">0.05</span><span class="op">)</span>, 
-          legend.name <span class="op">=</span> <span class="op">(</span><span class="st">"W/\u33A1"</span><span class="op">)</span>,
-          datetime.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">144</span>, <span class="fl">87</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-</details><div id="years-average" class="section level4">
-<h4 class="hasAnchor">
-<a href="#years-average" class="anchor"></a>41-years average</h4>
-<p><img src="../images/ghi_40y_avr_24steps.png" width="75%" height="75%" style="display: block; margin: auto;"></p>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">SWGDN</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/plot_merra.html">plot_merra</a></span><span class="op">(</span><span class="va">x</span>, name <span class="op">=</span> <span class="st">"SWGDN"</span>, limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1200</span><span class="op">)</span>, </span>
+<span>           legend.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.88</span>, <span class="fl">0.05</span><span class="op">)</span>, </span>
+<span>           legend.name <span class="op">=</span> <span class="op">(</span><span class="st">"W/\u33A1"</span><span class="op">)</span>,</span>
+<span>           datetime.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">144</span>, <span class="fl">87</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/plot_merra.html">plot_merra</a></span><span class="op">(</span><span class="va">x</span>, name <span class="op">=</span> <span class="st">"SWGDN"</span>, dirname <span class="op">=</span> <span class="st">"images"</span>, fps <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>          limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, scale <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="fl">1000</span>,</span>
+<span>          legend.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.88</span>, <span class="fl">0.05</span><span class="op">)</span>, </span>
+<span>          legend.name <span class="op">=</span> <span class="op">(</span><span class="st">"kW/\u33A1"</span><span class="op">)</span>,</span>
+<span>          datetime.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">144</span>, <span class="fl">87</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/gif_merra.html">gif_merra</a></span><span class="op">(</span><span class="va">x</span>, name <span class="op">=</span> <span class="st">"SWGDN"</span>, dirname <span class="op">=</span> <span class="st">"images"</span>, fps <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>          limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1200</span><span class="op">)</span>, scale <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>          legend.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.88</span>, <span class="fl">0.05</span><span class="op">)</span>, </span>
+<span>          legend.name <span class="op">=</span> <span class="op">(</span><span class="st">"W/\u33A1"</span><span class="op">)</span>,</span>
+<span>          datetime.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">144</span>, <span class="fl">87</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+</details><div class="figure" style="text-align: center">
+<img src="images/merra_SWGDN_576x360_5fps.gif" alt="Global Horizontal Irradiance" width="75%" height="75%"><p class="caption">
+Global Horizontal Irradiance
+</p>
 </div>
-<div id="annual-standard-deviation" class="section level4">
-<h4 class="hasAnchor">
-<a href="#annual-standard-deviation" class="anchor"></a>Annual standard deviation</h4>
-<p><img src="../images/ghi_40y_avr_24steps.png" width="75%" height="75%" style="display: block; margin: auto;"></p>
+<!-- #### 41-years average -->
+<!-- ```{r, echo=FALSE} -->
+<!-- fig_file <- "images/ghi_40y_avr_24steps.png" -->
+<!-- if (file.exists(fig_file)) include_graphics(fig_file) -->
+<!-- ``` -->
+<!-- #### Annual standard deviation -->
+<!-- ```{r, echo=FALSE} -->
+<!-- fig_file <- "images/ghi_40y_avr_24steps.png" -->
+<!-- if (file.exists(fig_file)) include_graphics(fig_file) -->
+<!-- ``` -->
 </div>
-</div>
-<div id="albedo-albedo-index-0--1" class="section level3">
-<h3 class="hasAnchor">
-<a href="#albedo-albedo-index-0--1" class="anchor"></a>Albedo (ALBEDO), index [0..1]</h3>
+<div class="section level3">
+<h3 id="albedo-albedo-index-0--1">Albedo (ALBEDO), index [0..1]<a class="anchor" aria-label="anchor" href="#albedo-albedo-index-0--1"></a>
+</h3>
 <details><summary>
 Figure code
 </summary><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">ALBEDO</span><span class="op">)</span>
-
-<span class="fu"><a href="../reference/plot_merra.html">plot_merra</a></span><span class="op">(</span><span class="va">x</span>, name <span class="op">=</span> <span class="st">"ALBEDO"</span>, dirname <span class="op">=</span> <span class="st">"images"</span>, fps <span class="op">=</span> <span class="fl">5</span>,
-          limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, scale <span class="op">=</span> <span class="fl">1</span>,
-          legend.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.9</span>, <span class="fl">0.05</span><span class="op">)</span>, 
-          legend.name <span class="op">=</span> <span class="op">(</span><span class="st">""</span><span class="op">)</span>,
-          datetime.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">144</span>, <span class="fl">87</span><span class="op">)</span><span class="op">)</span>
-
-<span class="fu"><a href="../reference/gif_merra.html">gif_merra</a></span><span class="op">(</span><span class="va">x</span>, name <span class="op">=</span> <span class="st">"ALBEDO"</span>, dirname <span class="op">=</span> <span class="st">"images"</span>, fps <span class="op">=</span> <span class="fl">5</span>,
-          limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, scale <span class="op">=</span> <span class="fl">1</span>,
-          legend.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.9</span>, <span class="fl">0.05</span><span class="op">)</span>, 
-          legend.name <span class="op">=</span> <span class="op">(</span><span class="st">""</span><span class="op">)</span>,
-          datetime.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">144</span>, <span class="fl">87</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-</details>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">ALBEDO</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/plot_merra.html">plot_merra</a></span><span class="op">(</span><span class="va">x</span>, name <span class="op">=</span> <span class="st">"ALBEDO"</span>, dirname <span class="op">=</span> <span class="st">"images"</span>, fps <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>          limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, scale <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>          legend.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.9</span>, <span class="fl">0.05</span><span class="op">)</span>, </span>
+<span>          legend.name <span class="op">=</span> <span class="op">(</span><span class="st">""</span><span class="op">)</span>,</span>
+<span>          datetime.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">144</span>, <span class="fl">87</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/gif_merra.html">gif_merra</a></span><span class="op">(</span><span class="va">x</span>, name <span class="op">=</span> <span class="st">"ALBEDO"</span>, dirname <span class="op">=</span> <span class="st">"images"</span>, fps <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>          limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, scale <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>          legend.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.9</span>, <span class="fl">0.05</span><span class="op">)</span>, </span>
+<span>          legend.name <span class="op">=</span> <span class="op">(</span><span class="st">""</span><span class="op">)</span>,</span>
+<span>          datetime.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">144</span>, <span class="fl">87</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+</details><div class="figure" style="text-align: center">
+<img src="images/merra_ALBEDO_576x360_5fps.gif" alt="Surface albedo" width="75%" height="75%"><p class="caption">
+Surface albedo
+</p>
 </div>
-<div id="surface-atmospheric-preassure-ps-hpa" class="section level3">
-<h3 class="hasAnchor">
-<a href="#surface-atmospheric-preassure-ps-hpa" class="anchor"></a>Surface atmospheric preassure (PS), hPa</h3>
+</div>
+<div class="section level3">
+<h3 id="surface-atmospheric-preassure-ps-hpa">Surface atmospheric preassure (PS), hPa<a class="anchor" aria-label="anchor" href="#surface-atmospheric-preassure-ps-hpa"></a>
+</h3>
 <details><summary>
 Figure code
 </summary><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">PS_hPa</span><span class="op">)</span>
-
-<span class="fu"><a href="../reference/plot_merra.html">plot_merra</a></span><span class="op">(</span><span class="va">x</span>, name <span class="op">=</span> <span class="st">"PS_hPa"</span>, dirname <span class="op">=</span> <span class="st">"images"</span>, fps <span class="op">=</span> <span class="fl">5</span>,
-          limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">500</span>, <span class="fl">1000</span><span class="op">)</span>, scale <span class="op">=</span> <span class="fl">1</span>, direction <span class="op">=</span> <span class="fl">1</span>,
-          legend.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.89</span>, <span class="fl">0.05</span><span class="op">)</span>, palette <span class="op">=</span> <span class="st">"YlGnBu"</span>,
-          legend.name <span class="op">=</span> <span class="op">(</span><span class="st">"hPa"</span><span class="op">)</span>,
-          datetime.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">144</span>, <span class="fl">87</span><span class="op">)</span><span class="op">)</span>
-
-<span class="fu"><a href="../reference/gif_merra.html">gif_merra</a></span><span class="op">(</span><span class="va">x</span>, name <span class="op">=</span> <span class="st">"PS_hPa"</span>, dirname <span class="op">=</span> <span class="st">"images"</span>, fps <span class="op">=</span> <span class="fl">24</span>,
-          limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">500</span>, <span class="fl">1000</span><span class="op">)</span>, scale <span class="op">=</span> <span class="fl">1</span>, direction <span class="op">=</span> <span class="fl">1</span>,
-          legend.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.89</span>, <span class="fl">0.05</span><span class="op">)</span>, 
-          legend.name <span class="op">=</span> <span class="op">(</span><span class="st">"hPa"</span><span class="op">)</span>,
-          datetime.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">144</span>, <span class="fl">87</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-</details><details><summary>
-Figure code
-</summary><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">PS_mean</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">%&gt;%</span> 
-  <span class="fu">group_by</span><span class="op">(</span><span class="va">locid</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu">summarise</span><span class="op">(</span>PS_mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">PS_hPa</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, .groups <span class="op">=</span> <span class="st">"drop"</span><span class="op">)</span>
-
-<span class="va">x</span> <span class="op">&lt;-</span> <span class="fu">full_join</span><span class="op">(</span><span class="va">x</span>, <span class="va">PS_mean</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu">mutate</span><span class="op">(</span>dPS <span class="op">=</span> <span class="va">PS_hPa</span> <span class="op">-</span> <span class="va">PS_mean</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">dPS</span><span class="op">)</span>
-
-<span class="fu"><a href="../reference/plot_merra.html">plot_merra</a></span><span class="op">(</span><span class="va">x</span>, name <span class="op">=</span> <span class="st">"dPS"</span>, dirname <span class="op">=</span> <span class="st">"images"</span>, fps <span class="op">=</span> <span class="fl">5</span>,
-          limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">30</span>, <span class="fl">30</span><span class="op">)</span>, scale <span class="op">=</span> <span class="fl">1</span>, direction <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>,
-          legend.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.9</span>, <span class="fl">0.05</span><span class="op">)</span>, 
-          legend.name <span class="op">=</span> <span class="op">(</span><span class="st">"hPa"</span><span class="op">)</span>,
-          datetime.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">144</span>, <span class="fl">87</span><span class="op">)</span><span class="op">)</span>
-
-<span class="fu"><a href="../reference/gif_merra.html">gif_merra</a></span><span class="op">(</span><span class="va">x</span>, name <span class="op">=</span> <span class="st">"dPS"</span>, dirname <span class="op">=</span> <span class="st">"images"</span>, fps <span class="op">=</span> <span class="fl">5</span>,
-          limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">30</span>, <span class="fl">30</span><span class="op">)</span>, scale <span class="op">=</span> <span class="fl">1</span>, direction <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>,
-          legend.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.89</span>, <span class="fl">0.05</span><span class="op">)</span>, 
-          legend.name <span class="op">=</span> <span class="op">(</span><span class="st">"hPa"</span><span class="op">)</span>,
-          datetime.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">144</span>, <span class="fl">87</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-</details>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">PS_hPa</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/plot_merra.html">plot_merra</a></span><span class="op">(</span><span class="va">x</span>, name <span class="op">=</span> <span class="st">"PS_hPa"</span>, dirname <span class="op">=</span> <span class="st">"images"</span>, fps <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>          limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">500</span>, <span class="fl">1000</span><span class="op">)</span>, scale <span class="op">=</span> <span class="fl">1</span>, direction <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>          legend.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.89</span>, <span class="fl">0.05</span><span class="op">)</span>, palette <span class="op">=</span> <span class="st">"YlGnBu"</span>,</span>
+<span>          legend.name <span class="op">=</span> <span class="op">(</span><span class="st">"hPa"</span><span class="op">)</span>,</span>
+<span>          datetime.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">144</span>, <span class="fl">87</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/gif_merra.html">gif_merra</a></span><span class="op">(</span><span class="va">x</span>, name <span class="op">=</span> <span class="st">"PS_hPa"</span>, dirname <span class="op">=</span> <span class="st">"images"</span>, fps <span class="op">=</span> <span class="fl">24</span>,</span>
+<span>          limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">500</span>, <span class="fl">1000</span><span class="op">)</span>, scale <span class="op">=</span> <span class="fl">1</span>, direction <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>          legend.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.89</span>, <span class="fl">0.05</span><span class="op">)</span>, </span>
+<span>          legend.name <span class="op">=</span> <span class="op">(</span><span class="st">"hPa"</span><span class="op">)</span>,</span>
+<span>          datetime.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">144</span>, <span class="fl">87</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+</details><div class="figure" style="text-align: center">
+<img src="images/merra_PS_hPa_576x360_24fps.gif" alt="Surface pressure" width="75%" height="75%"><p class="caption">
+Surface pressure
+</p>
 </div>
-<div id="combined-figures" class="section level3">
-<h3 class="hasAnchor">
-<a href="#combined-figures" class="anchor"></a>Combined figures</h3>
 <details><summary>
 Figure code
+</summary><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">PS_mean</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">locid</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>PS_mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">PS_hPa</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, .groups <span class="op">=</span> <span class="st">"drop"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">full_join</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">PS_mean</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>dPS <span class="op">=</span> <span class="va">PS_hPa</span> <span class="op">-</span> <span class="va">PS_mean</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">dPS</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/plot_merra.html">plot_merra</a></span><span class="op">(</span><span class="va">x</span>, name <span class="op">=</span> <span class="st">"dPS"</span>, dirname <span class="op">=</span> <span class="st">"images"</span>, fps <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>          limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">30</span>, <span class="fl">30</span><span class="op">)</span>, scale <span class="op">=</span> <span class="fl">1</span>, direction <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>,</span>
+<span>          legend.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.9</span>, <span class="fl">0.05</span><span class="op">)</span>, </span>
+<span>          legend.name <span class="op">=</span> <span class="op">(</span><span class="st">"hPa"</span><span class="op">)</span>,</span>
+<span>          datetime.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">144</span>, <span class="fl">87</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/gif_merra.html">gif_merra</a></span><span class="op">(</span><span class="va">x</span>, name <span class="op">=</span> <span class="st">"dPS"</span>, dirname <span class="op">=</span> <span class="st">"images"</span>, fps <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>          limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">30</span>, <span class="fl">30</span><span class="op">)</span>, scale <span class="op">=</span> <span class="fl">1</span>, direction <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>,</span>
+<span>          legend.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.89</span>, <span class="fl">0.05</span><span class="op">)</span>, </span>
+<span>          legend.name <span class="op">=</span> <span class="op">(</span><span class="st">"hPa"</span><span class="op">)</span>,</span>
+<span>          datetime.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">144</span>, <span class="fl">87</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+</details><div class="figure" style="text-align: center">
+<img src="images/merra_dPS_576x360_10fps.gif" alt="Surface pressure difference from mean value" width="75%" height="75%"><p class="caption">
+Surface pressure difference from mean value
+</p>
+</div>
+<details><summary>
+Combined figures code
 </summary><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="va">fig.T10M</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu"><a href="../reference/plot_merra.html">plot_merra</a></span><span class="op">(</span><span class="va">x</span>, name <span class="op">=</span> <span class="st">"T10M"</span>, intercept <span class="op">=</span> <span class="op">-</span><span class="fl">272</span>, 
-             limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">50</span>, <span class="fl">50</span><span class="op">)</span>, legend.name <span class="op">=</span> <span class="st">"\u00B0C"</span>,
-           <span class="co"># datetime.position = c(144, 87), </span>
-           <span class="co"># legend.position = c(0.89, 0.05), </span>
-           legend.position <span class="op">=</span> <span class="cn">NULL</span>,
-           datetime.position <span class="op">=</span> <span class="cn">NA</span>,
-           expand.x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.002</span>, <span class="fl">0.005</span><span class="op">)</span>, expand.y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.002</span>, <span class="fl">0.005</span><span class="op">)</span><span class="op">)</span>
-<span class="op">}</span>
-<span class="co"># fig.T10M(x)</span>
-
-<span class="va">fig.W50M</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
-    <span class="fu"><a href="../reference/plot_merra.html">plot_merra</a></span><span class="op">(</span><span class="va">x</span>, name <span class="op">=</span> <span class="st">"W50M"</span>, limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">30</span><span class="op">)</span>, 
-           legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span><span class="st">"m/s"</span><span class="op">)</span>,
-           datetime.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">110</span>, <span class="fl">87</span><span class="op">)</span>,
-           <span class="co"># legend.position = c(0.89, 0.05), </span>
-           legend.position <span class="op">=</span> <span class="cn">NULL</span>,
-           <span class="co"># datetime.position = NA,</span>
-           expand.x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.002</span>, <span class="fl">0.005</span><span class="op">)</span>, expand.y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.002</span>, <span class="fl">0.005</span><span class="op">)</span>
-           <span class="op">)</span>
-<span class="op">}</span>
-<span class="co"># fig.W50M(x)</span>
-
-<span class="va">fig.W10M</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
-    <span class="fu"><a href="../reference/plot_merra.html">plot_merra</a></span><span class="op">(</span><span class="va">x</span>, name <span class="op">=</span> <span class="st">"W10M"</span>, limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">30</span><span class="op">)</span>, 
-           legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span><span class="st">"m/s"</span><span class="op">)</span>,
-           <span class="co"># datetime.position = c(144, 87)</span>
-           <span class="co"># legend.position = c(0.89, 0.05), </span>
-           legend.position <span class="op">=</span> <span class="cn">NULL</span>,
-           datetime.position <span class="op">=</span> <span class="cn">NA</span>,
-           expand.x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.002</span>, <span class="fl">0.005</span><span class="op">)</span>, expand.y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.002</span>, <span class="fl">0.005</span><span class="op">)</span>
-           <span class="op">)</span>
-<span class="op">}</span>
-<span class="co"># fig.W10M(x)</span>
-
-<span class="va">fig.ALBEDO</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu"><a href="../reference/plot_merra.html">plot_merra</a></span><span class="op">(</span><span class="va">x</span>, name <span class="op">=</span> <span class="st">"ALBEDO"</span>, dirname <span class="op">=</span> <span class="st">"images"</span>, fps <span class="op">=</span> <span class="fl">5</span>,
-          limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, scale <span class="op">=</span> <span class="fl">1</span>,
-          <span class="co"># legend.position = c(0.9, 0.05), </span>
-          legend.position <span class="op">=</span> <span class="cn">NULL</span>,
-          legend.name <span class="op">=</span> <span class="op">(</span><span class="st">""</span><span class="op">)</span>, 
-           datetime.position <span class="op">=</span> <span class="cn">NA</span>,
-           expand.x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.002</span>, <span class="fl">0.005</span><span class="op">)</span>, expand.y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.002</span>, <span class="fl">0.005</span><span class="op">)</span>
-           <span class="op">)</span>
-<span class="op">}</span>
-<span class="co"># fig.ALBEDO(x)</span>
-
-<span class="va">fig.SWGDN</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu"><a href="../reference/plot_merra.html">plot_merra</a></span><span class="op">(</span><span class="va">x</span>, name <span class="op">=</span> <span class="st">"SWGDN"</span>, limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1200</span><span class="op">)</span>, 
-           <span class="co"># legend.position = c(0.88, 0.05), </span>
-           legend.position <span class="op">=</span> <span class="cn">NULL</span>,
-           legend.name <span class="op">=</span> <span class="op">(</span><span class="st">"W/\u33A1"</span><span class="op">)</span>, 
-           datetime.position <span class="op">=</span> <span class="cn">NULL</span>,
-           expand.x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.002</span>, <span class="fl">0.005</span><span class="op">)</span>, expand.y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.002</span>, <span class="fl">0.005</span><span class="op">)</span>
-           <span class="op">)</span>
-<span class="op">}</span>
-<span class="co"># fig.SWGDN(x)</span>
-
-<span class="va">fig.PS_hPa</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu"><a href="../reference/plot_merra.html">plot_merra</a></span><span class="op">(</span><span class="va">x</span>, name <span class="op">=</span> <span class="st">"PS_hPa"</span>, dirname <span class="op">=</span> <span class="st">"images"</span>, fps <span class="op">=</span> <span class="fl">5</span>,
-          limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">500</span>, <span class="fl">1000</span><span class="op">)</span>, scale <span class="op">=</span> <span class="fl">1</span>, direction <span class="op">=</span> <span class="fl">1</span>,
-          <span class="co"># palette = "YlGnBu",</span>
-          <span class="co"># legend.position = c(0.89, 0.05), </span>
-          legend.position <span class="op">=</span> <span class="cn">NULL</span>,
-          legend.name <span class="op">=</span> <span class="op">(</span><span class="st">"hPa"</span><span class="op">)</span>,
-           datetime.position <span class="op">=</span> <span class="cn">NA</span>,
-           expand.x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.002</span>, <span class="fl">0.005</span><span class="op">)</span>, expand.y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.002</span>, <span class="fl">0.005</span><span class="op">)</span>
-           <span class="op">)</span>
-<span class="op">}</span>
-<span class="co"># fig.PS_hPa(x)</span>
-
-<span class="va">fig.dPS</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu"><a href="../reference/plot_merra.html">plot_merra</a></span><span class="op">(</span><span class="va">x</span>, name <span class="op">=</span> <span class="st">"dPS"</span>, dirname <span class="op">=</span> <span class="st">"images"</span>, fps <span class="op">=</span> <span class="fl">5</span>,
-          limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">50</span>, <span class="fl">50</span><span class="op">)</span>, scale <span class="op">=</span> <span class="fl">1</span>, direction <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>,
-          <span class="co"># legend.position = c(0.9, 0.05), </span>
-          legend.position <span class="op">=</span> <span class="cn">NULL</span>,
-          legend.name <span class="op">=</span> <span class="op">(</span><span class="st">"hPa"</span><span class="op">)</span>,
-           datetime.position <span class="op">=</span> <span class="cn">NA</span>,
-           expand.x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.002</span>, <span class="fl">0.005</span><span class="op">)</span>, expand.y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.002</span>, <span class="fl">0.005</span><span class="op">)</span>
-           <span class="op">)</span>
-<span class="op">}</span>
-<span class="co"># fig.dPS(x)</span></code></pre></div>
+<code class="sourceCode R"><span></span>
+<span><span class="va">fig.T10M</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="../reference/plot_merra.html">plot_merra</a></span><span class="op">(</span><span class="va">x</span>, name <span class="op">=</span> <span class="st">"T10M"</span>, intercept <span class="op">=</span> <span class="op">-</span><span class="fl">272</span>, </span>
+<span>             limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">50</span>, <span class="fl">50</span><span class="op">)</span>, legend.name <span class="op">=</span> <span class="st">"\u00B0C"</span>,</span>
+<span>           <span class="co"># datetime.position = c(144, 87), </span></span>
+<span>           <span class="co"># legend.position = c(0.89, 0.05), </span></span>
+<span>           legend.position <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>           datetime.position <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>           expand.x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.002</span>, <span class="fl">0.005</span><span class="op">)</span>, expand.y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.002</span>, <span class="fl">0.005</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="co"># fig.T10M(x)</span></span>
+<span></span>
+<span><span class="va">fig.W50M</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="fu"><a href="../reference/plot_merra.html">plot_merra</a></span><span class="op">(</span><span class="va">x</span>, name <span class="op">=</span> <span class="st">"W50M"</span>, limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">30</span><span class="op">)</span>, </span>
+<span>           legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html" class="external-link">expression</a></span><span class="op">(</span><span class="st">"m/s"</span><span class="op">)</span>,</span>
+<span>           datetime.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">110</span>, <span class="fl">87</span><span class="op">)</span>,</span>
+<span>           <span class="co"># legend.position = c(0.89, 0.05), </span></span>
+<span>           legend.position <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>           <span class="co"># datetime.position = NA,</span></span>
+<span>           expand.x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.002</span>, <span class="fl">0.005</span><span class="op">)</span>, expand.y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.002</span>, <span class="fl">0.005</span><span class="op">)</span></span>
+<span>           <span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="co"># fig.W50M(x)</span></span>
+<span></span>
+<span><span class="va">fig.W10M</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="fu"><a href="../reference/plot_merra.html">plot_merra</a></span><span class="op">(</span><span class="va">x</span>, name <span class="op">=</span> <span class="st">"W10M"</span>, limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">30</span><span class="op">)</span>, </span>
+<span>           legend.name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html" class="external-link">expression</a></span><span class="op">(</span><span class="st">"m/s"</span><span class="op">)</span>,</span>
+<span>           <span class="co"># datetime.position = c(144, 87)</span></span>
+<span>           <span class="co"># legend.position = c(0.89, 0.05), </span></span>
+<span>           legend.position <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>           datetime.position <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>           expand.x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.002</span>, <span class="fl">0.005</span><span class="op">)</span>, expand.y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.002</span>, <span class="fl">0.005</span><span class="op">)</span></span>
+<span>           <span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="co"># fig.W10M(x)</span></span>
+<span></span>
+<span><span class="va">fig.ALBEDO</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="../reference/plot_merra.html">plot_merra</a></span><span class="op">(</span><span class="va">x</span>, name <span class="op">=</span> <span class="st">"ALBEDO"</span>, dirname <span class="op">=</span> <span class="st">"images"</span>, fps <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>          limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, scale <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>          <span class="co"># legend.position = c(0.9, 0.05), </span></span>
+<span>          legend.position <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>          legend.name <span class="op">=</span> <span class="op">(</span><span class="st">""</span><span class="op">)</span>, </span>
+<span>           datetime.position <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>           expand.x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.002</span>, <span class="fl">0.005</span><span class="op">)</span>, expand.y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.002</span>, <span class="fl">0.005</span><span class="op">)</span></span>
+<span>           <span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="co"># fig.ALBEDO(x)</span></span>
+<span></span>
+<span><span class="va">fig.SWGDN</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="../reference/plot_merra.html">plot_merra</a></span><span class="op">(</span><span class="va">x</span>, name <span class="op">=</span> <span class="st">"SWGDN"</span>, limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1200</span><span class="op">)</span>, </span>
+<span>           <span class="co"># legend.position = c(0.88, 0.05), </span></span>
+<span>           legend.position <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>           legend.name <span class="op">=</span> <span class="op">(</span><span class="st">"W/\u33A1"</span><span class="op">)</span>, </span>
+<span>           datetime.position <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>           expand.x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.002</span>, <span class="fl">0.005</span><span class="op">)</span>, expand.y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.002</span>, <span class="fl">0.005</span><span class="op">)</span></span>
+<span>           <span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="co"># fig.SWGDN(x)</span></span>
+<span></span>
+<span><span class="va">fig.PS_hPa</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="../reference/plot_merra.html">plot_merra</a></span><span class="op">(</span><span class="va">x</span>, name <span class="op">=</span> <span class="st">"PS_hPa"</span>, dirname <span class="op">=</span> <span class="st">"images"</span>, fps <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>          limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">500</span>, <span class="fl">1000</span><span class="op">)</span>, scale <span class="op">=</span> <span class="fl">1</span>, direction <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>          <span class="co"># palette = "YlGnBu",</span></span>
+<span>          <span class="co"># legend.position = c(0.89, 0.05), </span></span>
+<span>          legend.position <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>          legend.name <span class="op">=</span> <span class="op">(</span><span class="st">"hPa"</span><span class="op">)</span>,</span>
+<span>           datetime.position <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>           expand.x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.002</span>, <span class="fl">0.005</span><span class="op">)</span>, expand.y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.002</span>, <span class="fl">0.005</span><span class="op">)</span></span>
+<span>           <span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="co"># fig.PS_hPa(x)</span></span>
+<span></span>
+<span><span class="va">fig.dPS</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="../reference/plot_merra.html">plot_merra</a></span><span class="op">(</span><span class="va">x</span>, name <span class="op">=</span> <span class="st">"dPS"</span>, dirname <span class="op">=</span> <span class="st">"images"</span>, fps <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>          limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">50</span>, <span class="fl">50</span><span class="op">)</span>, scale <span class="op">=</span> <span class="fl">1</span>, direction <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>,</span>
+<span>          <span class="co"># legend.position = c(0.9, 0.05), </span></span>
+<span>          legend.position <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>          legend.name <span class="op">=</span> <span class="op">(</span><span class="st">"hPa"</span><span class="op">)</span>,</span>
+<span>           datetime.position <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>           expand.x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.002</span>, <span class="fl">0.005</span><span class="op">)</span>, expand.y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.002</span>, <span class="fl">0.005</span><span class="op">)</span></span>
+<span>           <span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="co"># fig.dPS(x)</span></span></code></pre></div>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://wilkelab.org/cowplot/">"cowplot"</a></span><span class="op">)</span>
-<span class="va">fig.grid</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu"><a href="https://wilkelab.org/cowplot/reference/plot_grid.html">plot_grid</a></span><span class="op">(</span><span class="fu">fig.W10M</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, <span class="fu">fig.W50M</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>,
-            <span class="fu">fig.SWGDN</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, <span class="fu">fig.ALBEDO</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>,
-            <span class="fu">fig.T10M</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, <span class="fu">fig.PS_hPa</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>,
-            <span class="co"># fig.dPS(x),</span>
-            labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"W10M"</span>, <span class="st">"W50M"</span>, <span class="st">"SWGDN"</span>, <span class="st">"ALBEDO"</span>, <span class="st">"T10M"</span>, <span class="st">"PS"</span><span class="op">)</span>,
-            ncol <span class="op">=</span> <span class="fl">2</span>, nrow <span class="op">=</span> <span class="fl">3</span>, hjust <span class="op">=</span> <span class="op">-</span><span class="fl">0.1</span>, vjust <span class="op">=</span> <span class="fl">1.1</span>, label_size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
-<span class="op">}</span>
-<span class="co"># ii &lt;- lubridate::month(x$UTC) == 2; summary(ii)</span>
-<span class="fu">fig.grid</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-
-<span class="fu"><a href="../reference/gif_merra.html">gif_merra</a></span><span class="op">(</span><span class="va">x</span>, FUN <span class="op">=</span> <span class="st">"fig.grid"</span>, dirname <span class="op">=</span> <span class="st">"images"</span>, fps <span class="op">=</span> <span class="fl">10</span>,
-          gif.width <span class="op">=</span> <span class="fl">576</span>, gif.height <span class="op">=</span> <span class="fl">360</span> <span class="op">*</span> <span class="fl">1.5</span><span class="op">)</span>
-
-
-<span class="co"># gif_merra(x, FUN = "fig.grid", dirname = "images", fps = 10,</span>
-<span class="co">#           gif.width = 576 * 2, gif.height = 360 * 3)</span>
-
-
-<span class="co"># gif_merra(x, FUN = "fig.grid", dirname = "images", fps = 10,</span>
-<span class="co">#           gif.width = 576/1.5, gif.height = 360)</span>
-
-
-<span class="va">fig.grid2</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu"><a href="https://wilkelab.org/cowplot/reference/plot_grid.html">plot_grid</a></span><span class="op">(</span><span class="fu">fig.W10M</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, <span class="fu">fig.W50M</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>,
-            <span class="fu">fig.SWGDN</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, <span class="fu">fig.ALBEDO</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>,
-            <span class="fu">fig.T10M</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, <span class="fu">fig.dPS</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>,
-            <span class="co"># fig.dPS(x),</span>
-            labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"W10M"</span>, <span class="st">"W50M"</span>, <span class="st">"SWGDN"</span>, <span class="st">"ALBEDO"</span>, <span class="st">"T10M"</span>, <span class="st">"dPS"</span><span class="op">)</span>,
-            ncol <span class="op">=</span> <span class="fl">2</span>, nrow <span class="op">=</span> <span class="fl">3</span>, hjust <span class="op">=</span> <span class="op">-</span><span class="fl">0.1</span>, vjust <span class="op">=</span> <span class="fl">1.1</span>, label_size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="fu"><a href="../reference/gif_merra.html">gif_merra</a></span><span class="op">(</span><span class="va">x</span>, FUN <span class="op">=</span> <span class="st">"fig.grid2"</span>, dirname <span class="op">=</span> <span class="st">"images"</span>, fps <span class="op">=</span> <span class="fl">5</span>,
-          gif.width <span class="op">=</span> <span class="fl">576</span>, gif.height <span class="op">=</span> <span class="fl">360</span> <span class="op">*</span> <span class="fl">1.5</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://wilkelab.org/cowplot/" class="external-link">"cowplot"</a></span><span class="op">)</span></span>
+<span><span class="va">fig.grid</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://wilkelab.org/cowplot/reference/plot_grid.html" class="external-link">plot_grid</a></span><span class="op">(</span><span class="fu">fig.W10M</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, <span class="fu">fig.W50M</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>,</span>
+<span>            <span class="fu">fig.SWGDN</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, <span class="fu">fig.ALBEDO</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>,</span>
+<span>            <span class="fu">fig.T10M</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, <span class="fu">fig.PS_hPa</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>,</span>
+<span>            <span class="co"># fig.dPS(x),</span></span>
+<span>            labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"W10M"</span>, <span class="st">"W50M"</span>, <span class="st">"SWGDN"</span>, <span class="st">"ALBEDO"</span>, <span class="st">"T10M"</span>, <span class="st">"PS"</span><span class="op">)</span>,</span>
+<span>            ncol <span class="op">=</span> <span class="fl">2</span>, nrow <span class="op">=</span> <span class="fl">3</span>, hjust <span class="op">=</span> <span class="op">-</span><span class="fl">0.1</span>, vjust <span class="op">=</span> <span class="fl">1.1</span>, label_size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="co"># ii &lt;- lubridate::month(x$UTC) == 2; summary(ii)</span></span>
+<span><span class="fu">fig.grid</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/gif_merra.html">gif_merra</a></span><span class="op">(</span><span class="va">x</span>, FUN <span class="op">=</span> <span class="st">"fig.grid"</span>, dirname <span class="op">=</span> <span class="st">"images"</span>, fps <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>          gif.width <span class="op">=</span> <span class="fl">576</span>, gif.height <span class="op">=</span> <span class="fl">360</span> <span class="op">*</span> <span class="fl">1.5</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="co"># gif_merra(x, FUN = "fig.grid", dirname = "images", fps = 10,</span></span>
+<span><span class="co">#           gif.width = 576 * 2, gif.height = 360 * 3)</span></span>
+<span></span>
+<span></span>
+<span><span class="co"># gif_merra(x, FUN = "fig.grid", dirname = "images", fps = 10,</span></span>
+<span><span class="co">#           gif.width = 576/1.5, gif.height = 360)</span></span>
+<span></span>
+<span></span>
+<span><span class="va">fig.grid2</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://wilkelab.org/cowplot/reference/plot_grid.html" class="external-link">plot_grid</a></span><span class="op">(</span><span class="fu">fig.W10M</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, <span class="fu">fig.W50M</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>,</span>
+<span>            <span class="fu">fig.SWGDN</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, <span class="fu">fig.ALBEDO</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>,</span>
+<span>            <span class="fu">fig.T10M</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, <span class="fu">fig.dPS</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>,</span>
+<span>            <span class="co"># fig.dPS(x),</span></span>
+<span>            labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"W10M"</span>, <span class="st">"W50M"</span>, <span class="st">"SWGDN"</span>, <span class="st">"ALBEDO"</span>, <span class="st">"T10M"</span>, <span class="st">"dPS"</span><span class="op">)</span>,</span>
+<span>            ncol <span class="op">=</span> <span class="fl">2</span>, nrow <span class="op">=</span> <span class="fl">3</span>, hjust <span class="op">=</span> <span class="op">-</span><span class="fl">0.1</span>, vjust <span class="op">=</span> <span class="fl">1.1</span>, label_size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/gif_merra.html">gif_merra</a></span><span class="op">(</span><span class="va">x</span>, FUN <span class="op">=</span> <span class="st">"fig.grid2"</span>, dirname <span class="op">=</span> <span class="st">"images"</span>, fps <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>          gif.width <span class="op">=</span> <span class="fl">576</span>, gif.height <span class="op">=</span> <span class="fl">360</span> <span class="op">*</span> <span class="fl">1.5</span><span class="op">)</span></span></code></pre></div>
 </details>
 </div>
 </div>
@@ -402,11 +431,13 @@ Figure code
 
 
       <footer><div class="copyright">
-  <p>Developed by Oleg Lugovoy, Shuo Gao.</p>
+  <p></p>
+<p>Developed by Oleg Lugovoy, Shuo Gao.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>
@@ -414,6 +445,8 @@ Figure code
 
   
 
+
+  
 
   </body>
 </html>

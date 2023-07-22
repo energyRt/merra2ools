@@ -13,9 +13,6 @@ coord2tz_offset(lon, lat, utc = NULL)
 
 \item{utc}{}
 }
-\value{
-
-}
 \description{
 Title
 }
