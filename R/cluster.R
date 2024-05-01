@@ -31,10 +31,16 @@
 #' @examples
 #' # see "Cluster locations" in "Get started" 
 #' 
-cluster_locid <- function(x, varname, locid = "locid", time = "UTC",
-                          locid_info = NULL, weight = NULL, group = NULL,
-                          k = NULL, max_loss = .05, verbose = TRUE,
-                          distance = "cor", cores = 1, ...) {
+cluster_locid <- function(
+    x, varname, locid = "locid", time = "UTC",
+    locid_info = NULL, weight = NULL, group = NULL,
+    k = c(1:20, 25, 30, 40, 50, 75, 100, 150, 200, 300, 500, 1000, 1e4),
+    max_loss = .05,
+    distance = "cor", 
+    cores = 1, 
+    plot = FALSE, 
+    verbose = TRUE,
+    ...) {
   # browser()
   require("TSdist", quietly = T)
   if (is.null(locid_info)) {
@@ -138,8 +144,9 @@ cluster_locid <- function(x, varname, locid = "locid", time = "UTC",
       if (verbose) cat("The data with applied weight has zero observations\n")
       next
     }
+    # browser()
     K <- 1:ncol(dd)
-    if (!is.null(k)) K <- K[K %in% k]
+    if (!is.null(k)) K <- unique(c(K[K %in% k], ncol(dd)))
     K <- K[K <= nrow(d)]
     # K[K >= max(1, min(k)) & K <= min(ncol(dd), max(k))]
     
@@ -197,6 +204,30 @@ cluster_locid <- function(x, varname, locid = "locid", time = "UTC",
       # )
       
       cl[, sd_N := sd_N][, sd_k := sd_i][, sd_loss := 1 - sd_i / sd_N]
+      if (plot && inherits(locid_info, "sf")) {
+        # if (r == "...") browser()
+        rf_cl_sf <- locid_info |> 
+          filter(get(group) %in% {{r}}) |>
+          left_join(cl, by = c(locid, group)) |>
+          st_make_valid() |>
+          filter(!is.na(st_dimension(geometry))) 
+        # (optional) merge geometries for the plot
+        #  %>%
+        #   group_by(across(any_of(c(group, "cluster")))) |>
+        #   summarise(geometry = st_union(geometry), .groups = "drop") |>
+        #   st_make_valid() |>
+        #   filter(!is.na(st_dimension(geometry)))
+        
+        # use discrete palette for smaller number of clusters
+        if (i <= 12) rf_cl_sf <- mutate(rf_cl_sf, cluster = as.factor(cluster))
+        
+        plot(rf_cl_sf["cluster"], 
+             main = paste0("group: ", r, "; clusters: ", i, " (", cl$N[1],
+                           "); sd_loss: ", round(100 * cl$sd_loss[1], 3), "%"),
+             nbreaks = i)
+      }
+      
+      # cl[, sd_N := sd_N][, sd_k := sd_i][, sd_loss := 1 - sd_i / sd_N]
       # cl[, max_loss := max_loss]
       cc[[i]] <- cl; rm(cl)
       

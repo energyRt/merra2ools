@@ -12,11 +12,12 @@ cluster_locid(
   locid_info = NULL,
   weight = NULL,
   group = NULL,
-  k = NULL,
+  k = c(1:20, 25, 30, 40, 50, 75, 100, 150, 200, 300, 500, 1000, 10000),
   max_loss = 0.05,
-  verbose = TRUE,
   distance = "cor",
   cores = 1,
+  plot = FALSE,
+  verbose = TRUE,
   ...
 )
 }
@@ -39,11 +40,11 @@ cluster_locid(
 
 \item{max_loss}{maximum loss of variation (standard deviation) of clustered variable, measured as `1 - sd(clustered_variable) / sd(original_variable)`. Default value is `0.05`, meaning up to `5` percent of variability of original, non-clustered variable is allowed to be lost by clustering.}
 
-\item{verbose}{logical, should the clustering process be reported, TRUE by default.}
-
 \item{distance}{character name of a selected distance measure to use `TSdist::KMedoids`. Default metrics is `cor` - Pearson's correlation between the time series variable in different locations. Alternative, allowed methasures: `"euclidean", "manhattan", "minkowski", "infnorm", "ccor", "sts", "dtw", "keogh_lb", "edr", "erp", "lcss", "fourier", "tquest", "dissimfull", "dissimapprox", "acf", "pacf", "ar.lpc.ceps", "ar.mah", "ar.mah.statistic", "ar.mah.pvalue", "ar.pic", "cdm", "cid", "cor", "cort", "wav", "int.per", "per", "mindist.sax", "ncd", "pred", "spec.glk", "spec.isd", "spec.llr", "pdc", "frechet"`.}
 
 \item{cores}{integer number of processor cores to use, currently ignored.}
+
+\item{verbose}{logical, should the clustering process be reported, TRUE by default.}
 
 \item{...}{additional parameters to pass to `TSdist::KMedoids`, might be required for some distance measures.}
 }
